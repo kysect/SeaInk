@@ -1,0 +1,24 @@
+@startuml components
+
+package "University infrastructure" {
+  [Isu module]
+
+  node {
+    [Isu module] - [Sync module]
+    database "MSSQL" {
+      [Sync module data]
+    }
+    [Sync module] --> [Sync module data]
+  }
+}
+
+package "Google" {
+  HTTP - [Google Drive API]
+  [Google Drive API]
+  [Sync module] --> HTTP
+}
+
+interface "User interface" as inf1
+inf1 - [Sync module]
+
+@enduml
