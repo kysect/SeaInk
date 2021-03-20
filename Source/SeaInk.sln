@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.218
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Core", "SeaInk.Core\SeaInk.Core.csproj", "{E12408EF-2A05-489F-9FB5-85E3E8114E93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Sample", "SeaInk.Sample\SeaInk.Sample.csproj", "{0EBBE205-9FAC-4691-820B-92C232D774F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C15B403-3B6F-477C-B338-BDD7F3B3CB66}
+	EndGlobalSection
+EndGlobal
