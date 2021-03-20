@@ -1,0 +1,32 @@
+@startuml Data model
+
+class Mentor
+Mentor : Name
+Mentor : IsuId
+Mentor : Token
+
+class Group
+Group : Name
+
+class Student
+Student : Name
+class Isu
+class Subject
+Subject : Title
+class SubjectActivity
+SubjectActivity : PointCount
+class GoogleTable
+GoogleTable : Link
+
+Mentor --> Group : has access to >
+Group --> Student : contains >
+Isu --> Group : contains info about >
+Mentor --> Isu : auth via >
+Isu --> Subject : contains info about >
+Student --> SubjectActivity : has >
+Mentor --> SubjectActivity : put >
+Isu --> SubjectActivity : contains >
+GoogleTable --> Group : associate with
+GoogleTable --> SubjectActivity : contains >
+
+@enduml
