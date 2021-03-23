@@ -9,4 +9,8 @@
     <ProjectReference Include="..\SeaInk.Core\SeaInk.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="33.0.2" />
+  </ItemGroup>
+
 </Project>

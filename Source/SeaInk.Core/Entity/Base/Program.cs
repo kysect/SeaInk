@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SeaInk.Core.Entity.Base
@@ -6,10 +7,9 @@ namespace SeaInk.Core.Entity.Base
     {
         public string Title { get; set; }
         
-        //TODO: Change to format used for time
-        public int Begin { get; set; }
-        public int End { get; set; }
+        public DateTime Begin { get; set; }
+        public DateTime End { get; set; }
 
-        public HashSet<Milestone> Milestones;
+        public List<Milestone> Milestones;
     }
 }
