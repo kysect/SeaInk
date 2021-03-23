@@ -9,9 +9,8 @@ namespace SeaInk.Core.Entity.Base
         public float Minimum { get; }
         public float Maximum { get; }
 
-        //TODO: Change to format used for time
-        public int Begin { get; set; }
-        public int End { get; set; }
+        public DateTime Begin { get; set; }
+        public DateTime End { get; set; }
 
         public void SetScoring(float minimum, float maximum)
         {
