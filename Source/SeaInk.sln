@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Sample", "SeaInk.Sam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Endpoints", "Endpoints", "{A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Endpoints.Server", "SeaInk.Endpoints\Server\SeaInk.Endpoints.Server.csproj", "{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Server", "SeaInk.Endpoints\Server\SeaInk.Endpoints.Server.csproj", "{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Endpoints.Client", "SeaInk.Endpoints\Client\SeaInk.Endpoints.Client.csproj", "{0201A570-8659-4EB8-AEE7-FAD911218E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Client", "SeaInk.Endpoints\Client\SeaInk.Endpoints.Client.csproj", "{0201A570-8659-4EB8-AEE7-FAD911218E5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
