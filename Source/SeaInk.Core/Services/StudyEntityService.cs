@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using SeaInk.Core.Entity;
-using SeaInk.Core.Entity.Base;
 
 namespace SeaInk.Core.Services
 {
     public class StudyEntityService
     {
-        public virtual List<Program> GetSubjectsByCurator(int curatorId)
+        public List<Subject> GetSubjectsByMentorSystemId(int curatorId)
         {
             throw new NotImplementedException();
         }
 
-        public virtual List<CuratedGroup> GetCuratedGroupsBySubject(string subject)
+        public List<StudyGroup> GetStudyGroupsBySystemSubjectId(string subject)
         {
             throw new NotImplementedException();
         }
 
-        public virtual List<Student> GetStudentsByUniversityGroup(UniversityGroup group)
+        public List<Student> GetStudentsBySystemGroupId(StudyGroup group)
         {
             throw new NotImplementedException();
         }
