@@ -9,6 +9,7 @@ namespace SeaInk.Core
         List<string> GetGroupsBySubject(string subjectName);
         List<string> GetStudentsByGroup(string groupName);
 
-        void SendPoints(List<SubjectActivity> results);
+        // Энто потом придумаем
+        // void SendPoints(List<SubjectActivity> results);
     }
 }
