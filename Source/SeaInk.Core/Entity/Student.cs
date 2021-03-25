@@ -1,14 +1,14 @@
 namespace SeaInk.Core.Entity
 {
-    public class Student: UniversitySystemUser
+    public class Student : UniversitySystemUser
     {
-        public int SystemGroupId { get; set; }
-        
-        public Student(int systemId, int systemGroupId,string token,
+        public StudyGroup Group { get; set; }
+
+        public Student(int systemId, StudyGroup group, string token,
             string firstName, string lastName, string midName)
-        : base(systemId, token, firstName, lastName, midName)
+            : base(systemId, token, firstName, lastName, midName)
         {
-            SystemGroupId = systemGroupId;
+            Group = group;
         }
     }
 }
