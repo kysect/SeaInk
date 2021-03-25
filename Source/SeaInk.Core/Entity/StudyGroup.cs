@@ -6,14 +6,16 @@ namespace SeaInk.Core.Entity
     {
         public int SystemId { get; set; }
         public string Name { get; set; }
-        public int AdminSystemId { get; set; }
-        public new List<Student> Students { get; set; }
+        public Student Admin { get; set; }
+        public List<Student> Students { get; set; }
+        // Нужно ли?
+        public List<Division> Divisions { get; set; }
 
-        public StudyGroup(int id, string name, int adminId, List<Student> students)
+        public StudyGroup(int id, string name, Student admin, List<Student> students)
         {
             SystemId = id;
             Name = name;
-            AdminSystemId = adminId;
+            Admin = admin;
             Students = students;
         }
     }
