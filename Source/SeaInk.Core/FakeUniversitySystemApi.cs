@@ -28,6 +28,14 @@ namespace SeaInk.Core
             return StudyGroupFaker.RuleFor(g => g.SystemId, groupId).Generate();
         }
 
+        public StudyGroup GetStudyGroupByStudentSystemId(int studentId)
+        {
+            return StudyGroupFaker.Rules((_, group) =>
+            {
+                group.Students.Add(StudentFaker.RuleFor(s => s.SystemId, studentId));
+            }).Generate();
+        }
+
         public Subject GetSubjectBySystemId(int subjectId)
         {
             return SubjectFaker.RuleFor(s => s.Id, subjectId).Generate();
