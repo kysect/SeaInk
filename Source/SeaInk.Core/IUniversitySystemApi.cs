@@ -8,6 +8,7 @@ namespace SeaInk.Core
         Student GetStudentBySystemId(int studentId);
         Mentor GetMentorBySystemId(int mentorId);
         StudyGroup GetStudyGroupBySystemId(int groupId);
+        StudyGroup GetStudyGroupByStudentSystemId(int studentId);
         Subject GetSubjectBySystemId(int subjectId);
         StudentAssignmentProgress GetStudentAssignmentProgressByIds(int studentId, int assignmentId);
 
