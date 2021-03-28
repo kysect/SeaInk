@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SeaInk.Core.Entity
+namespace SeaInk.Core.Entities
 {
     public class UniversitySystemUser
     {

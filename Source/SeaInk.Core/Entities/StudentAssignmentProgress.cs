@@ -1,6 +1,6 @@
-using SeaInk.Core.Model;
+using SeaInk.Core.Models;
 
-namespace SeaInk.Core.Entity
+namespace SeaInk.Core.Entities
 {
     public class StudentAssignmentProgress
     {

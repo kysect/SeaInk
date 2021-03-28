@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace SeaInk.Core.Entity
+namespace SeaInk.Core.Entities
 {
     public class StudyAssignment
     {

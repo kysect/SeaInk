@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace SeaInk.Core.Entity
+namespace SeaInk.Core.Entities
 {
     public class Mentor : UniversitySystemUser
     {

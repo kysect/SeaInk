@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SeaInk.Core.Entity
+namespace SeaInk.Core.Entities
 {
     public class StudyGroup
     {
