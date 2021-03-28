@@ -30,14 +30,9 @@ namespace SeaInk.Core
 
         public Subject GetSubjectBySystemId(int subjectId)
         {
-            return SubjectFaker.RuleFor(s => s.SystemId, subjectId).Generate();
+            return SubjectFaker.RuleFor(s => s.Id, subjectId).Generate();
         }
-
-        public Division GetDivisionBySystemId(int divisionId)
-        {
-            return DivisionFaker.RuleFor(d => d.SystemId, divisionId);
-        }
-
+        
         public StudentAssignmentProgress GetStudentAssignmentProgressByIds(int studentId, int assignmentId)
         {
             return StudentAssignmentProgressFaker.Rules((_, progress) =>
@@ -86,10 +81,9 @@ namespace SeaInk.Core
         /* Fake Entities */
         private static readonly Faker<Division> DivisionFaker =
             new Faker<Division>()
-                .Rules((f, d) =>
+                .Rules((_, d) =>
                 {
-                    d.SystemId = f.IndexFaker;
-                    d.Groups = ListOf(StudyGroupFaker.Rules(((_, group) => { group.Divisions.Add(d); })));
+                    d.Groups = ListOf(StudyGroupFaker);
                 });
 
         private static readonly Faker<Mentor> MentorFaker =
@@ -102,7 +96,7 @@ namespace SeaInk.Core
                     m.LastName = f.Person.LastName;
                     m.MidName = f.Person.UserName;
 
-                    m.Divisions = ListOf(DivisionFaker.RuleFor(d => d.Mentor, m));
+                    m.Divisions = ListOf(DivisionFaker);
                 });
 
         private static readonly Faker<Student> StudentFaker =
@@ -147,14 +141,13 @@ namespace SeaInk.Core
                     g.Name = f.Address.BuildingNumber();
                     g.Students = ListOf(StudentFaker.RuleFor(s => s.Group, g));
                     g.Admin = g.Students[0];
-                    g.Divisions = ListOf(DivisionFaker.Rules(((_, division) => { division.Groups.Add(g); })));
                 });
 
         private static readonly Faker<Subject> SubjectFaker =
             new Faker<Subject>()
                 .Rules((f, s) =>
                 {
-                    s.SystemId = f.IndexFaker;
+                    s.Id = f.IndexFaker;
                     s.Title = f.Commerce.Department();
                     s.StartDate = f.Date.Past();
                     s.EndDate = f.Date.Future();

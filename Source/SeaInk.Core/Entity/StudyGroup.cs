@@ -8,8 +8,6 @@ namespace SeaInk.Core.Entity
         public string Name { get; set; }
         public Student Admin { get; set; }
         public List<Student> Students { get; set; }
-        // Нужно ли?
-        public List<Division> Divisions { get; set; }
 
         public StudyGroup(int id, string name, Student admin, List<Student> students)
         {

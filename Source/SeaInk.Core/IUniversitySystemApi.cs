@@ -11,7 +11,6 @@ namespace SeaInk.Core
         Mentor GetMentorBySystemId(int mentorId);
         StudyGroup GetStudyGroupBySystemId(int groupId);
         Subject GetSubjectBySystemId(int subjectId);
-        Division GetDivisionBySystemId(int divisionId);
         StudentAssignmentProgress GetStudentAssignmentProgressByIds(int studentId, int assignmentId);
 
         void SaveUser(UniversitySystemUser user);
