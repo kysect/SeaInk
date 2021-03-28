@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SeaInk.Core.Entity;
+using SeaInk.Core.Entities;
 
 namespace SeaInk.Core.Services
 {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Bogus;
-using SeaInk.Core.Entity;
-using SeaInk.Core.Model;
+using SeaInk.Core.Entities;
+using SeaInk.Core.Models;
 
 namespace SeaInk.Core
 {

@@ -1,4 +1,4 @@
-namespace SeaInk.Core.Entity
+namespace SeaInk.Core.Entities
 {
     public class Student : UniversitySystemUser
     {

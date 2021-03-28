@@ -1,6 +1,6 @@
 using System;
 
-namespace SeaInk.Core.Model
+namespace SeaInk.Core.Models
 {
     public class AssignmentProgress
     {
