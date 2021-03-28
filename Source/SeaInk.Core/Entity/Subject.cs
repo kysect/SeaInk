@@ -5,7 +5,7 @@ namespace SeaInk.Core.Entity
 {
     public class Subject
     {
-        public int SystemId { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         
         public DateTime StartDate { get; set; }

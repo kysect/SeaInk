@@ -5,7 +5,7 @@ namespace SeaInk.Core.Model
     public class AssignmentProgress
     {
         public DateTime CompletionDate;
-        public float Points { get; set; }
+        public double Points { get; set; }
 
         public AssignmentProgress(DateTime date, float points)
         {
