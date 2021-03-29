@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
-using SeaInk.Core.Models;
+﻿using SeaInk.Core.Entities;
 
 namespace SeaInk.Core
 {
     public interface IUniversitySystemApi
     {
-        List<string> GetGroupsByMentor(int mentorId);
-        List<string> GetGroupsBySubject(string subjectName);
-        List<string> GetStudentsByGroup(string groupName);
+        UniversitySystemUser GetUserBySystemId(int userId);
+        Student GetStudentBySystemId(int studentId);
+        Mentor GetMentorBySystemId(int mentorId);
+        StudyGroup GetStudyGroupBySystemId(int groupId);
+        StudyGroup GetStudyGroupByStudentSystemId(int studentId);
+        Subject GetSubjectBySystemId(int subjectId);
+        StudentAssignmentProgress GetStudentAssignmentProgressByIds(int studentId, int assignmentId);
 
-        void SendPoints(List<SubjectActivity> results);
+        void SaveUser(UniversitySystemUser user);
+        void SaveStudent(Student student);
+        void SaveMentor(Mentor mentor);
+        void SaveStudyGroup(StudyGroup group);
+        void SaveSubject(Subject subject);
+        void SaveDivision(Division division);
+        void SaveAssignmentProgress(StudentAssignmentProgress progress);
     }
 }

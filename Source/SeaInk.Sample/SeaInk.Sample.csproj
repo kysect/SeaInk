@@ -9,4 +9,8 @@
     <ProjectReference Include="..\SeaInk.Core\SeaInk.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FakeServices" />
+  </ItemGroup>
+
 </Project>

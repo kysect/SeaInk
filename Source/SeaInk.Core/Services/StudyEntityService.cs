@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using SeaInk.Core.Entities;
 
 namespace SeaInk.Core.Services
 {
     public class StudyEntityService
     {
-        public List<string> GetSubjectsByMentor(int mentorId)
+        public List<Subject> GetSubjectsByMentorSystemId(int curatorId)
         {
             throw new NotImplementedException();
         }
 
-        public List<string> GetGroupsBySubject(string subject)
+        public List<StudyGroup> GetStudyGroupsBySystemSubjectId(string subject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Student> GetStudentsBySystemGroupId(StudyGroup group)
         {
             throw new NotImplementedException();
         }
