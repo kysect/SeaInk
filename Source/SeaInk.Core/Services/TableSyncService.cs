@@ -10,21 +10,18 @@ namespace SeaInk.Core.Services
     {
         private class Index
         {
-            private int ColumnIndex { get; }
-            private int LineIndex { get; }
+            public int Column { get; }
+            public int Line { get; }
             
             public Index(int column, int line)
             {
-                ColumnIndex = column;
-                LineIndex = line;
+                Column = column;
+                Line = line;
             }
-
-            public int Column => ColumnIndex;
             
-            public int Line => LineIndex;
             public string ToExcelIndex()
             {
-                return Convert.ToChar(ColumnIndex + 'A' - 1).ToString() + LineIndex;
+                return Convert.ToChar(Column + 'A' - 1).ToString() + Line;
             }
         }
 
