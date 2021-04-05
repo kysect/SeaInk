@@ -1,4 +1,6 @@
 using System.Drawing;
+using SeaInk.Core.Models.Tables.Enums;
+using FontStyle = SeaInk.Core.Models.Tables.Enums.FontStyle;
 
 namespace SeaInk.Core.Models.Tables.Styles
 {
@@ -20,75 +22,75 @@ namespace SeaInk.Core.Models.Tables.Styles
         public ICellStyle AssignmentHeaderOpeningCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Bold, 
-                IStyles.LineStyle.Light, 
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Light)
+                LineStyle.Bold, 
+                LineStyle.Light, 
+                LineStyle.Bold,
+                LineStyle.Light)
         };
 
         public ICellStyle AssignmentHeaderCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Light)
+                LineStyle.Light,
+                LineStyle.Light,
+                LineStyle.Bold,
+                LineStyle.Light)
         };
 
         public ICellStyle AssignmentHeaderClosingCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Black,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Light)
+                LineStyle.Light,
+                LineStyle.Black,
+                LineStyle.Bold,
+                LineStyle.Light)
         };
 
 
         public ICellStyle StudentListOpeningCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Bold)
+                LineStyle.Light,
+                LineStyle.Bold,
+                LineStyle.Light,
+                LineStyle.Bold)
         };
 
         public ICellStyle StudentListCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Light)
+                LineStyle.Light,
+                LineStyle.Bold,
+                LineStyle.Light,
+                LineStyle.Light)
         };
 
         public ICellStyle StudentListClosingCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Bold)
+                LineStyle.Light,
+                LineStyle.Bold,
+                LineStyle.Bold,
+                LineStyle.Bold)
         };
 
 
         public ICellStyle BottomCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Black,
-                IStyles.LineStyle.Light)
+                LineStyle.Light,
+                LineStyle.Light,
+                LineStyle.Black,
+                LineStyle.Light)
         };
 
         public ICellStyle TrailingCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Bold,
-                IStyles.LineStyle.Light,
-                IStyles.LineStyle.Light)
+                LineStyle.Light,
+                LineStyle.Bold,
+                LineStyle.Light,
+                LineStyle.Light)
         };
 
         public ICellStyle CommonCellStyle { get; set; } = new DefaultCellStyle();
@@ -104,16 +106,16 @@ namespace SeaInk.Core.Models.Tables.Styles
         public Color BackgroundColor { get; set; } = Color.White;
 
         public BorderStyle BorderStyle { get; set; } =
-            new BorderStyle(new LineStyleCreator(Color.Black, IStyles.LineStyle.Light));
+            new BorderStyle(new LineStyleCreator(Color.Black, LineStyle.Light));
 
-        public IStyles.Alignment VerticalAlignment { get; set; } = IStyles.Alignment.Center;
-        public IStyles.Alignment HorizontalAlignment { get; set; } = IStyles.Alignment.Center;
+        public Alignment VerticalAlignment { get; set; } = Alignment.Center;
+        public Alignment HorizontalAlignment { get; set; } = Alignment.Center;
 
         public string FontName { get; set; } = "Arial";
-        public IStyles.FontStyle FontStyle { get; set; } = IStyles.FontStyle.Regular;
+        public FontStyle FontStyle { get; set; } = FontStyle.Regular;
         public Color FontColor { get; set; } = Color.Black;
 
 
-        public IStyles.TextWrapping TextWrapping { get; set; } = IStyles.TextWrapping.NewLine;
+        public TextWrapping TextWrapping { get; set; } = TextWrapping.NewLine;
     }
 }

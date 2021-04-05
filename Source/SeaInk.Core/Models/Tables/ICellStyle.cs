@@ -1,4 +1,6 @@
 using System.Drawing;
+using SeaInk.Core.Models.Tables.Enums;
+using FontStyle = SeaInk.Core.Models.Tables.Enums.FontStyle;
 
 namespace SeaInk.Core.Models.Tables
 {
@@ -13,14 +15,14 @@ namespace SeaInk.Core.Models.Tables
 
         public BorderStyle BorderStyle { get; set; }
 
-        public IStyles.Alignment VerticalAlignment { get; set; }
-        public IStyles.Alignment HorizontalAlignment { get; set; }
+        public Alignment VerticalAlignment { get; set; }
+        public Alignment HorizontalAlignment { get; set; }
 
         public string FontName { get; set; }
-        public IStyles.FontStyle FontStyle { get; set; }
+        public FontStyle FontStyle { get; set; }
         public Color FontColor { get; set; }
         
         
-        public IStyles.TextWrapping TextWrapping { get; set; }
+        public TextWrapping TextWrapping { get; set; }
     }
 }

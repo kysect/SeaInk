@@ -1,14 +1,15 @@
 using System.Drawing;
+using SeaInk.Core.Models.Tables.Enums;
 
 namespace SeaInk.Core.Models.Tables
 {
     public class BorderStyle
     {
-        public LineStyle Leading { get; set; } = new();
-        public LineStyle Trailing { get; set; } = new();
+        public LineConfiguration Leading { get; set; } = new();
+        public LineConfiguration Trailing { get; set; } = new();
 
-        public LineStyle Bottom { get; set; } = new();
-        public LineStyle Top { get; set; } = new();
+        public LineConfiguration Bottom { get; set; } = new();
+        public LineConfiguration Top { get; set; } = new();
 
         public BorderStyle()
         {
@@ -23,7 +24,7 @@ namespace SeaInk.Core.Models.Tables
             Top = creator.Create();
         }
 
-        public BorderStyle(LineStyle leading, LineStyle trailing, LineStyle bottom, LineStyle top)
+        public BorderStyle(LineConfiguration leading, LineConfiguration trailing, LineConfiguration bottom, LineConfiguration top)
         {
             Leading = leading;
             Trailing = trailing;
@@ -32,14 +33,14 @@ namespace SeaInk.Core.Models.Tables
             Top = top;
         }
 
-        public BorderStyle(IStyles.LineStyle leading, IStyles.LineStyle trailing, IStyles.LineStyle bottom,
-            IStyles.LineStyle top)
+        public BorderStyle(LineStyle leading, LineStyle trailing, LineStyle bottom,
+            LineStyle top)
         {
-            Leading = new LineStyle(Color.Black, leading);
-            Trailing = new LineStyle(Color.Black, trailing);
+            Leading = new LineConfiguration(Color.Black, leading);
+            Trailing = new LineConfiguration(Color.Black, trailing);
 
-            Bottom = new LineStyle(Color.Black, bottom);
-            Top = new LineStyle(Color.Black, bottom);
+            Bottom = new LineConfiguration(Color.Black, bottom);
+            Top = new LineConfiguration(Color.Black, top);
         }
     }
 }
