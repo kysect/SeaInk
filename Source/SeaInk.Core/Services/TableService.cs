@@ -21,12 +21,12 @@ namespace SeaInk.Core.Services
 
             SaveDivision(division, markup);
         }
-        
+
         public void SaveDivision(Division division, ISheetMarkup? markup = null)
         {
             if (division.TableId == "")
                 throw new InvalidDataException();
-            
+
             markup ??= new DefaultSheetMarkup();
 
             var table = new TTable();
@@ -35,11 +35,11 @@ namespace SeaInk.Core.Services
             foreach (StudyGroup group in division.Groups)
             {
                 table.CreateSheet(group.Name);
-                PasteStudents(group, table, markup);
-                PasteAssignments(group, division.Subject, table, markup);
+                PasteStudents(division, group, table, markup);
+                PasteAssignments(division, group, table, division.Subject, markup);
                 //TODO: PasteAssignmentProgress когда будет готов доступ к ним из StudyEntityService
             }
-            
+
             table.FormatSheets(markup);
         }
 
@@ -48,12 +48,9 @@ namespace SeaInk.Core.Services
             throw new NotImplementedException();
         }
 
-        private void PasteStudents(StudyGroup group, TTable table, ISheetMarkup markup)
+        private void PasteStudents(Division division, StudyGroup group, TTable table, ISheetMarkup markup)
         {
-            var index = new TableIndex(
-                group.Name,
-                markup.StudentsStartIndex.Column,
-                markup.StudentsStartIndex.Row);
+            TableIndex index = markup.StudentsStartIndex.WithSheet(division.Groups.IndexOf(group));
 
             table.SetValuesForCellsAt(
                 index,
@@ -61,49 +58,47 @@ namespace SeaInk.Core.Services
                 ITable.Direction.Vertical);
         }
 
-        private void PasteAssignments(StudyGroup group, Subject subject, TTable table, ISheetMarkup markup)
+        private void PasteAssignments(Division division, StudyGroup group, TTable table, Subject subject,
+            ISheetMarkup markup)
         {
-            int i = markup.AssignmentStartIndex.Column;
+            TableIndex index = markup.AssignmentStartIndex.WithSheet(division.Groups.IndexOf(group));
 
             foreach (StudyAssignment assignment in subject.Assignments)
             {
-                table.SetValueForCellAt(new TableIndex(
-                        group.Name,
-                        i,
-                        markup.AssignmentStartIndex.Row),
+                table.SetValueForCellAt(
+                    index,
                     assignment.Title);
-                
-                table.SetValueForCellAt(new TableIndex(
-                    group.Name,
-                    i,
-                    markup.AssignmentStartIndex.Row + markup.CellsPerAssignmentTitle.height),
+
+                table.SetValueForCellAt(
+                    index
+                        .WithRow(markup.AssignmentStartIndex.Row + markup.CellsPerAssignmentTitle.height),
                     assignment.MinPoints);
-                table.SetValueForCellAt(new TableIndex(
-                        group.Name,
-                        i + markup.CellsPerAssignmentTitle.width / 2,
-                        markup.AssignmentStartIndex.Row + markup.CellsPerAssignmentTitle.height),
+                table.SetValueForCellAt(
+                    index
+                        .WithColumn(index.Column + markup.CellsPerAssignmentTitle.width / 2)
+                        .WithRow(markup.AssignmentStartIndex.Row + markup.CellsPerAssignmentTitle.height),
                     assignment.MinPoints);
 
-                i += markup.CellsPerAssignmentTitle.width;
+                index.Column += markup.CellsPerAssignmentTitle.width;
             }
         }
-        
-        private void PasteAssignmentProgress(List<StudentAssignmentProgress> progresses, Subject subject, StudyGroup group, TTable table,
-            ISheetMarkup markup)
+
+        private void PasteAssignmentProgress(Division division, StudyGroup group, TTable table,
+            List<StudentAssignmentProgress> progresses, Subject subject, ISheetMarkup markup)
         {
             foreach (StudentAssignmentProgress progress in progresses)
             {
                 int student = group.Students.FindIndex(s => s.SystemId == progress.Student.SystemId);
-                int assignment = subject.Assignments.FindIndex(a => a.SystemId == progress.Assignment.SystemId); 
+                int assignment = subject.Assignments.FindIndex(a => a.SystemId == progress.Assignment.SystemId);
 
                 if (student == -1 || assignment == -1)
                     throw new InvalidDataException();
 
                 var index = new TableIndex(
-                    group.Name,
+                    division.Groups.IndexOf(group),
                     markup.AssignmentStartIndex.Column + assignment,
                     markup.StudentsStartIndex.Row + student);
-                
+
                 table.SetValueForCellAt(index, progress.Progress.Points);
             }
         }

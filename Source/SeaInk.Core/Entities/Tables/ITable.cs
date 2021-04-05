@@ -6,19 +6,19 @@ namespace SeaInk.Core.Entities.Tables
 {
     public interface ITable
     {
-        public int SheetCount { get; }
+        int SheetCount { get; }
 
-        public int ColumnCount(TableIndex sheet);
-        public int RowCount(TableIndex sheet);
+        int ColumnCount(TableIndex sheet);
+        int RowCount(TableIndex sheet);
 
-        public void CreateSheet(string name);
-        public void DeleteSheet(TableIndex sheet);
+        void CreateSheet(string name);
+        void DeleteSheet(TableIndex sheet);
 
-        public void Load(string address);
+        void Load(string address);
 
-        public string Create();
+        string Create();
 
-        public void Save();
+        void Save();
 
         /*
          * 
@@ -37,24 +37,24 @@ namespace SeaInk.Core.Entities.Tables
          * }
          * 
          */
-        public T GetValueForCellAt<T>(TableIndex index);
-        public string GetValueForCellAt(TableIndex index);
+        T GetValueForCellAt<T>(TableIndex index);
+        string GetValueForCellAt(TableIndex index);
 
-        public List<T> GetValuesForCellsAt<T>(TableIndex index, int count, Direction direction);
-        public List<string> GetValuesForCellsAt(TableIndex index, int count, Direction direction);
-
-
-        public void SetValueForCellAt<T>(TableIndex index, T value);
-
-        public void SetValuesForCellsAt<T>(TableIndex index, List<T> values, Direction direction);
+        List<T> GetValuesForCellsAt<T>(TableIndex index, int count, Direction direction);
+        List<string> GetValuesForCellsAt(TableIndex index, int count, Direction direction);
 
 
-        public void FormatSheet(ISheetMarkup markup, TableIndex sheet);
+        void SetValueForCellAt<T>(TableIndex index, T value);
+
+        void SetValuesForCellsAt<T>(TableIndex index, List<T> values, Direction direction);
+
+
+        void FormatSheet(ISheetMarkup markup, TableIndex sheet);
 
         //sheets = null - форматировать все листы
-        public void FormatSheets(ISheetMarkup markup, TableIndex[]? sheets = null);
+        void FormatSheets(ISheetMarkup markup, TableIndex[]? sheets = null);
 
-        public enum Direction
+        enum Direction
         {
             Horizontal,
             Vertical
