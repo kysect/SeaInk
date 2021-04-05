@@ -6,5 +6,7 @@ namespace SeaInk.Core.Entities
     {
         public Subject Subject { get; set; }
         public List<StudyGroup> Groups { get; set; }
+        
+        public string TableId { get; set; }
     }
 }
