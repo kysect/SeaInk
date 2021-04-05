@@ -23,7 +23,7 @@ namespace SeaInk.Core.Services
             return _worksheets[sheet].Cell(row, column).Value.ToString();
         }
         
-        private IEnumerable GetCells(int startRow, int startColumn, int endRow, int endColumn)
+        private IEnumerable<(int row, int column)> GetCells(int startRow, int startColumn, int endRow, int endColumn)
         {
             for (var column = startColumn; column <= endColumn; column++)
             {
@@ -47,7 +47,7 @@ namespace SeaInk.Core.Services
 
         private void SetCellsBordersThick(int sheet, int startRow, int startColumn, int endRow, int endColumn)
         {
-            foreach ((int row, int column) index in GetCells(startRow, startColumn, endRow, endColumn))
+            foreach (var index in GetCells(startRow, startColumn, endRow, endColumn))
             {
                 SetCellBordersThick(sheet, index.row, index.column);
             }
@@ -63,7 +63,7 @@ namespace SeaInk.Core.Services
 
         private void SetCellsBordersThin(int sheet, int startRow, int startColumn, int endRow, int endColumn)
         {
-            foreach ((int row, int column) index in GetCells(startRow, startColumn, endRow, endColumn))
+            foreach (var index in GetCells(startRow, startColumn, endRow, endColumn))
             {
                 SetCellBordersThin(sheet, index.row, index.column);
             }
@@ -77,7 +77,7 @@ namespace SeaInk.Core.Services
 
         private void SetCellsAlignmentCenter(int sheet, int startRow, int startColumn, int endRow, int endColumn)
         {
-            foreach ((int column, int row) index in GetCells(startRow, startColumn, endRow, endColumn))
+            foreach (var index in GetCells(startRow, startColumn, endRow, endColumn))
             {
                 SetCellAlignmentCenter(sheet, index.row, index.column);
             }
@@ -132,7 +132,6 @@ namespace SeaInk.Core.Services
 
         public void GenerateWorkbook(string subject, List<string> names, List<string> labs)
         {
-            //TODO: Ширина таблицы ограничена английским алфавитом - когда-то исправить
             AddWorksheet(subject);
 
             SetCellData(0, 1, 1, "ФИО");
