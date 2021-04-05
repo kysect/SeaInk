@@ -3,28 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Column = DocumentFormat.OpenXml.Wordprocessing.Column;
 
 namespace SeaInk.Core.Services
 {
     public class ExcelGenerator
     {
-        private class Index
-        {
-            public int Column { get; }
-            public int Line { get; }
-            
-            public Index(int column, int line)
-            {
-                Column = column;
-                Line = line;
-            }
-            
-            public string ToExcelIndex()
-            {
-                return Convert.ToChar(Column + 'A' - 1).ToString() + Line;
-            }
-        }
-
         private readonly XLWorkbook _workbook = new XLWorkbook();
         private readonly List<IXLWorksheet> _worksheets = new List<IXLWorksheet>();
 
@@ -33,119 +18,105 @@ namespace SeaInk.Core.Services
             _worksheets.Add(_workbook.Worksheets.Add(nameOfSheet));
         }
 
-        private string GetCellValue(int sheet, int column, int line)
+        private string GetCellValue(int sheet, int row, int column)
         {
-            var index = new Index(column, line).ToExcelIndex();
-            return _worksheets[sheet].Cell(index).Value.ToString();
+            return _worksheets[sheet].Cell(row, column).Value.ToString();
         }
         
-        private IEnumerable GetCells(Index lp, Index rb)
+        private IEnumerable<(int row, int column)> GetCells(int startRow, int startColumn, int endRow, int endColumn)
         {
-            for (var column = lp.Column; column <= rb.Column; column++)
+            for (var column = startColumn; column <= endColumn; column++)
             {
-                for (var line = lp.Line; line <= rb.Line; line++)
+                for (var row = startRow; row <= endRow; row++)
                 {
-                    yield return new Index(column, line);
+                    (int row, int column) index;
+                    index.row = row;
+                    index.column = column;
+                    yield return index;
                 }
             }
         }
 
-        private void SetCellBordersThick(int sheet, int column, int line)
+        private void SetCellBordersThick(int sheet, int row, int column)
         {
-            var index = new Index(column, line).ToExcelIndex();
-            _worksheets[sheet].Cell(index).Style.Border.BottomBorder = XLBorderStyleValues.Thick;
-            _worksheets[sheet].Cell(index).Style.Border.TopBorder = XLBorderStyleValues.Thick;
-            _worksheets[sheet].Cell(index).Style.Border.RightBorder = XLBorderStyleValues.Thick;
-            _worksheets[sheet].Cell(index).Style.Border.LeftBorder = XLBorderStyleValues.Thick;
+            _worksheets[sheet].Cell(row, column).Style.Border.BottomBorder = XLBorderStyleValues.Thick;
+            _worksheets[sheet].Cell(row, column).Style.Border.TopBorder = XLBorderStyleValues.Thick;
+            _worksheets[sheet].Cell(row, column).Style.Border.RightBorder = XLBorderStyleValues.Thick;
+            _worksheets[sheet].Cell(row, column).Style.Border.LeftBorder = XLBorderStyleValues.Thick;
         }
 
-        private void SetCellsBordersThick(int sheet, int leftTopColumn, int leftTopLine, int rightBotColumn, int rightBotLine)
+        private void SetCellsBordersThick(int sheet, int startRow, int startColumn, int endRow, int endColumn)
         {
-            var lp = new Index(leftTopColumn, leftTopLine);
-            var rb = new Index(rightBotColumn, rightBotLine);
-
-            foreach (Index index in GetCells(lp, rb))
+            foreach (var index in GetCells(startRow, startColumn, endRow, endColumn))
             {
-                SetCellBordersThick(sheet, index.Column, index.Line);
+                SetCellBordersThick(sheet, index.row, index.column);
             }
         }
 
-        private void SetCellBordersThin(int sheet, int column, int line)
+        private void SetCellBordersThin(int sheet, int row, int column)
         {
-            var index = new Index(column, line).ToExcelIndex();
-            _worksheets[sheet].Cell(index).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-            _worksheets[sheet].Cell(index).Style.Border.TopBorder = XLBorderStyleValues.Thin;
-            _worksheets[sheet].Cell(index).Style.Border.RightBorder = XLBorderStyleValues.Thin;
-            _worksheets[sheet].Cell(index).Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+            _worksheets[sheet].Cell(row, column).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+            _worksheets[sheet].Cell(row, column).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+            _worksheets[sheet].Cell(row, column).Style.Border.RightBorder = XLBorderStyleValues.Thin;
+            _worksheets[sheet].Cell(row, column).Style.Border.LeftBorder = XLBorderStyleValues.Thin;
         }
 
-        private void SetCellsBordersThin(int sheet, int leftTopColumn, int leftTopLine, int rightBotColumn, int rightBotLine)
+        private void SetCellsBordersThin(int sheet, int startRow, int startColumn, int endRow, int endColumn)
         {
-            var lp = new Index(leftTopColumn, leftTopLine);
-            var rb = new Index(rightBotColumn, rightBotLine);
-
-            foreach (Index index in GetCells(lp, rb))
+            foreach (var index in GetCells(startRow, startColumn, endRow, endColumn))
             {
-                SetCellBordersThin(sheet, index.Column, index.Line);
+                SetCellBordersThin(sheet, index.row, index.column);
             }
         }
 
-        private void SetCellAlignmentCenter(int sheet, int column, int line)
+        private void SetCellAlignmentCenter(int sheet, int row, int column)
         {
-            var index = new Index(column, line).ToExcelIndex();
-            _worksheets[sheet].Cell(index).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-            _worksheets[sheet].Cell(index).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            _worksheets[sheet].Cell(row, column).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            _worksheets[sheet].Cell(row, column).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         }
 
-        private void SetCellsAlignmentCenter(int sheet, int leftTopColumn, int leftTopLine, int rightBotColumn, int rightBotLine)
+        private void SetCellsAlignmentCenter(int sheet, int startRow, int startColumn, int endRow, int endColumn)
         {
-            var lp = new Index(leftTopColumn, leftTopLine);
-            var rb = new Index(rightBotColumn, rightBotLine);
-
-            foreach (Index index in GetCells(lp, rb))
+            foreach (var index in GetCells(startRow, startColumn, endRow, endColumn))
             {
-                SetCellAlignmentCenter(sheet, index.Column, index.Line);
+                SetCellAlignmentCenter(sheet, index.row, index.column);
             }
         }
 
-        private void SetCellAutoWidth(int sheet, int column, int line)
+        private void SetCellAutoWidth(int sheet, int row, int column)
         {
-            var index = new Index(column, line);
-            var data = GetCellValue(sheet, column, line);
+            var data = GetCellValue(sheet, row, column);
             
-            if (data.Length >= _worksheets[sheet].Column(index.Column.ToString()).Width)
+            if (data.Length >= _worksheets[sheet].Column(column).Width)
             {
-                _worksheets[sheet].Column(index.Column.ToString()).Width = data.Length + 1;
+                _worksheets[sheet].Column(column).Width = data.Length + 1;
             }
         }
 
-        private void SetCellData(int sheet, int column, int line, string data)
+        private void SetCellData(int sheet, int row, int column, string data)
         {
-            var index = new Index(column, line).ToExcelIndex();
-            _worksheets[sheet].Cell(index).Value = data;
-            SetCellAutoWidth(sheet, column, line);
+            _worksheets[sheet].Cell(row, column).Value = data;
+            SetCellAutoWidth(sheet, row, column);
         }
 
-        private void SetCellsDataVertical(int sheet, int column, int line, List<string> data)
+        private void SetCellsDataVertical(int sheet, int row, int column, List<string> data)
         {
-            var index = new Index(column, line);
-            var numberOfLine = index.Line;
+            var numberOfRow = row;
             foreach (var d in data)
             {
-                SetCellData(sheet, index.Column, numberOfLine, d);
-                SetCellAutoWidth(sheet, index.Column, numberOfLine);
-                numberOfLine++;
+                SetCellData(sheet, numberOfRow, column, d);
+                SetCellAutoWidth(sheet, numberOfRow, column);
+                numberOfRow++;
             }
         }
         
-        private void SetCellsDataHorizontal(int sheet, int column, int line, List<string> data)
+        private void SetCellsDataHorizontal(int sheet, int row, int column, List<string> data)
         {
-            var index = new Index(column, line);
-            var numberOfColumn = index.Column;
+            var numberOfColumn = column;
             foreach (var d in data)
             {
-                SetCellData(sheet, numberOfColumn, index.Line, d);
-                SetCellAutoWidth(sheet, numberOfColumn, index.Line);
+                SetCellData(sheet, row, numberOfColumn, d);
+                SetCellAutoWidth(sheet, row, numberOfColumn);
                 numberOfColumn++;
             }
         }
@@ -161,21 +132,20 @@ namespace SeaInk.Core.Services
 
         public void GenerateWorkbook(string subject, List<string> names, List<string> labs)
         {
-            //TODO: Ширина таблицы ограничена английским алфавитом - когда-то исправить
             AddWorksheet(subject);
 
             SetCellData(0, 1, 1, "ФИО");
             SetCellBordersThick(0, 1, 1);
             SetCellAlignmentCenter(0, 1, 1);
 
-            SetCellsDataVertical(0, 1, 2, names);
-            SetCellsDataHorizontal(0, 2, 1, labs);
+            SetCellsDataVertical(0, 2, 1, names);
+            SetCellsDataHorizontal(0, 1, 2, labs);
             
-            SetCellsBordersThin(0, 1, 2, 1 + labs.Count, 1 + names.Count);
+            SetCellsBordersThin(0, 2, 1, 1 + names.Count, 1 + labs.Count);
             
-            SetCellsBordersThick(0, 2, 1, 1 + labs.Count, 1);
+            SetCellsBordersThick(0, 1, 2, 1, 1 + labs.Count);
             
-            SetCellsAlignmentCenter(0, 2, 1, 1 + labs.Count, 1);
+            SetCellsAlignmentCenter(0, 1, 2, 1, 1 + labs.Count);
             
             var path = @"E:\ITMO prog\Projects\Sea-ink\Docs\" + subject + ".xlsx";
             SaveWorkbook(path); 
