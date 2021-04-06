@@ -20,26 +20,23 @@ namespace SeaInk.Core.Entities.Tables
 
         void Save();
 
-        /*
-         * 
-         * Функция для получения значения ячейки, женерик нужен чтобы
-         * сразу кастить в нужный тип
-         *
-         * Ex (получение баллов студента):
-         *
-         * try
-         * {
-         *      int points = Table.GetValueForCellAt<int>((0, 0));
-         * }
-         * catch (Exception e)
-         * {
-         *      Console.WriteLine(e.Message);
-         * }
-         * 
-         */
+        /// <summary>
+        /// Returns value casted to specified type
+        /// </summary>
+        /// <param name="index"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         T GetValueForCellAt<T>(TableIndex index);
         string GetValueForCellAt(TableIndex index);
 
+        /// <summary>
+        /// Returns value range casted to specified type
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="direction"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         List<T> GetValuesForCellsAt<T>(TableIndex index, int count, Direction direction);
         List<string> GetValuesForCellsAt(TableIndex index, int count, Direction direction);
 
