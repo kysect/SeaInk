@@ -40,7 +40,7 @@ namespace SeaInk.Core
         {
             return SubjectFaker.RuleFor(s => s.Id, subjectId).Generate();
         }
-        
+
         public StudentAssignmentProgress GetStudentAssignmentProgressByIds(int studentId, int assignmentId)
         {
             return StudentAssignmentProgressFaker.Rules((_, progress) =>
@@ -87,15 +87,93 @@ namespace SeaInk.Core
 
         /* Faker */
         /* Fake Entities */
-        private static readonly Faker<Division> DivisionFaker =
-            new Faker<Division>()
-                .Rules((_, d) =>
+        private static Faker<Division> DivisionFaker { get; }
+
+        private static Faker<Mentor> MentorFaker { get; }
+
+        private static Faker<Student> StudentFaker { get; }
+
+        private static Faker<StudentAssignmentProgress> StudentAssignmentProgressFaker { get; }
+
+        private static Faker<StudyAssignment> StudyAssignmentFaker { get; }
+
+        private static Faker<StudyGroup> StudyGroupFaker { get; }
+
+        private static Faker<Subject> SubjectFaker { get; }
+
+        private static Faker<UniversitySystemUser> UniversitySystemUserFaker { get; }
+
+
+        /* Models */
+        private static Faker<AssignmentProgress> AssignmentProgressFaker { get; }
+
+        /* Helpers */
+        private static List<T> ListOf<T>(Faker<T> faker, int l = 10, int h = 20) where T : class
+        {
+            var list = new List<T>();
+            int top = new Random().Next(l, h);
+
+            for (int i = 0; i < top; ++i)
+            {
+                list.Add(faker.Generate());
+            }
+
+            return list;
+        }
+
+        static FakeUniversitySystemApi()
+        {
+            StudyAssignmentFaker = new Faker<StudyAssignment>()
+                .Rules((f, a) =>
                 {
-                    d.Groups = ListOf(StudyGroupFaker);
+                    a.SystemId = f.IndexFaker;
+                    a.Title = f.Commerce.Department();
+                    a.IsMilestone = f.Random.Bool();
+                    a.StartDate = f.Date.Past();
+                    a.EndDate = f.Date.Future();
+                    a.MinPoints = f.Random.Float(0, 5);
+                    a.MaxPoints = f.Random.Float(5, 10);
+                });
+            UniversitySystemUserFaker = new Faker<UniversitySystemUser>()
+                .Rules((f, u) =>
+                {
+                    u.SystemId = f.IndexFaker;
+                    u.Token = f.Internet.Password();
+                    u.FirstName = f.Person.FirstName;
+                    u.LastName = f.Person.LastName;
+                    u.MidName = f.Person.UserName;
+                });
+            AssignmentProgressFaker = new Faker<AssignmentProgress>()
+                .Rules((f, p) =>
+                {
+                    p.CompletionDate = f.Date.Past();
+                    p.Points = f.Random.Float(5, 10);
                 });
 
-        private static readonly Faker<Mentor> MentorFaker =
-            new Faker<Mentor>()
+            StudentFaker = new Faker<Student>()
+                .Rules((f, s) =>
+                {
+                    s.SystemId = f.IndexFaker;
+                    s.Token = f.Internet.Password();
+                    s.FirstName = f.Person.FirstName;
+                    s.LastName = f.Person.LastName;
+                    s.MidName = f.Person.UserName;
+                });
+
+            StudyGroupFaker = new Faker<StudyGroup>()
+                .Rules((f, g) =>
+                {
+                    g.SystemId = f.IndexFaker;
+                    g.Name = f.Address.BuildingNumber();
+                    g.Students = ListOf(StudentFaker.RuleFor(s => s.Group, g));
+                    g.Admin = g.Students[0];
+                });
+
+
+            DivisionFaker = new Faker<Division>()
+                .Rules((_, d) => { d.Groups = ListOf(StudyGroupFaker); });
+
+            MentorFaker = new Faker<Mentor>()
                 .Rules((f, m) =>
                 {
                     m.SystemId = f.IndexFaker;
@@ -107,52 +185,7 @@ namespace SeaInk.Core
                     m.Divisions = ListOf(DivisionFaker);
                 });
 
-        private static readonly Faker<Student> StudentFaker =
-            new Faker<Student>()
-                .Rules((f, s) =>
-                {
-                    s.SystemId = f.IndexFaker;
-                    s.Group = StudyGroupFaker.Generate();
-                    s.Token = f.Internet.Password();
-                    s.FirstName = f.Person.FirstName;
-                    s.LastName = f.Person.LastName;
-                    s.MidName = f.Person.UserName;
-                });
-
-        private static readonly Faker<StudentAssignmentProgress> StudentAssignmentProgressFaker =
-            new Faker<StudentAssignmentProgress>()
-                .Rules(((_, progress) =>
-                {
-                    progress.Student = StudentFaker.Generate();
-                    progress.Assignment = StudyAssignmentFaker.Generate();
-                    progress.Progress = AssignmentProgressFaker.Generate();
-                }));
-
-        private static readonly Faker<StudyAssignment> StudyAssignmentFaker =
-            new Faker<StudyAssignment>()
-                .Rules((f, a) =>
-                {
-                    a.SystemId = f.IndexFaker;
-                    a.Title = f.Commerce.Department();
-                    a.IsMilestone = f.Random.Bool();
-                    a.StartDate = f.Date.Past();
-                    a.EndDate = f.Date.Future();
-                    a.MinPoints = f.Random.Float(0, 5);
-                    a.MaxPoints = f.Random.Float(5, 10);
-                });
-
-        private static readonly Faker<StudyGroup> StudyGroupFaker =
-            new Faker<StudyGroup>()
-                .Rules((f, g) =>
-                {
-                    g.SystemId = f.IndexFaker;
-                    g.Name = f.Address.BuildingNumber();
-                    g.Students = ListOf(StudentFaker.RuleFor(s => s.Group, g));
-                    g.Admin = g.Students[0];
-                });
-
-        private static readonly Faker<Subject> SubjectFaker =
-            new Faker<Subject>()
+            SubjectFaker = new Faker<Subject>()
                 .Rules((f, s) =>
                 {
                     s.Id = f.IndexFaker;
@@ -160,46 +193,20 @@ namespace SeaInk.Core
                     s.StartDate = f.Date.Past();
                     s.EndDate = f.Date.Future();
 
-                    var top = f.Random.Int(3, 5);
-                    for (var i = 0; i < top; ++i)
+                    int top = f.Random.Int(3, 5);
+                    for (int i = 0; i < top; ++i)
                     {
                         s.Assignments.Add(StudyAssignmentFaker.Generate());
                     }
                 });
 
-        private static readonly Faker<UniversitySystemUser> UniversitySystemUserFaker =
-            new Faker<UniversitySystemUser>()
-                .Rules((f, u) =>
+            StudentAssignmentProgressFaker = new Faker<StudentAssignmentProgress>()
+                .Rules((_, progress) =>
                 {
-                    u.SystemId = f.IndexFaker;
-                    u.Token = f.Internet.Password();
-                    u.FirstName = f.Person.FirstName;
-                    u.LastName = f.Person.LastName;
-                    u.MidName = f.Person.UserName;
+                    progress.Student = StudentFaker.Generate();
+                    progress.Assignment = StudyAssignmentFaker.Generate();
+                    progress.Progress = AssignmentProgressFaker.Generate();
                 });
-
-
-        /* Models */
-        private static readonly Faker<AssignmentProgress> AssignmentProgressFaker =
-            new Faker<AssignmentProgress>()
-                .Rules((f, p) =>
-                {
-                    p.CompletionDate = f.Date.Past();
-                    p.Points = f.Random.Float(5, 10);
-                });
-        
-        /* Helpers */
-        private static List<T> ListOf<T>(Faker<T> faker, int l = 10, int h = 20) where T : class
-        {
-            var list = new List<T>();
-            var top = new Random().Next(l, h);
-
-            for (var i = 0; i < top; ++i)
-            {
-                list.Add(faker.Generate());
-            }
-
-            return list;
         }
     }
 }
