@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using SeaInk.Core.Entities;
 using SeaInk.Core.Models;
@@ -40,7 +40,7 @@ namespace SeaInk.Core
         {
             return SubjectFaker.RuleFor(s => s.Id, subjectId).Generate();
         }
-        
+
         public StudentAssignmentProgress GetStudentAssignmentProgressByIds(int studentId, int assignmentId)
         {
             return StudentAssignmentProgressFaker.Rules((_, progress) =>
@@ -87,49 +87,29 @@ namespace SeaInk.Core
 
         /* Faker */
         /* Fake Entities */
-        private static readonly Faker<Division> DivisionFaker =
-            new Faker<Division>()
-                .Rules((_, d) =>
-                {
-                    d.Groups = ListOf(StudyGroupFaker);
-                });
+        private static Faker<Division> DivisionFaker { get; }
 
-        private static readonly Faker<Mentor> MentorFaker =
-            new Faker<Mentor>()
-                .Rules((f, m) =>
-                {
-                    m.SystemId = f.IndexFaker;
-                    m.Token = f.Internet.Password();
-                    m.FirstName = f.Person.FirstName;
-                    m.LastName = f.Person.LastName;
-                    m.MidName = f.Person.UserName;
+        private static Faker<Mentor> MentorFaker { get; }
 
-                    m.Divisions = ListOf(DivisionFaker);
-                });
+        private static Faker<Student> StudentFaker { get; }
 
-        private static readonly Faker<Student> StudentFaker =
-            new Faker<Student>()
-                .Rules((f, s) =>
-                {
-                    s.SystemId = f.IndexFaker;
-                    s.Group = StudyGroupFaker.Generate();
-                    s.Token = f.Internet.Password();
-                    s.FirstName = f.Person.FirstName;
-                    s.LastName = f.Person.LastName;
-                    s.MidName = f.Person.UserName;
-                });
+        private static Faker<StudentAssignmentProgress> StudentAssignmentProgressFaker { get; }
 
-        private static readonly Faker<StudentAssignmentProgress> StudentAssignmentProgressFaker =
-            new Faker<StudentAssignmentProgress>()
-                .Rules(((_, progress) =>
-                {
-                    progress.Student = StudentFaker.Generate();
-                    progress.Assignment = StudyAssignmentFaker.Generate();
-                    progress.Progress = AssignmentProgressFaker.Generate();
-                }));
+        private static Faker<StudyAssignment> StudyAssignmentFaker { get; }
 
-        private static readonly Faker<StudyAssignment> StudyAssignmentFaker =
-            new Faker<StudyAssignment>()
+        private static Faker<StudyGroup> StudyGroupFaker { get; }
+
+        private static Faker<Subject> SubjectFaker { get; }
+
+        private static Faker<UniversitySystemUser> UniversitySystemUserFaker { get; }
+
+
+        /* Models */
+        private static Faker<AssignmentProgress> AssignmentProgressFaker { get; }
+
+        static FakeUniversitySystemApi()
+        {
+            StudyAssignmentFaker = new Faker<StudyAssignment>()
                 .Rules((f, a) =>
                 {
                     a.SystemId = f.IndexFaker;
@@ -140,35 +120,7 @@ namespace SeaInk.Core
                     a.MinPoints = f.Random.Float(0, 5);
                     a.MaxPoints = f.Random.Float(5, 10);
                 });
-
-        private static readonly Faker<StudyGroup> StudyGroupFaker =
-            new Faker<StudyGroup>()
-                .Rules((f, g) =>
-                {
-                    g.SystemId = f.IndexFaker;
-                    g.Name = f.Address.BuildingNumber();
-                    g.Students = ListOf(StudentFaker.RuleFor(s => s.Group, g));
-                    g.Admin = g.Students[0];
-                });
-
-        private static readonly Faker<Subject> SubjectFaker =
-            new Faker<Subject>()
-                .Rules((f, s) =>
-                {
-                    s.Id = f.IndexFaker;
-                    s.Title = f.Commerce.Department();
-                    s.StartDate = f.Date.Past();
-                    s.EndDate = f.Date.Future();
-
-                    var top = f.Random.Int(3, 5);
-                    for (var i = 0; i < top; ++i)
-                    {
-                        s.Assignments.Add(StudyAssignmentFaker.Generate());
-                    }
-                });
-
-        private static readonly Faker<UniversitySystemUser> UniversitySystemUserFaker =
-            new Faker<UniversitySystemUser>()
+            UniversitySystemUserFaker = new Faker<UniversitySystemUser>()
                 .Rules((f, u) =>
                 {
                     u.SystemId = f.IndexFaker;
@@ -177,29 +129,76 @@ namespace SeaInk.Core
                     u.LastName = f.Person.LastName;
                     u.MidName = f.Person.UserName;
                 });
-
-
-        /* Models */
-        private static readonly Faker<AssignmentProgress> AssignmentProgressFaker =
-            new Faker<AssignmentProgress>()
+            AssignmentProgressFaker = new Faker<AssignmentProgress>()
                 .Rules((f, p) =>
                 {
                     p.CompletionDate = f.Date.Past();
                     p.Points = f.Random.Float(5, 10);
                 });
-        
-        /* Helpers */
-        private static List<T> ListOf<T>(Faker<T> faker, int l = 10, int h = 20) where T : class
-        {
-            var list = new List<T>();
-            var top = new Random().Next(l, h);
 
-            for (var i = 0; i < top; ++i)
-            {
-                list.Add(faker.Generate());
-            }
+            StudentFaker = new Faker<Student>()
+                .Rules((f, s) =>
+                {
+                    s.SystemId = f.IndexFaker;
+                    s.Token = f.Internet.Password();
+                    s.FirstName = f.Person.FirstName;
+                    s.LastName = f.Person.LastName;
+                    s.MidName = f.Person.UserName;
+                });
 
-            return list;
+            StudyGroupFaker = new Faker<StudyGroup>()
+                .Rules((f, g) =>
+                {
+                    g.SystemId = f.IndexFaker;
+                    g.Name = f.Address.BuildingNumber();
+                    g.Students = StudentFaker
+                        .RuleFor(s => s.Group, g)
+                        .Generate(f.Random.Int(15, 25))
+                        .ToList();
+                    g.Admin = g.Students[0];
+                });
+
+
+            DivisionFaker = new Faker<Division>()
+                .Rules((f, d) =>
+                {
+                    d.Groups = StudyGroupFaker.Generate(f.Random.Int(3, 5));
+                });
+
+            MentorFaker = new Faker<Mentor>()
+                .Rules((f, m) =>
+                {
+                    m.SystemId = f.IndexFaker;
+                    m.Token = f.Internet.Password();
+                    m.FirstName = f.Person.FirstName;
+                    m.LastName = f.Person.LastName;
+                    m.MidName = f.Person.UserName;
+
+                    m.Divisions = DivisionFaker.Generate(f.Random.Int(2, 4));
+                });
+
+            SubjectFaker = new Faker<Subject>()
+                .Rules((f, s) =>
+                {
+                    s.Id = f.IndexFaker;
+                    s.Title = f.Commerce.Department();
+                    s.StartDate = f.Date.Past();
+                    s.EndDate = f.Date.Future();
+
+                    int top = f.Random.Int(3, 5);
+                    for (int i = 0; i < top; ++i)
+                    {
+                        s.Assignments.Add(StudyAssignmentFaker.Generate());
+                    }
+                });
+
+            StudentAssignmentProgressFaker = new Faker<StudentAssignmentProgress>()
+                .Rules((_, progress) =>
+                {
+                    progress.Student = StudentFaker.Generate();
+                    progress.Assignment = StudyAssignmentFaker.Generate();
+                    progress.Progress = AssignmentProgressFaker.Generate();
+                });
         }
     }
 }
