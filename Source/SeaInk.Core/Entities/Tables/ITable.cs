@@ -8,8 +8,8 @@ namespace SeaInk.Core.Entities.Tables
     {
         int SheetCount { get; }
 
-        int ColumnCount(TableIndex sheet);
-        int RowCount(TableIndex sheet);
+        int ColumnCount(int sheetNumber);
+        int RowCount(int sheetNumber);
 
         void CreateSheet(string name);
         void DeleteSheet(TableIndex sheet);

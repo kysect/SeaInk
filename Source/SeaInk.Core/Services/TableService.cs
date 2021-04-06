@@ -51,7 +51,7 @@ namespace SeaInk.Core.Services
 
         private void PasteStudents(Division division, StudyGroup group, TTable table, ISheetMarkup markup)
         {
-            TableIndex index = markup.StudentsStartIndex.WithSheet(division.Groups.IndexOf(group));
+            TableIndex index = markup.StudentsStartIndex.WithSheet(group.Name);
 
             table.SetValuesForCellsAt(
                 index,
@@ -62,7 +62,7 @@ namespace SeaInk.Core.Services
         private void PasteAssignments(Division division, StudyGroup group, TTable table, Subject subject,
             ISheetMarkup markup)
         {
-            TableIndex index = markup.AssignmentStartIndex.WithSheet(division.Groups.IndexOf(group));
+            TableIndex index = markup.AssignmentStartIndex.WithSheet(group.Name);
 
             foreach (StudyAssignment assignment in subject.Assignments)
             {
@@ -96,7 +96,7 @@ namespace SeaInk.Core.Services
                     throw new InvalidDataException();
 
                 var index = new TableIndex(
-                    division.Groups.IndexOf(group),
+                    group.Name,
                     markup.AssignmentStartIndex.Column + assignment,
                     markup.StudentsStartIndex.Row + student);
 

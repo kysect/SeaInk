@@ -4,11 +4,11 @@ namespace SeaInk.Core.Models.Tables
 {
     public class TableIndex 
     {
-        public int Sheet { get; set; }
+        public string Sheet { get; set; }
         public int Column { get; set; }
         public int Row { get; set; }
 
-        public TableIndex(int sheet, int column, int row)
+        public TableIndex(string sheet, int column, int row)
         {
             Sheet = sheet;
             Column = column;
@@ -17,19 +17,19 @@ namespace SeaInk.Core.Models.Tables
 
         public TableIndex(int column, int row)
         {
-            Sheet = -1;
+            Sheet = "";
             Column = column;
             Row = row;
         }
         
-        public TableIndex(int sheet)
+        public TableIndex(string sheet)
         {
             Sheet = sheet;
             Column = 0;
             Row = 0;
         }
 
-        public TableIndex WithSheet(int i)
+        public TableIndex WithSheet(string i)
         {
             return new TableIndex(i, Column, Row);
         }
@@ -44,24 +44,50 @@ namespace SeaInk.Core.Models.Tables
             return new TableIndex(Sheet, Column, i);
         }
 
+        public string Range()
+        {
+            return Sheet + $"!{ConvertToLetters(Column)}{Row}";
+        }
+
+        public string Range(TableIndex index)
+        {
+            if (Sheet != index.Sheet)
+                throw new InvalidDataException();
+
+            return Sheet + $"!{ConvertToLetters(Column)}{Row}:{ConvertToLetters(index.Column)}{Row}";
+        }
+
+        private string ConvertToLetters(int number)
+        {
+            string result = "";
+
+            while (number > 0)
+            {
+                result += 'A' + number % 26;
+                number /= 26;
+            }
+
+            return result;
+        }
+
         public static TableIndex operator +(TableIndex lhs, TableIndex rhs)
         {
-            if (lhs.Sheet != rhs.Sheet && lhs.Sheet != -1 && rhs.Sheet != -1)
+            if (lhs.Sheet != rhs.Sheet && lhs.Sheet != "" && rhs.Sheet != "")
                 throw new InvalidDataException();
 
             return new TableIndex(
-                lhs.Sheet == -1 ? rhs.Sheet : lhs.Sheet,
+                lhs.Sheet == "" ? rhs.Sheet : lhs.Sheet,
                 lhs.Column + rhs.Column,
                 rhs.Row + rhs.Row);
         }
         
         public static TableIndex operator -(TableIndex lhs, TableIndex rhs)
         {
-            if (lhs.Sheet != rhs.Sheet && lhs.Sheet != -1 && rhs.Sheet != -1)
+            if (lhs.Sheet != rhs.Sheet && lhs.Sheet != "" && rhs.Sheet != "")
                 throw new InvalidDataException();
 
             return new TableIndex(
-                lhs.Sheet == -1 ? rhs.Sheet : lhs.Sheet,
+                lhs.Sheet == "" ? rhs.Sheet : lhs.Sheet,
                 lhs.Column - rhs.Column,
                 rhs.Row - rhs.Row);
         }
