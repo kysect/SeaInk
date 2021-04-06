@@ -1,0 +1,18 @@
+﻿@page "/generate/table"
+
+<h3>Generate new table for group</h3>
+
+<Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+    <Items>
+        <Tab Name="group">New table for single group</Tab>
+        <Tab Name="groups">New table for groups</Tab>
+    </Items>
+    <Content>
+        <TabPanel Name="group">
+            <GroupTableGenerationPage />
+        </TabPanel>
+        <TabPanel Name="groups">
+            <GroupsTableGenerationPage />
+        </TabPanel>
+    </Content>
+</Tabs>
