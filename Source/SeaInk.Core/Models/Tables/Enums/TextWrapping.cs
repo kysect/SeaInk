@@ -2,8 +2,19 @@ namespace SeaInk.Core.Models.Tables.Enums
 {
     public enum TextWrapping
     {
-        Expand, //Выводить текст за рамки ячейки
-        NewLine, //Переносить слова на новую строку
-        Cut //Обрезать текст
+        /// <summary>
+        /// Overlays the contents of other cells
+        /// </summary>
+        Overlay,
+        
+        /// <summary>
+        /// Moving words onto the new line
+        /// </summary>
+        NewLine,
+        
+        /// <summary>
+        /// Cuts the outstanding content of that cell
+        /// </summary>
+        Cut 
     }
 }

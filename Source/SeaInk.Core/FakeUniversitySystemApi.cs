@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using SeaInk.Core.Entities;
 using SeaInk.Core.Models;
@@ -107,20 +107,6 @@ namespace SeaInk.Core
         /* Models */
         private static Faker<AssignmentProgress> AssignmentProgressFaker { get; }
 
-        /* Helpers */
-        private static List<T> ListOf<T>(Faker<T> faker, int l = 10, int h = 20) where T : class
-        {
-            var list = new List<T>();
-            int top = new Random().Next(l, h);
-
-            for (int i = 0; i < top; ++i)
-            {
-                list.Add(faker.Generate());
-            }
-
-            return list;
-        }
-
         static FakeUniversitySystemApi()
         {
             StudyAssignmentFaker = new Faker<StudyAssignment>()
@@ -165,13 +151,19 @@ namespace SeaInk.Core
                 {
                     g.SystemId = f.IndexFaker;
                     g.Name = f.Address.BuildingNumber();
-                    g.Students = ListOf(StudentFaker.RuleFor(s => s.Group, g));
+                    g.Students = StudentFaker
+                        .RuleFor(s => s.Group, g)
+                        .Generate(f.Random.Int(15, 25))
+                        .ToList();
                     g.Admin = g.Students[0];
                 });
 
 
             DivisionFaker = new Faker<Division>()
-                .Rules((_, d) => { d.Groups = ListOf(StudyGroupFaker); });
+                .Rules((f, d) =>
+                {
+                    d.Groups = StudyGroupFaker.Generate(f.Random.Int(3, 5));
+                });
 
             MentorFaker = new Faker<Mentor>()
                 .Rules((f, m) =>
@@ -182,7 +174,7 @@ namespace SeaInk.Core
                     m.LastName = f.Person.LastName;
                     m.MidName = f.Person.UserName;
 
-                    m.Divisions = ListOf(DivisionFaker);
+                    m.Divisions = DivisionFaker.Generate(f.Random.Int(2, 4));
                 });
 
             SubjectFaker = new Faker<Subject>()

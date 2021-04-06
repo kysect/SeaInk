@@ -6,23 +6,23 @@ namespace SeaInk.Core.Models.Tables
 {
     public interface ICellStyle
     {
-        public double Width { get; set; }
-        public double Height { get; set; }
+        double Width { get; set; }
+        double Height { get; set; }
         
-        public string HyperLink { get; set; }
+        string HyperLink { get; set; }
 
-        public Color BackgroundColor { get; set; }
+        Color BackgroundColor { get; set; }
 
-        public BorderStyle BorderStyle { get; set; }
+        BorderStyle BorderStyle { get; set; }
 
-        public Alignment VerticalAlignment { get; set; }
-        public Alignment HorizontalAlignment { get; set; }
+        Alignment VerticalAlignment { get; set; }
+        Alignment HorizontalAlignment { get; set; }
 
-        public string FontName { get; set; }
-        public FontStyle FontStyle { get; set; }
-        public Color FontColor { get; set; }
+        string FontName { get; set; }
+        FontStyle FontStyle { get; set; }
+        Color FontColor { get; set; }
         
         
-        public TextWrapping TextWrapping { get; set; }
+        TextWrapping TextWrapping { get; set; }
     }
 }
