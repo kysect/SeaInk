@@ -6,6 +6,7 @@ using SeaInk.Core.Entities;
 using SeaInk.Core.Entities.Tables;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Styles;
+using SeaInk.Core.Models.Tables.Enums;
 
 namespace SeaInk.Core.Services
 {
@@ -55,7 +56,7 @@ namespace SeaInk.Core.Services
             table.SetValuesForCellsAt(
                 index,
                 group.Students.Select(s => s.FullName).ToList(),
-                ITable.Direction.Vertical);
+                Direction.Vertical);
         }
 
         private void PasteAssignments(Division division, StudyGroup group, TTable table, Subject subject,
