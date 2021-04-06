@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Metadata;
 using SeaInk.Core.Models.Tables;
+using SeaInk.Core.Models.Tables.Enums;
 
 namespace SeaInk.Core.Entities.Tables
 {
@@ -53,11 +53,5 @@ namespace SeaInk.Core.Entities.Tables
 
         //sheets = null - форматировать все листы
         void FormatSheets(ISheetMarkup markup, TableIndex[]? sheets = null);
-
-        enum Direction
-        {
-            Horizontal,
-            Vertical
-        }
     }
 }
