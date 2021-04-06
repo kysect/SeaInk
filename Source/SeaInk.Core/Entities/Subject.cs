@@ -7,10 +7,20 @@ namespace SeaInk.Core.Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        
+
         public List<StudyAssignment> Assignments { get; set; }
+
+        public Subject(int id, string title, DateTime startDate, DateTime endDate, List<StudyAssignment>? assignments = null)
+        {
+            Id = id;
+            Title = title;
+            StartDate = startDate;
+            EndDate = endDate;
+
+            Assignments = assignments ?? new List<StudyAssignment>();
+        }
     }
 }

@@ -8,10 +8,5 @@
   <ItemGroup>
     <ProjectReference Include="..\SeaInk.Core\SeaInk.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ClosedXML.Report" Version="0.2.1" />
-    <Folder Include="FakeServices" />
-  </ItemGroup>
-
+  
 </Project>
