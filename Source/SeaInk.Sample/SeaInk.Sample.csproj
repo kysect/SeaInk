@@ -8,5 +8,5 @@
   <ItemGroup>
     <ProjectReference Include="..\SeaInk.Core\SeaInk.Core.csproj" />
   </ItemGroup>
-
+  
 </Project>
