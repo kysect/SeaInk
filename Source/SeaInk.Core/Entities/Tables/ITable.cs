@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SeaInk.Core.Models;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Enums;
 
@@ -8,15 +9,17 @@ namespace SeaInk.Core.Entities.Tables
     {
         int SheetCount { get; }
 
-        int ColumnCount(int sheetNumber);
-        int RowCount(int sheetNumber);
+        int ColumnCount(TableIndex index);
+        int RowCount(TableIndex index);
 
-        void CreateSheet(string name);
-        void DeleteSheet(TableIndex sheet);
+        void CreateSheet(TableIndex index);
+        void DeleteSheet(TableIndex index);
 
         void Load(string address);
 
-        string Create();
+        string Create(string name);
+
+        void Delete();
 
         void Save();
 
@@ -32,23 +35,25 @@ namespace SeaInk.Core.Entities.Tables
         /// <summary>
         /// Returns value range casted to specified type
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
-        /// <param name="direction"></param>
+        /// <param name="range"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        List<T> GetValuesForCellsAt<T>(TableIndex index, int count, Direction direction);
-        List<string> GetValuesForCellsAt(TableIndex index, int count, Direction direction);
+        List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range);
+        List<List<string>> GetValuesForCellsAt(TableIndexRange range);
 
 
         void SetValueForCellAt<T>(TableIndex index, T value);
 
-        void SetValuesForCellsAt<T>(TableIndex index, List<T> values, Direction direction);
+        void SetValuesForCellsAt<T>(TableIndex index, List<List<T>> values);
 
 
         void FormatSheet(ISheetMarkup markup, TableIndex sheet);
 
-        //sheets = null - форматировать все листы
+        /// <summary>
+        /// sheets == null - Format all sheets
+        /// </summary>
+        /// <param name="markup"></param>
+        /// <param name="sheets"></param>
         void FormatSheets(ISheetMarkup markup, TableIndex[]? sheets = null);
     }
 }
