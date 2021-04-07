@@ -18,7 +18,7 @@ namespace SeaInk.Core.Services
             markup ??= new DefaultSheetMarkup();
 
             var table = new TTable();
-            division.TableId = table.Create();
+            division.TableId = table.Create(division.Subject.Title);
 
             SaveDivision(division, markup);
         }
@@ -35,7 +35,7 @@ namespace SeaInk.Core.Services
 
             foreach (StudyGroup group in division.Groups)
             {
-                table.CreateSheet(group.Name);
+                table.CreateSheet(new TableIndex(group.Name, division.Groups.IndexOf(group)));
                 PasteStudents(division, group, table, markup);
                 PasteAssignments(division, group, table, division.Subject, markup);
                 //TODO: PasteAssignmentProgress когда будет готов доступ к ним из StudyEntityService
@@ -51,18 +51,17 @@ namespace SeaInk.Core.Services
 
         private void PasteStudents(Division division, StudyGroup group, TTable table, ISheetMarkup markup)
         {
-            TableIndex index = markup.StudentsStartIndex.WithSheet(group.Name);
+            TableIndex index = markup.StudentsStartIndex.WithSheet(group.Name, division.Groups.IndexOf(group));
 
             table.SetValuesForCellsAt(
                 index,
-                group.Students.Select(s => s.FullName).ToList(),
-                Direction.Vertical);
+                new List<List<string>> {group.Students.Select(s => s.FullName).ToList()});
         }
 
         private void PasteAssignments(Division division, StudyGroup group, TTable table, Subject subject,
             ISheetMarkup markup)
         {
-            TableIndex index = markup.AssignmentStartIndex.WithSheet(group.Name);
+            TableIndex index = markup.AssignmentStartIndex.WithSheet(group.Name, division.Groups.IndexOf(group));
 
             foreach (StudyAssignment assignment in subject.Assignments)
             {
@@ -97,6 +96,7 @@ namespace SeaInk.Core.Services
 
                 var index = new TableIndex(
                     group.Name,
+                    division.Groups.IndexOf(group),
                     markup.AssignmentStartIndex.Column + assignment,
                     markup.StudentsStartIndex.Row + student);
 
