@@ -9,6 +9,7 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
+using Newtonsoft.Json;
 using SeaInk.Core.Models;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Enums;
@@ -20,7 +21,7 @@ namespace SeaInk.Core.Entities.Tables
         static string[] Scopes = {SheetsService.Scope.Spreadsheets};
         static string ApplicationName = "Google Sheets API .NET Quickstart";
 
-        private string SpreadsheetId { get; set; } = "";
+        public string SpreadsheetId { get; private set; } = "";
         private SheetsService Service { get; set; }
 
         public int SheetCount => GetSpreadsheet().Sheets.Count;
@@ -147,10 +148,24 @@ namespace SeaInk.Core.Entities.Tables
         {
             var body = new ValueRange
             {
-                Values = new List<IList<object>> {new List<object> {value}}
+                Values = new List<IList<object>>
+                {
+                    new List<object>
+                    {
+                        value
+                    }
+                }
             };
 
-            Service.Spreadsheets.Values.Update(body, SpreadsheetId, index.String);
+            SpreadsheetsResource.ValuesResource.UpdateRequest? request =
+                Service.Spreadsheets.Values.Update(body, SpreadsheetId, index.String);
+
+            request.ValueInputOption =
+                SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+            request.ResponseDateTimeRenderOption = SpreadsheetsResource.ValuesResource.UpdateRequest
+                .ResponseDateTimeRenderOptionEnum.FORMATTEDSTRING;
+
+            request.Execute();
         }
 
         /// <summary>
@@ -158,20 +173,30 @@ namespace SeaInk.Core.Entities.Tables
         /// </summary>
         /// <param name="index"></param>
         /// <param name="values"></param>
-        /// <typeparam name="T"></typeparam>
-        public void SetValuesForCellsAt<T>(TableIndex index, List<List<T>> values)
+        public void SetValuesForCellsAt(TableIndex index, List<IList<object>> values)
         {
             var body = new ValueRange
             {
-                Values = values as IList<IList<object>>
+                Values = values,
+                MajorDimension = "ROWS"
             };
 
-            Service.Spreadsheets.Values.Update(body, SpreadsheetId,
-                new TableIndexRange(
-                    index, 
-                    index
-                        .WithColumn(index.Column + values.Count)
-                        .WithRow(index.Row + values[0].Count)).String);
+
+            var range = new TableIndexRange(
+                index,
+                index
+                    .WithRow(index.Row + values.Count - 1)
+                    .WithColumn(index.Column + values[0].Count - 1));
+
+            SpreadsheetsResource.ValuesResource.UpdateRequest? request = Service.Spreadsheets.Values.Update(body,
+                SpreadsheetId,
+                range.String);
+
+
+            request.ValueInputOption =
+                SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+
+            Console.WriteLine(JsonConvert.SerializeObject(request.Execute()));
         }
 
         public void FormatSheet(ISheetMarkup markup, TableIndex sheet)
@@ -181,7 +206,8 @@ namespace SeaInk.Core.Entities.Tables
 
         public void FormatSheets(ISheetMarkup markup, TableIndex[]? sheets = null)
         {
-            sheets ??= GetSpreadsheet().Sheets.Select(s => new TableIndex(s.Properties.Title, s.Properties.SheetId ?? -1)).ToArray();
+            sheets ??= GetSpreadsheet().Sheets
+                .Select(s => new TableIndex(s.Properties.Title, s.Properties.SheetId ?? -1)).ToArray();
 
             foreach (TableIndex index in sheets)
             {

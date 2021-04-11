@@ -12,9 +12,9 @@ namespace SeaInk.Core.Models
         public (int Column, int Row) To { get; set; }
 
         public string String => SheetName +
-                                $"!{TableIndex.ColumnStringFromInt(From.Column)}{From.Row}" +
+                                $"!{TableIndex.ColumnStringFromInt(From.Column)}{From.Row + 1}" +
                                 ":" +
-                                $"{TableIndex.ColumnStringFromInt(To.Column)}{To.Row}";
+                                $"{TableIndex.ColumnStringFromInt(To.Column)}{To.Row + 1}";
 
         public TableIndexRange(string sheetName, int sheetId, (int column, int row) from, (int column, int row) to)
         {
