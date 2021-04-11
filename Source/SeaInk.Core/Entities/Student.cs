@@ -2,7 +2,7 @@ namespace SeaInk.Core.Entities
 {
     public class Student : UniversitySystemUser
     {
-        public StudyGroup? Group { get; set; } = null;
+        public StudyGroup Group { get; set; }
 
         public Student()
         {
