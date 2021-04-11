@@ -8,6 +8,10 @@ namespace SeaInk.Core.Entities
     {
         public List<Division> Divisions { get; set; } = new();
 
+        public Mentor()
+        {
+            
+        }
         public Mentor(int systemId, string token,
             string firstName, string lastName, string midName)
             : base(systemId, token, firstName, lastName, midName)
