@@ -4,19 +4,20 @@ namespace SeaInk.Core.Entities
 {
     public class UniversitySystemUser
     {
-        [Key] public int SystemId { get; set; } = -1;
-        public string Token { get; set; } = "";
+        [Key] public int SystemId { get; set; }
+        public string Token { get; set; }
 
-        public string FirstName { get; set; } = "";
-        public string LastName { get; set; } = "";
-        public string MidName { get; set; } = "";
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MidName { get; set; }
 
         public string FullName => LastName + " " + FirstName + " " + MidName;
 
         public UniversitySystemUser()
         {
-            
+            SystemId = -1;
         }
+
         public UniversitySystemUser(int systemId, string token,
             string firstName, string lastName, string midName)
         {
