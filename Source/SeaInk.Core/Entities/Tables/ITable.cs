@@ -44,7 +44,7 @@ namespace SeaInk.Core.Entities.Tables
 
         void SetValueForCellAt<T>(TableIndex index, T value);
 
-        void SetValuesForCellsAt(TableIndex index, List<IList<object>> values);
+        void SetValuesForCellsAt<T>(TableIndex index, List<List<T>> values);
 
 
         void FormatSheet(ISheetMarkup markup, TableIndex sheet);

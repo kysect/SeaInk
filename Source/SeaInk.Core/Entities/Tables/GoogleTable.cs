@@ -173,26 +173,26 @@ namespace SeaInk.Core.Entities.Tables
         /// </summary>
         /// <param name="index"></param>
         /// <param name="values"></param>
-        public void SetValuesForCellsAt(TableIndex index, List<IList<object>> values)
+        public void SetValuesForCellsAt<T>(TableIndex index, List<List<T>> values)
         {
             var body = new ValueRange
             {
-                Values = values,
+                Values = values.Select(v => v.Cast<object>().ToList())
+                    .Cast<IList<object>>()
+                    .ToList(),
                 MajorDimension = "ROWS"
             };
-
-
+            
             var range = new TableIndexRange(
                 index,
                 index
                     .WithRow(index.Row + values.Count - 1)
-                    .WithColumn(index.Column + values[0].Count - 1));
+                    .WithColumn(index.Column + values.Select(v => v.Count).Max() - 1));
 
-            SpreadsheetsResource.ValuesResource.UpdateRequest? request = Service.Spreadsheets.Values.Update(body,
+            SpreadsheetsResource.ValuesResource.UpdateRequest? request = Service.Spreadsheets.Values.Update(
+                body,
                 SpreadsheetId,
                 range.String);
-
-
             request.ValueInputOption =
                 SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
