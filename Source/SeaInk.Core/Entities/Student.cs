@@ -2,8 +2,12 @@ namespace SeaInk.Core.Entities
 {
     public class Student : UniversitySystemUser
     {
-        public StudyGroup Group { get; set; }
+        public StudyGroup? Group { get; set; } = null;
 
+        public Student()
+        {
+            
+        }
         public Student(int systemId, StudyGroup group, string token,
             string firstName, string lastName, string midName)
             : base(systemId, token, firstName, lastName, midName)

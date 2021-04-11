@@ -5,9 +5,9 @@ namespace SeaInk.Core.Entities
 {
     public class StudyAssignment
     {
-        public int SystemId { get; set; }
-        public string Title { get; set; }
-        public bool IsMilestone { get; set; }
+        public int SystemId { get; set; } = -1;
+        public string Title { get; set; } = "";
+        public bool IsMilestone { get; set; } 
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -15,6 +15,10 @@ namespace SeaInk.Core.Entities
         public float MinPoints { get; set; }
         public float MaxPoints { get; set; }
 
+        public StudyAssignment()
+        {
+            
+        }
         public StudyAssignment(int id, string title, bool isMilestone, DateTime start,
             DateTime end, float min, float max)
         {
