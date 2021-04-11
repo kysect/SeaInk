@@ -55,9 +55,9 @@ namespace SeaInk.Core.Services
 
             table.SetValuesForCellsAt(
                 index,
-                new List<IList<object>>
+                new List<List<string>>
                 {
-                    group.Students.Select(s => (object) s.FullName).ToList()
+                    group.Students.Select(s => s.FullName).ToList()
                 });
         }
 

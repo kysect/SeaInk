@@ -11,15 +11,15 @@ namespace SeaInk.Sample
             var table = new GoogleTable();
             table.Load("1Z7JaEecXh5K6NPwrRuZC0OfM3TMCzHt-_POD2812J_k");
             
-            table.SetValuesForCellsAt(new TableIndex("Test", 1, 1, 1), new List<IList<object>>
+            table.SetValuesForCellsAt(new TableIndex("Test", 1, 1, 1), new List<List<string>>
             {
-                new List<object>
+                new ()
                 {
-                    "я", "пофиксил", "задание", "данных"
+                    "почему", "List<List<", "object>> н"
                 },
-                new List<object>
+                new ()
                 {
-                    "для", "ячеек", "но, надо много ", "переделывать("
+                    "апкастится", "в", "IList<IList<", "object>>?"
                 }
             });
             
