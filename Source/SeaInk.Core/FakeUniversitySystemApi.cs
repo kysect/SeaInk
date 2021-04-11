@@ -158,25 +158,6 @@ namespace SeaInk.Core
                     g.Admin = g.Students[0];
                 });
 
-
-            DivisionFaker = new Faker<Division>()
-                .Rules((f, d) =>
-                {
-                    d.Groups = StudyGroupFaker.Generate(f.Random.Int(3, 5));
-                });
-
-            MentorFaker = new Faker<Mentor>()
-                .Rules((f, m) =>
-                {
-                    m.SystemId = f.IndexFaker;
-                    m.Token = f.Internet.Password();
-                    m.FirstName = f.Person.FirstName;
-                    m.LastName = f.Person.LastName;
-                    m.MidName = f.Person.UserName;
-
-                    m.Divisions = DivisionFaker.Generate(f.Random.Int(2, 4));
-                });
-
             SubjectFaker = new Faker<Subject>()
                 .Rules((f, s) =>
                 {
@@ -190,6 +171,25 @@ namespace SeaInk.Core
                     {
                         s.Assignments.Add(StudyAssignmentFaker.Generate());
                     }
+                });
+
+            DivisionFaker = new Faker<Division>()
+                .Rules((f, d) =>
+                {
+                    d.Subject = SubjectFaker.Generate();
+                    d.Groups = StudyGroupFaker.Generate(f.Random.Int(3, 5));
+                });
+
+            MentorFaker = new Faker<Mentor>()
+                .Rules((f, m) =>
+                {
+                    m.SystemId = f.IndexFaker;
+                    m.Token = f.Internet.Password();
+                    m.FirstName = f.Person.FirstName;
+                    m.LastName = f.Person.LastName;
+                    m.MidName = f.Person.UserName;
+
+                    m.Divisions = DivisionFaker.Generate(f.Random.Int(2, 4));
                 });
 
             StudentAssignmentProgressFaker = new Faker<StudentAssignmentProgress>()
