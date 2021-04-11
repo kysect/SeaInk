@@ -5,11 +5,15 @@ namespace SeaInk.Core.Entities
 {
     public class Division
     {
-        public Subject Subject { get; set; }
-        public List<StudyGroup> Groups { get; set; }
-        
-        public string TableId { get; set; }
+        public Subject Subject { get; set; } = new Subject();
+        public List<StudyGroup> Groups { get; set; } = new();
 
+        public string TableId { get; set; } = "";
+
+        public Division()
+        {
+            
+        }
         public Division(Subject subject, List<StudyGroup> groups, string tableId)
         {
             Subject = subject;
