@@ -55,7 +55,10 @@ namespace SeaInk.Core.Services
 
             table.SetValuesForCellsAt(
                 index,
-                new List<List<string>> {group.Students.Select(s => s.FullName).ToList()});
+                new List<IList<object>>
+                {
+                    group.Students.Select(s => (object) s.FullName).ToList()
+                });
         }
 
         private void PasteAssignments(Division division, StudyGroup group, TTable table, Subject subject,

@@ -9,7 +9,7 @@ namespace SeaInk.Core.Models.Tables
         public int Column { get; set; }
         public int Row { get; set; }
 
-        public string String => SheetName + $"!{ColumnStringFromInt(Column)}{Row}";
+        public string String => SheetName + $"!{ColumnStringFromInt(Column)}{Row + 1}";
 
         public TableIndex(string sheetName, int sheetId, int column, int row)
         {
@@ -55,7 +55,7 @@ namespace SeaInk.Core.Models.Tables
             if (SheetName != index.SheetName)
                 throw new InvalidDataException();
 
-            return SheetName + $"!{ColumnStringFromInt(Column)}{Row}:{ColumnStringFromInt(index.Column)}{Row}";
+            return SheetName + $"!{ColumnStringFromInt(Column)}{Row + 1}:{ColumnStringFromInt(index.Column)}{Row + 1}";
         }
 
         public static string ColumnStringFromInt(int number)
@@ -64,7 +64,7 @@ namespace SeaInk.Core.Models.Tables
 
             while (number > 0)
             {
-                result += 'A' + number % 26;
+                result += (char) ('A' + number % 26);
                 number /= 26;
             }
 
