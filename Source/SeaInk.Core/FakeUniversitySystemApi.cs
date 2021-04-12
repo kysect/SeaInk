@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Bogus;
 using SeaInk.Core.Entities;
-using SeaInk.Core.Models;
+using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core
 {
