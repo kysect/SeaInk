@@ -1,4 +1,4 @@
-namespace SeaInk.Core.Models.Tables.Enums
+namespace SeaInk.Core.Models.Tables.Tables.Enums
 {
     public enum FontStyle
     {

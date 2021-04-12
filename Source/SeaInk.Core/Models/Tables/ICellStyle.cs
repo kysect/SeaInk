@@ -1,8 +1,8 @@
 using System.Drawing;
-using SeaInk.Core.Models.Tables.Enums;
-using FontStyle = SeaInk.Core.Models.Tables.Enums.FontStyle;
+using SeaInk.Core.Models.Tables.Tables.Enums;
+using FontStyle = SeaInk.Core.Models.Tables.Tables.Enums.FontStyle;
 
-namespace SeaInk.Core.Models.Tables
+namespace SeaInk.Core.Models.Tables.Tables
 {
     public interface ICellStyle
     {
@@ -19,7 +19,7 @@ namespace SeaInk.Core.Models.Tables
         Alignment HorizontalAlignment { get; set; }
 
         string FontName { get; set; }
-        FontStyle FontStyle { get; set; }
+        Enums.FontStyle FontStyle { get; set; }
         Color FontColor { get; set; }
         
         
