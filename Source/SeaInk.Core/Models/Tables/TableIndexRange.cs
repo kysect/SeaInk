@@ -11,10 +11,13 @@ namespace SeaInk.Core.Models.Tables
         public (int Column, int Row) From { get; set; }
         public (int Column, int Row) To { get; set; }
 
-        public string String => SheetName +
-                                $"!{TableIndex.ColumnStringFromInt(From.Column)}{From.Row + 1}" +
-                                ":" +
-                                $"{TableIndex.ColumnStringFromInt(To.Column)}{To.Row + 1}";
+        public override string ToString()
+        {
+            return SheetName +
+                $"!{TableIndex.ColumnStringFromInt(From.Column)}{From.Row + 1}" +
+                ":" +
+                $"{TableIndex.ColumnStringFromInt(To.Column)}{To.Row + 1}";
+        }
 
         public TableIndexRange(string sheetName, int sheetId, (int column, int row) from, (int column, int row) to)
         {

@@ -1,6 +1,6 @@
 using System;
 
-namespace SeaInk.Core.Models.Tables.Tables.Exceptions
+namespace SeaInk.Core.Models.Tables.Exceptions
 {
     /// <summary>
     /// Generic ITable exception, any occured exceptions in ITable or

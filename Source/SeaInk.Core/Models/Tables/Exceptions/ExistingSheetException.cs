@@ -1,4 +1,4 @@
-namespace SeaInk.Core.Models.Tables.Tables.Exceptions
+namespace SeaInk.Core.Models.Tables.Exceptions
 {
     public class ExistingSheetException : TableException
     {
