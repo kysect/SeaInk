@@ -19,7 +19,7 @@ namespace SeaInk.Core.Models.Tables
         Alignment HorizontalAlignment { get; set; }
 
         string FontName { get; set; }
-        Enums.FontStyle FontStyle { get; set; }
+        FontStyle FontStyle { get; set; }
         Color FontColor { get; set; }
         
         
