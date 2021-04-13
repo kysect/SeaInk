@@ -9,7 +9,10 @@ namespace SeaInk.Core.Models.Tables.Tables
         public int Column { get; set; }
         public int Row { get; set; }
 
-        public string String => SheetName + $"!{ColumnStringFromInt(Column)}{Row + 1}";
+        public override string ToString()
+        {
+            return SheetName + $"!{ColumnStringFromInt(Column)}{Row + 1}";
+        }
 
         public TableIndex(string sheetName, int sheetId, int column, int row)
         {
@@ -60,23 +63,35 @@ namespace SeaInk.Core.Models.Tables.Tables
 
         public static string ColumnStringFromInt(int number)
         {
-            string result = number == 0 ? "A" : "";
+            string result = "";
 
-            while (number > 0)
+            do
             {
-                result += (char) ('A' + number % 26);
+                result = (char) ('A' + number % 26) + result;
                 number /= 26;
-            }
+            } while (number >= 26);
+            
+            if (number != 0)
+                result = (char) ('A' + number - 1) + result;
 
             return result;
         }
 
         public static TableIndex operator +(TableIndex lhs, TableIndex rhs)
         {
-            if (lhs.SheetName != rhs.SheetName && lhs.SheetId != rhs.SheetId &&
-                lhs.SheetName != "" && rhs.SheetName != "" &&
-                lhs.SheetId != -1 && rhs.SheetId != -1)
-                throw new InvalidDataException();
+            if (lhs.SheetName != rhs.SheetName || lhs.SheetId != rhs.SheetId)
+            {
+                if (lhs.SheetName == "")
+                    lhs.SheetId = -1;
+                else if (rhs.SheetName == "")
+                    rhs.SheetId = -1;
+                else if (lhs.SheetId == -1)
+                    lhs.SheetName = "";
+                else if (rhs.SheetId == -1)
+                    rhs.SheetName = "";
+                else
+                    throw new InvalidDataException();
+            }
 
             return new TableIndex(
                 lhs.SheetName == "" ? rhs.SheetName : lhs.SheetName,
@@ -87,10 +102,19 @@ namespace SeaInk.Core.Models.Tables.Tables
 
         public static TableIndex operator -(TableIndex lhs, TableIndex rhs)
         {
-            if (lhs.SheetName != rhs.SheetName && lhs.SheetId != rhs.SheetId &&
-                lhs.SheetName != "" && rhs.SheetName != "" &&
-                lhs.SheetId != -1 && rhs.SheetId != -1)
-                throw new InvalidDataException();
+            if (lhs.SheetName != rhs.SheetName || lhs.SheetId != rhs.SheetId)
+            {
+                if (lhs.SheetName == "")
+                    lhs.SheetId = -1;
+                else if (rhs.SheetName == "")
+                    rhs.SheetId = -1;
+                else if (lhs.SheetId == -1)
+                    lhs.SheetName = "";
+                else if (rhs.SheetId == -1)
+                    rhs.SheetName = "";
+                else
+                    throw new InvalidDataException();
+            }
 
             return new TableIndex(
                 lhs.SheetName == "" ? rhs.SheetName : lhs.SheetName,
