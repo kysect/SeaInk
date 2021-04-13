@@ -1,4 +1,4 @@
-namespace SeaInk.Core.Models.Tables.Tables.Enums
+namespace SeaInk.Core.Models.Tables.Enums
 {
     public enum LineStyle
     {

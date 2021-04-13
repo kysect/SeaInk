@@ -1,8 +1,8 @@
 using System.Drawing;
-using SeaInk.Core.Models.Tables.Tables.Enums;
-using FontStyle = SeaInk.Core.Models.Tables.Tables.Enums.FontStyle;
+using SeaInk.Core.Models.Tables.Enums;
+using FontStyle = SeaInk.Core.Models.Tables.Enums.FontStyle;
 
-namespace SeaInk.Core.Models.Tables.Tables
+namespace SeaInk.Core.Models.Tables
 {
     public interface ICellStyle
     {

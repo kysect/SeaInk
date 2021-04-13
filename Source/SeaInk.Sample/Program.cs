@@ -1,5 +1,5 @@
 ﻿using System;
-using SeaInk.Core.Models.Tables.Tables;
+using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Sample
 {
@@ -7,10 +7,12 @@ namespace SeaInk.Sample
     {
         public static void Main(string[] args)
         {
-            for (int i = 26; i < 64; ++i) 
-                Console.WriteLine(TableIndex.ColumnStringFromInt(i));
-            
-            // Console.WriteLine(TableIndex.ColumnStringFromInt(26));
+            var range = new TableIndexRange("A", 0, (0, 0), (5, 5));
+
+            foreach (TableIndex index in range)
+            {
+                Console.WriteLine(index);
+            }
         }
     }
 }
