@@ -1,7 +1,7 @@
 using System.Drawing;
-using SeaInk.Core.Models.Tables.Tables.Enums;
+using SeaInk.Core.Models.Tables.Enums;
 
-namespace SeaInk.Core.Models.Tables.Tables
+namespace SeaInk.Core.Models.Tables
 {
     public class LineConfiguration
     {

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using SeaInk.Core.Models.Tables;
-using SeaInk.Core.Models.Tables.Tables;
-using SeaInk.Core.Models.Tables.Tables.Enums;
 
 namespace SeaInk.Core.Entities.Tables
 {
