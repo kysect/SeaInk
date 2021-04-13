@@ -60,7 +60,7 @@ namespace SeaInk.Core.Models.Tables.Tables
 
         public static string ColumnStringFromInt(int number)
         {
-            string result = "";
+            string result = number == 0 ? "A" : "";
 
             while (number > 0)
             {
