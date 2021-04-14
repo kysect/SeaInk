@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Sample
