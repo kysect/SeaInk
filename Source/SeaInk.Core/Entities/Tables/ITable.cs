@@ -44,6 +44,11 @@ namespace SeaInk.Core.Entities.Tables
         /// Must throw TableException if saving cannot be performed.
         /// </summary>
         void Save();
+        
+        
+        void Rename(string name);
+
+        void RenameSheet(TableIndex index, string name);
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
@@ -53,10 +58,6 @@ namespace SeaInk.Core.Entities.Tables
         /// <returns> Value casted to specified type </returns>
         T GetValueForCellAt<T>(TableIndex index);
 
-        void Rename(string name);
-
-        void RenameSheet(TableIndex index, string name);
-        
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
