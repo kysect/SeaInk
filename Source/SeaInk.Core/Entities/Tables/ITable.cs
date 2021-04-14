@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using SeaInk.Core.Models;
 using SeaInk.Core.Models.Tables;
-using SeaInk.Core.Models.Tables.Enums;
 
 namespace SeaInk.Core.Entities.Tables
 {
@@ -12,48 +10,119 @@ namespace SeaInk.Core.Entities.Tables
         int ColumnCount(TableIndex index);
         int RowCount(TableIndex index);
 
-        void CreateSheet(TableIndex index);
-        void DeleteSheet(TableIndex index);
+        /// <summary>
+        /// Creates a new sheet.
+        /// Must throw TableException if creating cannot be performed.
+        /// </summary>
+        /// <param name="sheet"> Must contain SheetName and SheetId parameters </param>
+        /// <returns></returns>
+        void CreateSheet(TableIndex sheet);
 
+        /// <summary>
+        /// Deletes a specified sheet.
+        /// Must throw TableException if deleting cannot be performed.
+        /// </summary>
+        /// <param name="sheet"> Must contain SheetName and SheetId parameters </param>
+        void DeleteSheet(TableIndex sheet);
+
+        /// <summary>
+        /// Loads a sheet at given path.
+        /// Must throw TableException if loading cannot be performed.
+        /// </summary>
+        /// <param name="address"></param>
         void Load(string address);
 
-        string Create(string name);
+        /// <summary>
+        /// Creates and loads a new table.
+        /// Must throw TableException if creating cannot be performed.
+        /// </summary>
+        /// <returns> Table identifier </returns>
+        string Create();
 
-        void Delete();
-
+        /// <summary>
+        /// Saves loaded sheet.
+        /// Must throw TableException if saving cannot be performed.
+        /// </summary>
         void Save();
 
         /// <summary>
-        /// Returns value casted to specified type
+        /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
         /// <param name="index"></param>
         /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <returns> Value casted to specified type </returns>
         T GetValueForCellAt<T>(TableIndex index);
+        
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns> Value casted to string </returns>
         string GetValueForCellAt(TableIndex index);
 
         /// <summary>
-        /// Returns value range casted to specified type
+        /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
         /// <param name="range"></param>
         /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <returns> Value range casted to specified type </returns>
         List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range);
+
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// /// <param name="range"></param>
+        /// <returns> Value range casted to string </returns>
         List<List<string>> GetValuesForCellsAt(TableIndexRange range);
 
-
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <typeparam name="T"></typeparam>
         void SetValueForCellAt<T>(TableIndex index, T value);
 
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="index"> Top left corner of updating range </param>
+        /// <param name="values"></param>
+        /// <typeparam name="T"></typeparam>
         void SetValuesForCellsAt<T>(TableIndex index, List<List<T>> values);
 
 
-        void FormatSheet(ISheetMarkup markup, TableIndex sheet);
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="style"></param>
+        void FormatCellAt(TableIndex index, ICellStyle style);
 
         /// <summary>
-        /// sheets == null - Format all sheets
+        /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
-        /// <param name="markup"></param>
-        /// <param name="sheets"></param>
-        void FormatSheets(ISheetMarkup markup, TableIndex[]? sheets = null);
+        /// <param name="range"></param>
+        /// <param name="style"></param>
+        void FormatCellsAt(TableIndexRange range, ICellStyle style);
+
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="range"></param>
+        void MergeCellsAt(TableIndexRange range);
+
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="index"></param>
+        void DeleteRowAt(TableIndex index);
+
+        /// <summary>
+        /// Must throw NonExistingIndexException if index does not exists.
+        /// </summary>
+        /// <param name="index"></param>
+        void DeleteColumnAt(TableIndex index);
     }
 }
