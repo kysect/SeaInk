@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SeaInk.Core.Models;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core.Entities.Tables
@@ -65,6 +66,9 @@ namespace SeaInk.Core.Entities.Tables
         /// <typeparam name="T"></typeparam>
         /// <returns> Value casted to string </returns>
         string GetValueForCellAt(TableIndex index);
+        /// <param name="range"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
