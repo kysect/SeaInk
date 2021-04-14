@@ -1,7 +1,10 @@
+using Newtonsoft.Json;
+
 namespace SeaInk.Core.Entities
 {
     public class Student : UniversitySystemUser
     {
+        [JsonIgnore]
         public StudyGroup Group { get; set; }
 
         public Student()
