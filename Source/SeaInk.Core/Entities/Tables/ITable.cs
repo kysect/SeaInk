@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SeaInk.Core.Models;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core.Entities.Tables
@@ -14,16 +15,16 @@ namespace SeaInk.Core.Entities.Tables
         /// Creates a new sheet.
         /// Must throw TableException if creating cannot be performed.
         /// </summary>
-        /// <param name="sheet"> Must contain SheetName and SheetId parameters </param>
+        /// <param name="index"> Must contain SheetName and SheetId parameters </param>
         /// <returns></returns>
-        void CreateSheet(TableIndex sheet);
+        void CreateSheet(TableIndex index);
 
         /// <summary>
         /// Deletes a specified sheet.
         /// Must throw TableException if deleting cannot be performed.
         /// </summary>
-        /// <param name="sheet"> Must contain SheetName and SheetId parameters </param>
-        void DeleteSheet(TableIndex sheet);
+        /// <param name="index"> Must contain SheetName and SheetId parameters </param>
+        void DeleteSheet(TableIndex index);
 
         /// <summary>
         /// Loads a sheet at given path.
@@ -37,13 +38,18 @@ namespace SeaInk.Core.Entities.Tables
         /// Must throw TableException if creating cannot be performed.
         /// </summary>
         /// <returns> Table identifier </returns>
-        string Create();
+        string Create(string name);
 
         /// <summary>
         /// Saves loaded sheet.
         /// Must throw TableException if saving cannot be performed.
         /// </summary>
         void Save();
+        
+        
+        void Rename(string name);
+
+        void RenameSheet(TableIndex index, string name);
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
@@ -52,7 +58,7 @@ namespace SeaInk.Core.Entities.Tables
         /// <typeparam name="T"></typeparam>
         /// <returns> Value casted to specified type </returns>
         T GetValueForCellAt<T>(TableIndex index);
-        
+
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
@@ -60,6 +66,9 @@ namespace SeaInk.Core.Entities.Tables
         /// <typeparam name="T"></typeparam>
         /// <returns> Value casted to string </returns>
         string GetValueForCellAt(TableIndex index);
+        /// <param name="range"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
