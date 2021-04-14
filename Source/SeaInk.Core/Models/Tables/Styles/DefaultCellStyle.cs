@@ -9,7 +9,7 @@ namespace SeaInk.Core.Models.Tables.Styles
         public double Width { get; set; } = 100.0;
         public double Height { get; set; } = 50.0;
 
-        public string HyperLink { get; set; } = "";
+        public string HyperLink { get; set; }
 
         public Color BackgroundColor { get; set; } = Color.White;
 

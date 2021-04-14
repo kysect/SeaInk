@@ -9,8 +9,13 @@ namespace SeaInk.Core.Models.Tables.Exceptions
     /// </summary>
     public class TableException : Exception
     {
-        public TableException(string message = "")
-            : base(message ?? "Unspecified table exception occured")
+        public TableException(string message)
+            : base(message)
+        {
+        }
+
+        public TableException()
+            : this("Unspecified table exception occured")
         {
         }
     }
