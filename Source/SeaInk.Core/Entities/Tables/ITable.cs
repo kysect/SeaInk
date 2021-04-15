@@ -40,13 +40,6 @@ namespace SeaInk.Core.Entities.Tables
         /// <returns> Table identifier </returns>
         string Create(string name);
 
-        /// <summary>
-        /// Saves loaded sheet.
-        /// Must throw TableException if saving cannot be performed.
-        /// </summary>
-        void Save();
-        
-        
         void Rename(string name);
 
         void RenameSheet(TableIndex index, string name);

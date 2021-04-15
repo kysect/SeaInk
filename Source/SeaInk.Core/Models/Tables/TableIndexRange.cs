@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Google.Apis.Sheets.v4.Data;
 using SeaInk.Core.Models.Tables.Exceptions;
 
 namespace SeaInk.Core.Models.Tables
@@ -78,5 +79,18 @@ namespace SeaInk.Core.Models.Tables
             From = (index.Column, index.Row);
             To = (index.Column, index.Row);
         }
+    }
+
+    public static class GoogleTableIndexRangeExtension
+    {
+        public static GridRange ToGoogleGridRange(this TableIndexRange range)
+            => new GridRange
+            {
+                SheetId = range.SheetId,
+                StartColumnIndex = range.From.Column,
+                StartRowIndex = range.From.Row,
+                EndColumnIndex = range.To.Column + 1,
+                EndRowIndex = range.To.Row + 1
+            };
     }
 }

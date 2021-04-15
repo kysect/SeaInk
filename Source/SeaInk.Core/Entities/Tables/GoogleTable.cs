@@ -10,8 +10,6 @@ using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Exceptions;
-using SeaInk.Core.Models.Tables.Enums;
-using LineStyle = SeaInk.Core.Models.Tables.Enums.LineStyle;
 
 namespace SeaInk.Core.Entities.Tables
 {
@@ -21,52 +19,59 @@ namespace SeaInk.Core.Entities.Tables
         private static readonly string[] Scopes = {SheetsService.Scope.Spreadsheets};
         private const string ApplicationName = "Sea Ink";
 
-        private string SpreadsheetId { get; set; } = "";
+        private string SpreadsheetId { get; set; }
         private SheetsService Service { get; set; }
 
         public int SheetCount => GetSpreadsheet().Sheets.Count;
+        
+        
+        public GoogleTable()
+        {
+            UserCredential credential;
+            using (var stream =
+                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                const string credPath = "token.json";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+
+            Service = new SheetsService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+        }
 
 
         public int ColumnCount(TableIndex index)
         {
             int? count = GetSpreadsheet().Sheets[index.SheetId].Properties.GridProperties.ColumnCount;
 
-            if (!count.HasValue)
-                throw new NonExistingIndexException();
-
-            return count.Value;
+            return count ?? throw new NonExistingIndexException();
         }
 
         public int RowCount(TableIndex index)
         {
             int? count = GetSpreadsheet().Sheets[index.SheetId].Properties.GridProperties.RowCount;
 
-            if (!count.HasValue)
-                throw new NonExistingIndexException();
-
-            return count.Value;
+            return count ?? throw new NonExistingIndexException();
         }
 
         public void CreateSheet(TableIndex index)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                AddSheet = new AddSheetRequest
                 {
-                    new()
-                    {
-                        AddSheet = new AddSheetRequest
-                        {
-                            Properties = new SheetProperties
-                            {
-                                Title = index.SheetName,
-                                SheetId = index.SheetId,
-                                Index = index.SheetId
-                            }
-                        }
-                    }
+                    Properties = index.ToGoogleSheetProperties()
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets
                 .BatchUpdate(requestBody, SpreadsheetId)
@@ -75,19 +80,13 @@ namespace SeaInk.Core.Entities.Tables
 
         public void DeleteSheet(TableIndex index)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                DeleteSheet = new DeleteSheetRequest
                 {
-                    new()
-                    {
-                        DeleteSheet = new DeleteSheetRequest
-                        {
-                            SheetId = index.SheetId
-                        }
-                    }
+                    SheetId = index.SheetId
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets
                 .BatchUpdate(requestBody, SpreadsheetId)
@@ -112,53 +111,37 @@ namespace SeaInk.Core.Entities.Tables
             return Service.Spreadsheets.Create(spreadsheet).Execute().SpreadsheetId;
         }
 
-        public void Save()
-        {
-        }
-
         public void Rename(string name)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                UpdateSpreadsheetProperties = new UpdateSpreadsheetPropertiesRequest
                 {
-                    new()
+                    Properties = new SpreadsheetProperties
                     {
-                        UpdateSpreadsheetProperties = new UpdateSpreadsheetPropertiesRequest
-                        {
-                            Properties = new SpreadsheetProperties
-                            {
-                                Title = name
-                            },
-                            Fields = "title"
-                        }
-                    }
+                        Title = name
+                    },
+                    Fields = "title"
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void RenameSheet(TableIndex index, string name)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                UpdateSheetProperties = new UpdateSheetPropertiesRequest
                 {
-                    new()
+                    Properties = new SheetProperties
                     {
-                        UpdateSheetProperties = new UpdateSheetPropertiesRequest
-                        {
-                            Properties = new SheetProperties
-                            {
-                                SheetId = index.SheetId,
-                                Title = name
-                            },
-                            Fields = "title"
-                        }
-                    }
+                        SheetId = index.SheetId,
+                        Title = name
+                    },
+                    Fields = "title"
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
             index.SheetName = name;
@@ -197,7 +180,7 @@ namespace SeaInk.Core.Entities.Tables
         {
             SetValuesForCellsAt(index, new List<List<T>>
             {
-                new()
+                new List<T>
                 {
                     value
                 }
@@ -237,252 +220,119 @@ namespace SeaInk.Core.Entities.Tables
 
         public void FormatCellsAt(TableIndexRange range, ICellStyle style)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                RepeatCell = new RepeatCellRequest
                 {
-                    new ()
-                    {
-                        RepeatCell = new RepeatCellRequest
-                        {
-                            Range = new GridRange
-                            {
-                                SheetId = range.SheetId,
-                                StartColumnIndex = range.From.Column,
-                                StartRowIndex = range.From.Row,
-                                EndColumnIndex = range.To.Column + 1,
-                                EndRowIndex = range.To.Row + 1
-                            },
-                            Cell = new CellData
-                            {
-                                UserEnteredFormat = new CellFormat
-                                {
-                                    BackgroundColor = GoogleColorFromColor(style.BackgroundColor),
-                                    Borders = new Borders
-                                    {
-                                        Top = new Border
-                                        {
-                                            Color = GoogleColorFromColor(style.BorderStyle.Top.Color),
-                                            Style = LineStyleToString(style.BorderStyle.Top.Style),
-                                        },
-                                        Bottom = new Border
-                                        {
-                                            Color = GoogleColorFromColor(style.BorderStyle.Bottom.Color),
-                                            Style = LineStyleToString(style.BorderStyle.Bottom.Style),
-                                        },
-                                        Left = new Border
-                                        {
-                                            Color = GoogleColorFromColor(style.BorderStyle.Leading.Color),
-                                            Style = LineStyleToString(style.BorderStyle.Leading.Style),
-                                        },
-                                        Right = new Border
-                                        {
-                                            Color = GoogleColorFromColor(style.BorderStyle.Trailing.Color),
-                                            Style = LineStyleToString(style.BorderStyle.Trailing.Style),
-                                        }
-                                    },
-                                    HorizontalAlignment = HorizontalAlignmentToString(style.HorizontalAlignment),
-                                    VerticalAlignment = VerticalAlignmentToString(style.VerticalAlignment),
-                                    WrapStrategy = TextWrappingToString(style.TextWrapping),
-                                    TextFormat = new TextFormat
-                                    {
-                                        ForegroundColor = GoogleColorFromColor(style.FontColor),
-                                        FontFamily = style.FontName,
-                                        FontSize = style.FontSize,
-                                        Bold = style.FontStyle == FontStyle.Bold,
-                                        Italic = style.FontStyle == FontStyle.Italic,
-                                        Strikethrough = style.FontStyle == FontStyle.Crossed,
-                                        Underline = style.FontStyle == FontStyle.Underlined
-                                    }
-                                },
-                                Hyperlink = style.HyperLink
-                            },
-                            Fields =
-                                "userEnteredFormat" +
-                                "(" +
-                                    "backgroundColor, " +
-                                    "borders" +
-                                        "(" +
-                                            "top(color, style), " +
-                                            "bottom(color, style), " +
-                                            "left(color, style), " +
-                                            "right(color, style)" +
-                                        ")," +
-                                    "horizontalAlignment, " +
-                                    "verticalAlignment, " +
-                                    "wrapStrategy, " +
-                                    "textFormat" +
-                                        "(" +
-                                            "foregroundColor, " + 
-                                            "fontFamily, " + 
-                                            "fontSize, " + 
-                                            "bold, " + 
-                                            "italic, " +
-                                            "strikethrough, " +
-                                            "underline" +
-                                        ")" +
-                                ")," +
-                                "hyperlink"
-                        }
-                    }
+                    Range = range.ToGoogleGridRange(),
+                    Cell = style.ToGoogleCellData(),
+                    Fields = AllFields
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void MergeCellsAt(TableIndexRange range)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                MergeCells = new MergeCellsRequest
                 {
-                    new()
-                    {
-                        MergeCells = new MergeCellsRequest
-                        {
-                            Range = new GridRange
-                            {
-                                SheetId = range.SheetId,
-                                StartColumnIndex = range.From.Column,
-                                StartRowIndex = range.From.Row,
-                                EndColumnIndex = range.To.Column + 1,
-                                EndRowIndex = range.To.Row + 1
-                            },
-                            MergeType = "MERGE_ALL",
-                        }
-                    }
+                    Range = range.ToGoogleGridRange(),
+                    MergeType = "MERGE_ALL",
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void DeleteRowAt(TableIndex index)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                DeleteRange = new DeleteRangeRequest
                 {
-                    new()
+                    Range = new GridRange
                     {
-                        DeleteRange = new DeleteRangeRequest
-                        {
-                            Range = new GridRange
-                            {
-                                SheetId = index.SheetId,
-                                StartRowIndex = index.Row,
-                                EndRowIndex = index.Row + 1
-                            },
-                            ShiftDimension = "ROWS"
-                        }
-                    }
+                        SheetId = index.SheetId,
+                        StartRowIndex = index.Row,
+                        EndRowIndex = index.Row + 1
+                    },
+                    ShiftDimension = "ROWS"
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void DeleteColumnAt(TableIndex index)
         {
-            var requestBody = new BatchUpdateSpreadsheetRequest
+            BatchUpdateSpreadsheetRequest requestBody = new Request
             {
-                Requests = new List<Request>
+                DeleteRange = new DeleteRangeRequest
                 {
-                    new()
+                    Range = new GridRange
                     {
-                        DeleteRange = new DeleteRangeRequest
-                        {
-                            Range = new GridRange
-                            {
-                                SheetId = index.SheetId,
-                                StartColumnIndex = index.Column,
-                                EndColumnIndex = index.Column + 1
-                            },
-                            ShiftDimension = "COLUMNS"
-                        }
-                    }
+                        SheetId = index.SheetId,
+                        StartColumnIndex = index.Column,
+                        EndColumnIndex = index.Column + 1
+                    },
+                    ShiftDimension = "COLUMNS"
                 }
-            };
+            }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
-
-        public GoogleTable()
-        {
-            UserCredential credential;
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-            {
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
-
-            Service = new SheetsService(new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
-        }
-
+        
         private Spreadsheet GetSpreadsheet()
         {
             return Service.Spreadsheets.Get(SpreadsheetId).Execute();
         }
 
-        private static string LineStyleToString(LineStyle style)
-            => style switch
+        private const string AllFields =
+            @"userEnteredFormat
+                (
+                    backgroundColor, 
+                    borders 
+                        (
+                            top(color, style),
+                            bottom(color, style), 
+                            left(color, style), 
+                            right(color, style)
+                        ),
+                    horizontalAlignment, 
+                    verticalAlignment, 
+                    wrapStrategy, 
+                    textFormat
+                        (
+                            foregroundColor, 
+                            fontFamily, 
+                            fontSize, 
+                            bold, 
+                            italic, 
+                            strikethrough, 
+                            underline
+                        ), 
+                    hyperlink
+                )";
+    }
+
+    internal static class GoogleRequestCreator
+    {
+        public static BatchUpdateSpreadsheetRequest ToBody(this Request request)
+            => new BatchUpdateSpreadsheetRequest
             {
-                LineStyle.None => "NONE",
-                LineStyle.Light => "SOLID",
-                LineStyle.Bold => "SOLID_MEDIUM",
-                LineStyle.Black => "SOLID_THICK",
-                LineStyle.Dashed => "DASHED",
-                LineStyle.Dotted => "DOTTED",
-                LineStyle.Doubled => "DOUBLE",
-                _ => throw new ArgumentOutOfRangeException(nameof(style), style, null)
+                Requests = new List<Request>
+                {
+                    request
+                }
             };
 
-        private static string HorizontalAlignmentToString(Alignment alignment)
-            => alignment switch
+        public static BatchUpdateSpreadsheetRequest ToBody(this List<Request> requests)
+            => new BatchUpdateSpreadsheetRequest
             {
-                Alignment.Leading => "LEFT",
-                Alignment.Center => "CENTER",
-                Alignment.Trailing => "RIGHT",
-                _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
-            };
-
-        private static string VerticalAlignmentToString(Alignment alignment)
-            => alignment switch
-            {
-                Alignment.Top => "TOP",
-                Alignment.Center => "MIDDLE",
-                Alignment.Bottom => "BOTTOM",
-                _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
-            };
-
-        private static string TextWrappingToString(TextWrapping wrapping)
-            => wrapping switch
-            {
-                TextWrapping.Overlay => "OVERFLOW_CELL",
-                TextWrapping.NewLine => "WRAP",
-                TextWrapping.Cut => "CLIP",
-                _ => throw new ArgumentOutOfRangeException(nameof(wrapping), wrapping, null)
-            };
-
-        private static Color GoogleColorFromColor(System.Drawing.Color color)
-            => new()
-            {
-                Alpha = color.A * 255,
-                Red = color.R * 255,
-                Green = color.G * 255,
-                Blue = color.B * 255
+                Requests = requests
             };
     }
 }
