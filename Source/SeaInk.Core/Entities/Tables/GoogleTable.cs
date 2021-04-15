@@ -9,7 +9,11 @@ using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using SeaInk.Core.Models.Tables;
+using SeaInk.Core.Models.Tables.Enums;
 using SeaInk.Core.Models.Tables.Exceptions;
+using SeaInk.Core.Utils;
+using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource;
+using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum;
 
 namespace SeaInk.Core.Entities.Tables
 {
@@ -23,24 +27,21 @@ namespace SeaInk.Core.Entities.Tables
         private SheetsService Service { get; set; }
 
         public int SheetCount => GetSpreadsheet().Sheets.Count;
-        
-        
+
+
         public GoogleTable()
         {
-            UserCredential credential;
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-            {
-                const string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
-
+            using var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read);
+            const string credPath = "token.json";
+            UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                GoogleClientSecrets.Load(stream).Secrets,
+                Scopes,
+                "user",
+                CancellationToken.None,
+                new FileDataStore(credPath, true)).Result;
+            
+            Logger.GetInstance().Log("Credential file saved to: " + credPath);
+            
             Service = new SheetsService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
@@ -121,7 +122,7 @@ namespace SeaInk.Core.Entities.Tables
                     {
                         Title = name
                     },
-                    Fields = "title"
+                    Fields = Title
                 }
             }.ToBody();
 
@@ -139,7 +140,7 @@ namespace SeaInk.Core.Entities.Tables
                         SheetId = index.SheetId,
                         Title = name
                     },
-                    Fields = "title"
+                    Fields = Title
                 }
             }.ToBody();
 
@@ -180,10 +181,7 @@ namespace SeaInk.Core.Entities.Tables
         {
             SetValuesForCellsAt(index, new List<List<T>>
             {
-                new List<T>
-                {
-                    value
-                }
+                new List<T> {value}
             });
         }
 
@@ -194,21 +192,15 @@ namespace SeaInk.Core.Entities.Tables
                 Values = values.Select(v => v.Cast<object>().ToList())
                     .Cast<IList<object>>()
                     .ToList(),
-                MajorDimension = "ROWS"
+                MajorDimension = Direction.Horizontal.ToGoogleDimension()
             };
 
-            var range = new TableIndexRange(
-                index,
-                index
+            var range = new TableIndexRange(index, index
                     .WithRow(index.Row + values.Count - 1)
                     .WithColumn(index.Column + values.Select(v => v.Count).Max() - 1));
 
-            SpreadsheetsResource.ValuesResource.UpdateRequest request = Service.Spreadsheets.Values.Update(
-                body,
-                SpreadsheetId,
-                range.ToString());
-            request.ValueInputOption =
-                SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+            UpdateRequest request = Service.Spreadsheets.Values.Update(body, SpreadsheetId, range.ToString());
+            request.ValueInputOption = USERENTERED;
 
             request.Execute();
         }
@@ -259,7 +251,7 @@ namespace SeaInk.Core.Entities.Tables
                         StartRowIndex = index.Row,
                         EndRowIndex = index.Row + 1
                     },
-                    ShiftDimension = "ROWS"
+                    ShiftDimension = Direction.Horizontal.ToGoogleDimension()
                 }
             }.ToBody();
 
@@ -278,13 +270,13 @@ namespace SeaInk.Core.Entities.Tables
                         StartColumnIndex = index.Column,
                         EndColumnIndex = index.Column + 1
                     },
-                    ShiftDimension = "COLUMNS"
+                    ShiftDimension = Direction.Vertical.ToGoogleDimension()
                 }
             }.ToBody();
 
             Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
-        
+
         private Spreadsheet GetSpreadsheet()
         {
             return Service.Spreadsheets.Get(SpreadsheetId).Execute();
@@ -316,6 +308,8 @@ namespace SeaInk.Core.Entities.Tables
                         ), 
                     hyperlink
                 )";
+
+        private const string Title = "title";
     }
 
     internal static class GoogleRequestCreator
