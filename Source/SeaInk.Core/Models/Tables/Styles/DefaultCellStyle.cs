@@ -22,6 +22,7 @@ namespace SeaInk.Core.Models.Tables.Styles
         public string FontName { get; set; } = "Arial";
         public FontStyle FontStyle { get; set; } = FontStyle.Regular;
         public Color FontColor { get; set; } = Color.Black;
+        public int FontSize { get; set; } = 10;
 
 
         public TextWrapping TextWrapping { get; set; } = TextWrapping.NewLine;

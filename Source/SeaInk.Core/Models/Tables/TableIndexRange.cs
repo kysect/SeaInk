@@ -70,5 +70,13 @@ namespace SeaInk.Core.Models.Tables
             From = (from.Column, from.Row);
             To = (to.Column, to.Row);
         }
+
+        public TableIndexRange(TableIndex index)
+        {
+            SheetName = index.SheetName;
+            SheetId = index.SheetId;
+            From = (index.Column, index.Row);
+            To = (index.Column, index.Row);
+        }
     }
 }

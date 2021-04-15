@@ -8,7 +8,7 @@ namespace SeaInk.Core.Models.Tables
     {
         double Width { get; set; }
         double Height { get; set; }
-        
+
         string HyperLink { get; set; }
 
         Color BackgroundColor { get; set; }
@@ -21,8 +21,9 @@ namespace SeaInk.Core.Models.Tables
         string FontName { get; set; }
         FontStyle FontStyle { get; set; }
         Color FontColor { get; set; }
-        
-        
+        int FontSize { get; set; }
+
+
         TextWrapping TextWrapping { get; set; }
     }
 }
