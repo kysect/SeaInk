@@ -1,5 +1,7 @@
-using System.Drawing;
+using Google.Apis.Sheets.v4.Data;
 using SeaInk.Core.Models.Tables.Enums;
+using Color = System.Drawing.Color;
+using LineStyle = SeaInk.Core.Models.Tables.Enums.LineStyle;
 
 namespace SeaInk.Core.Models.Tables
 {
@@ -39,5 +41,15 @@ namespace SeaInk.Core.Models.Tables
         {
             return new LineConfiguration(Color, LineStyle); 
         }
+    }
+
+    public static class GoogleLineConfigurationExtension
+    {
+        public static Border ToGoogleBorder(this LineConfiguration configuration)
+            => new Border
+            {
+                Color = configuration.Color.ToGoogleColor(),
+                Style = configuration.Style.ToGoogleLineStyle()
+            };
     }
 }

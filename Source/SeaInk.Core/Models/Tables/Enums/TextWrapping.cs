@@ -1,3 +1,5 @@
+using System;
+
 namespace SeaInk.Core.Models.Tables.Enums
 {
     public enum TextWrapping
@@ -6,15 +8,27 @@ namespace SeaInk.Core.Models.Tables.Enums
         /// Overlays the contents of other cells
         /// </summary>
         Overlay,
-        
+
         /// <summary>
         /// Moving words onto the new line
         /// </summary>
         NewLine,
-        
+
         /// <summary>
         /// Cuts the outstanding content of that cell
         /// </summary>
-        Cut 
+        Cut
+    }
+
+    public static class GoogleTextWrappingExtension
+    {
+        public static string ToGoogleTextWrapping(this TextWrapping wrapping)
+            => wrapping switch
+            {
+                TextWrapping.Overlay => "OVERFLOW_CELL",
+                TextWrapping.NewLine => "WRAP",
+                TextWrapping.Cut => "CLIP",
+                _ => throw new ArgumentOutOfRangeException(nameof(wrapping), wrapping, null)
+            };
     }
 }
