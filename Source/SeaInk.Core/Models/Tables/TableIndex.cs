@@ -1,3 +1,5 @@
+using Google.Apis.Sheets.v4.Data;
+
 namespace SeaInk.Core.Models.Tables
 {
     public class TableIndex
@@ -51,5 +53,16 @@ namespace SeaInk.Core.Models.Tables
 
             return result;
         }
+    }
+
+    public static class GoogleTableIndexExtension
+    {
+        public static SheetProperties ToGoogleSheetProperties(this TableIndex index)
+            => new SheetProperties
+            {
+                Title = index.SheetName,
+                SheetId = index.SheetId,
+                Index = index.SheetId
+            };
     }
 }

@@ -1,5 +1,6 @@
-using System.Drawing;
-using SeaInk.Core.Models.Tables.Enums;
+using Google.Apis.Sheets.v4.Data;
+using Color = System.Drawing.Color;
+using LineStyle = SeaInk.Core.Models.Tables.Enums.LineStyle;
 
 namespace SeaInk.Core.Models.Tables
 {
@@ -24,7 +25,8 @@ namespace SeaInk.Core.Models.Tables
             Top = creator.Create();
         }
 
-        public BorderStyle(LineConfiguration leading, LineConfiguration trailing, LineConfiguration bottom, LineConfiguration top)
+        public BorderStyle(LineConfiguration leading, LineConfiguration trailing, LineConfiguration bottom,
+            LineConfiguration top)
         {
             Leading = leading;
             Trailing = trailing;
@@ -42,5 +44,17 @@ namespace SeaInk.Core.Models.Tables
             Bottom = new LineConfiguration(Color.Black, bottom);
             Top = new LineConfiguration(Color.Black, top);
         }
+    }
+
+    public static class GoogleBorderStyleExtension
+    {
+        public static Borders ToGoogleBorder(this BorderStyle style)
+            => new Borders
+            {
+               Top = style.Top.ToGoogleBorder(),
+               Bottom = style.Bottom.ToGoogleBorder(),
+               Left = style.Leading.ToGoogleBorder(),
+               Right = style.Trailing.ToGoogleBorder()
+            };
     }
 }
