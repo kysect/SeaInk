@@ -40,7 +40,7 @@ namespace SeaInk.Core.Entities.Tables
                 CancellationToken.None,
                 new FileDataStore(credPath, true)).Result;
             
-            Logger.GetInstance().Log("Credential file saved to: " + credPath);
+            Logger.Log("Credential file saved to: " + credPath);
             
             Service = new SheetsService(new BaseClientService.Initializer
             {
