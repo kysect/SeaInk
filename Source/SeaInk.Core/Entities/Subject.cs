@@ -18,7 +18,7 @@ namespace SeaInk.Core.Entities
             Id = -1;
             Assignments = new List<StudyAssignment>();
         }
-        public Subject(int id, string title, DateTime startDate, DateTime endDate, List<StudyAssignment>? assignments = null)
+        public Subject(int id, string title, DateTime startDate, DateTime endDate, List<StudyAssignment> assignments = null)
         {
             Id = id;
             Title = title;

@@ -5,6 +5,7 @@ namespace SeaInk.Core.Models.Tables.Enums
         Regular,
         Bold,
         Italic,
-        Crossed
+        Crossed,
+        Underlined
     }
 }
