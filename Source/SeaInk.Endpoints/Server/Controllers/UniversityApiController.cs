@@ -19,14 +19,14 @@ namespace SeaInk.Endpoints.Server.Controllers
         }
 
         [HttpGet("mentor/{id}/subjects")]
-        public List<Subject> GetSubjectsByMentorId(Int32 id)
+        public List<Subject> GetSubjectsByMentorId(int id)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(id).Divisions;
             return mentorDivisions.Select( x => x.Subject).ToList();
         }
         
         [HttpGet("mentor/{mid}/subject/{sid}/groups")]
-        public List<StudyGroup> GetgroupsByMentorIdAndSubject(Int32 mid, Int32 sid)
+        public List<StudyGroup> GetgroupsByMentorIdAndSubject(int mid, int sid)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(mid).Divisions;
             return mentorDivisions.Aggregate(new List<StudyGroup>(), (acc, y) =>
