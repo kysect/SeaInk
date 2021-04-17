@@ -18,30 +18,23 @@ namespace SeaInk.Endpoints.Server.Controllers
             _api = new FakeUniversitySystemApi();
         }
 
-        [HttpGet("mentor/{id}/subjects/")]
+        [HttpGet("mentor/{id}/subjects")]
         public List<Subject> GetSubjectsByMentorId(Int32 id)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(id).Divisions;
-            IEnumerable<Subject> subjectQuery =
-                from division in mentorDivisions
-                select division.Subject;
-            return subjectQuery.ToList();
+            return mentorDivisions.Select( x => x.Subject).ToList();
         }
         
         [HttpGet("mentor/{mid}/subject/{sid}/groups")]
         public List<StudyGroup> GetgroupsByMentorIdAndSubject(Int32 mid, Int32 sid)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(mid).Divisions;
-            IEnumerable<List<StudyGroup>> groupsQuery =
-                from division in mentorDivisions
-                where division.Subject.Id == sid
-                select division.Groups;
-            List<StudyGroup> res = new List<StudyGroup>(0);
-            foreach (var subj in groupsQuery) 
-            { //if in 2 divisions the mentor teaches 2 subjects with the same id (this is unrealistic, if I get it right, so normally, cycle will work 1 time)
-                res.AddRange(subj);
-            } 
-            return res;
+            return mentorDivisions.Aggregate(new List<StudyGroup>(), (acc, y) =>
+            {
+                if (y.Subject.Id == sid)
+                    acc.AddRange(y.Groups);
+                return acc;
+            });
         }
     }
 }
