@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using MoreLinq;
 using SeaInk.Core;
 using SeaInk.Core.Entities;
 
@@ -29,12 +29,11 @@ namespace SeaInk.Endpoints.Server.Controllers
         public List<StudyGroup> GetgroupsByMentorIdAndSubject(int mid, int sid)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(mid).Divisions;
-            return mentorDivisions.Aggregate(new List<StudyGroup>(), (acc, y) =>
-            {
-                if (y.Subject.Id == sid)
-                    acc.AddRange(y.Groups);
-                return acc;
-            });
+            return mentorDivisions
+                .Where(division => division.Subject.Id == sid)
+                .SelectMany(division => division.Groups)
+                .DistinctBy(group => group.SystemId)
+                .ToList();
         }
     }
 }
