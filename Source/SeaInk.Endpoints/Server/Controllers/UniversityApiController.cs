@@ -18,19 +18,19 @@ namespace SeaInk.Endpoints.Server.Controllers
             _api = new FakeUniversitySystemApi();
         }
 
-        [HttpGet("mentor/{id}/subjects")]
-        public List<Subject> GetSubjectsByMentorId(int id)
+        [HttpGet("mentor/{mentorId}/subjects")]
+        public List<Subject> GetSubjectsList(int mentorId)
         {
-            List<Division> mentorDivisions = _api.GetMentorBySystemId(id).Divisions;
+            List<Division> mentorDivisions = _api.GetMentorBySystemId(mentorId).Divisions;
             return mentorDivisions.Select( x => x.Subject).ToList();
         }
         
-        [HttpGet("mentor/{mid}/subject/{sid}/groups")]
-        public List<StudyGroup> GetgroupsByMentorIdAndSubject(int mid, int sid)
+        [HttpGet("mentor/{mentorId}/subject/{subjectId}/groups")]
+        public List<StudyGroup> GetGroupsList(int mentorId, int subjectId)
         {
-            List<Division> mentorDivisions = _api.GetMentorBySystemId(mid).Divisions;
+            List<Division> mentorDivisions = _api.GetMentorBySystemId(mentorId).Divisions;
             return mentorDivisions
-                .Where(division => division.Subject.Id == sid)
+                .Where(division => division.Subject.Id == subjectId)
                 .SelectMany(division => division.Groups)
                 .DistinctBy(group => group.SystemId)
                 .ToList();
