@@ -18,14 +18,14 @@ namespace SeaInk.Endpoints.Server.Controllers
             _api = new FakeUniversitySystemApi();
         }
 
-        [HttpGet("mentor/{mentorId}/subjects")]
+        [HttpGet("mentors/{mentorId}/subjects")]
         public List<Subject> GetSubjectsList(int mentorId)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(mentorId).Divisions;
-            return mentorDivisions.Select( x => x.Subject).ToList();
+            return mentorDivisions.Select(x => x.Subject).ToList();
         }
         
-        [HttpGet("mentor/{mentorId}/subject/{subjectId}/groups")]
+        [HttpGet("mentors/{mentorId}/subjects/{subjectId}/groups")]
         public List<StudyGroup> GetGroupsList(int mentorId, int subjectId)
         {
             List<Division> mentorDivisions = _api.GetMentorBySystemId(mentorId).Divisions;
