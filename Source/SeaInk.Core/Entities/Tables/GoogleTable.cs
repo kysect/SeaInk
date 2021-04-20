@@ -4,16 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
+using SeaInk.Core.Models.Google.Exceptions;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Enums;
 using SeaInk.Core.Models.Tables.Exceptions;
+using SeaInk.Core.Services;
 using SeaInk.Core.Utils;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum;
+using GoogleFile = Google.Apis.Drive.v3.Data.File;
 
 namespace SeaInk.Core.Entities.Tables
 {
@@ -24,7 +29,8 @@ namespace SeaInk.Core.Entities.Tables
         private const string ApplicationName = "Sea Ink";
 
         private string SpreadsheetId { get; set; }
-        private SheetsService Service { get; set; }
+        private SheetsService SheetsService { get; set; }
+        private DriveService DriveService { get; set; }
 
         public int SheetCount => GetSpreadsheet().Sheets.Count;
 
@@ -42,10 +48,16 @@ namespace SeaInk.Core.Entities.Tables
             
             Logger.Log("Credential file saved to: " + credPath);
             
-            Service = new SheetsService(new BaseClientService.Initializer
+            SheetsService = new SheetsService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
+            });
+
+            DriveService = new DriveService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName
             });
         }
 
@@ -66,17 +78,11 @@ namespace SeaInk.Core.Entities.Tables
 
         public void CreateSheet(TableIndex index)
         {
-            BatchUpdateSpreadsheetRequest requestBody = new Request
-            {
-                AddSheet = new AddSheetRequest
-                {
-                    Properties = index.ToGoogleSheetProperties()
-                }
-            }.ToBody();
+            if (!AuthService.HasDriveAccess())
+                throw new InsufficientPermissionException();
 
-            Service.Spreadsheets
-                .BatchUpdate(requestBody, SpreadsheetId)
-                .Execute();
+            var file = new GoogleFile();
+            
         }
 
         public void DeleteSheet(TableIndex index)
@@ -89,7 +95,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets
+            SheetsService.Spreadsheets
                 .BatchUpdate(requestBody, SpreadsheetId)
                 .Execute();
         }
@@ -109,7 +115,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             };
 
-            return Service.Spreadsheets.Create(spreadsheet).Execute().SpreadsheetId;
+            return SheetsService.Spreadsheets.Create(spreadsheet).Execute().SpreadsheetId;
         }
 
         public void Rename(string name)
@@ -126,7 +132,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
+            SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void RenameSheet(TableIndex index, string name)
@@ -144,7 +150,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
+            SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
             index.SheetName = name;
         }
 
@@ -160,7 +166,7 @@ namespace SeaInk.Core.Entities.Tables
 
         public List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range)
         {
-            ValueRange result = Service.Spreadsheets.Values
+            ValueRange result = SheetsService.Spreadsheets.Values
                 .Get(SpreadsheetId, range.ToString())
                 .Execute();
 
@@ -199,7 +205,7 @@ namespace SeaInk.Core.Entities.Tables
                     .WithRow(index.Row + values.Count - 1)
                     .WithColumn(index.Column + values.Select(v => v.Count).Max() - 1));
 
-            UpdateRequest request = Service.Spreadsheets.Values.Update(body, SpreadsheetId, range.ToString());
+            UpdateRequest request = SheetsService.Spreadsheets.Values.Update(body, SpreadsheetId, range.ToString());
             request.ValueInputOption = USERENTERED;
 
             request.Execute();
@@ -222,7 +228,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
+            SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void MergeCellsAt(TableIndexRange range)
@@ -236,7 +242,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
+            SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void DeleteRowAt(TableIndex index)
@@ -255,7 +261,7 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
+            SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         public void DeleteColumnAt(TableIndex index)
@@ -274,12 +280,12 @@ namespace SeaInk.Core.Entities.Tables
                 }
             }.ToBody();
 
-            Service.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
+            SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
         private Spreadsheet GetSpreadsheet()
         {
-            return Service.Spreadsheets.Get(SpreadsheetId).Execute();
+            return SheetsService.Spreadsheets.Get(SpreadsheetId).Execute();
         }
 
         private const string AllFields =
