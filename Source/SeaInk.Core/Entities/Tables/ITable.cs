@@ -56,18 +56,13 @@ namespace SeaInk.Core.Entities.Tables
         /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
         /// <param name="index"></param>
-        /// <typeparam name="T"></typeparam>
         /// <returns> Value casted to string </returns>
         string GetValueForCellAt(TableIndex index);
-        /// <param name="range"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
         /// <param name="range"></param>
-        /// <typeparam name="T"></typeparam>
         /// <returns> Value range casted to specified type </returns>
         List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range);
 

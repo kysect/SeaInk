@@ -1,15 +1,24 @@
 ﻿using System;
+using SeaInk.Core.Entities;
 
 namespace SeaInk.Core.Services
 {
-    public class AuthService
+    public static class AuthService
     {
-        public void AuthWithUniversitySystem()
+        public static readonly UniversitySystemUser CurrentUser = null;
+
+        public static bool HasDriveAccess()
+        {
+            //TODO: Resolve safety cringe
+            return true;
+        }
+        
+        public static void AuthWithUniversitySystem()
         {
             throw new NotImplementedException();
         }
 
-        public void AuthWithGoogle()
+        public static void AuthWithGoogle()
         {
             throw new NotImplementedException();
         }
