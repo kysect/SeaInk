@@ -1,6 +1,7 @@
 using Google.Apis.Sheets.v4.Data;
 using SeaInk.Core.Models.Tables.Enums;
 using Color = System.Drawing.Color;
+using GoogleColor = Google.Apis.Sheets.v4.Data.Color;
 using FontStyle = SeaInk.Core.Models.Tables.Enums.FontStyle;
 
 namespace SeaInk.Core.Models.Tables
@@ -54,8 +55,8 @@ namespace SeaInk.Core.Models.Tables
                 Hyperlink = style.HyperLink
             };
 
-        public static Google.Apis.Sheets.v4.Data.Color ToGoogleColor(this Color color)
-            => new Google.Apis.Sheets.v4.Data.Color
+        public static GoogleColor ToGoogleColor(this Color color)
+            => new GoogleColor
             {
                 Alpha = color.A * 255,
                 Red = color.R * 255,

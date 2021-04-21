@@ -17,32 +17,34 @@ namespace SeaInk.Core.Entities.Tables
         /// </summary>
         /// <param name="index"> Must contain SheetName and SheetId parameters </param>
         /// <returns></returns>
-        void CreateSheet(TableIndex index);
+        void CreateSheet(SheetIndex index);
 
         /// <summary>
         /// Deletes a specified sheet.
         /// Must throw TableException if deleting cannot be performed.
         /// </summary>
         /// <param name="index"> Must contain SheetName and SheetId parameters </param>
-        void DeleteSheet(TableIndex index);
+        void DeleteSheet(SheetIndex index);
 
         /// <summary>
         /// Loads a sheet at given path.
         /// Must throw TableException if loading cannot be performed.
         /// </summary>
         /// <param name="address"></param>
-        void Load(string address);
+        void Load(TableInfo address);
 
         /// <summary>
         /// Creates and loads a new table.
         /// Must throw TableException if creating cannot be performed.
         /// </summary>
         /// <returns> Table identifier </returns>
-        string Create(string name);
+        string Create(TableInfo name, List<string> path = null);
+
+        void Delete();
 
         void Rename(string name);
 
-        void RenameSheet(TableIndex index, string name);
+        void RenameSheet(SheetIndex index, string name);
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
