@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
-using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
@@ -25,7 +24,12 @@ namespace SeaInk.Core.Entities.Tables
     /// <inheritdoc cref="ITable"/>
     public class GoogleTable : ITable
     {
-        private static readonly string[] Scopes = {SheetsService.Scope.Spreadsheets};
+        private static readonly string[] Scopes =
+        {
+            SheetsService.Scope.Spreadsheets,
+            DriveService.Scope.Drive
+        };
+
         private const string ApplicationName = "Sea Ink";
 
         private string SpreadsheetId { get; set; }
@@ -45,9 +49,9 @@ namespace SeaInk.Core.Entities.Tables
                 "user",
                 CancellationToken.None,
                 new FileDataStore(credPath, true)).Result;
-            
+
             Logger.Log("Credential file saved to: " + credPath);
-            
+
             SheetsService = new SheetsService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
@@ -76,16 +80,22 @@ namespace SeaInk.Core.Entities.Tables
             return count ?? throw new NonExistingIndexException();
         }
 
-        public void CreateSheet(TableIndex index)
+        public void CreateSheet(SheetIndex index)
         {
-            if (!AuthService.HasDriveAccess())
-                throw new InsufficientPermissionException();
+            BatchUpdateSpreadsheetRequest requestBody = new Request
+            {
+                AddSheet = new AddSheetRequest
+                {
+                    Properties = index.ToGoogleSheetProperties()
+                }
+            }.ToBody();
 
-            var file = new GoogleFile();
-            
+            SheetsService.Spreadsheets
+                .BatchUpdate(requestBody, SpreadsheetId)
+                .Execute();
         }
 
-        public void DeleteSheet(TableIndex index)
+        public void DeleteSheet(SheetIndex index)
         {
             BatchUpdateSpreadsheetRequest requestBody = new Request
             {
@@ -100,22 +110,39 @@ namespace SeaInk.Core.Entities.Tables
                 .Execute();
         }
 
-        public void Load(string address)
+        public void Load(TableInfo address)
         {
-            SpreadsheetId = address;
+            SpreadsheetId = address.Id;
         }
 
-        public string Create(string name)
+        public string Create(TableInfo tableInfo, List<string> path = null)
         {
-            var spreadsheet = new Spreadsheet
+            if (!AuthService.HasDriveAccess())
+                throw new InsufficientPermissionException();
+
+            tableInfo.Location = EstablishLocationForPath(path);
+
+            var file = new GoogleFile
             {
-                Properties = new SpreadsheetProperties
-                {
-                    Title = name
-                }
+                Name = tableInfo.Name,
+                MimeType = tableInfo.MimeType,
+                Description = tableInfo.Description,
+                Parents = new List<string> {tableInfo.Location}
             };
 
-            return SheetsService.Spreadsheets.Create(spreadsheet).Execute().SpreadsheetId;
+            file = DriveService.Files.Create(file).Execute();
+            SpreadsheetId = file.Id;
+            tableInfo.Id = file.Id;
+
+            return file.Id;
+        }
+
+        public void Delete()
+        {
+            FilesResource.DeleteRequest deleteRequest = DriveService.Files.Delete(SpreadsheetId);
+            deleteRequest.SupportsAllDrives = true;
+
+            deleteRequest.Execute();
         }
 
         public void Rename(string name)
@@ -135,7 +162,7 @@ namespace SeaInk.Core.Entities.Tables
             SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
         }
 
-        public void RenameSheet(TableIndex index, string name)
+        public void RenameSheet(SheetIndex index, string name)
         {
             BatchUpdateSpreadsheetRequest requestBody = new Request
             {
@@ -202,8 +229,8 @@ namespace SeaInk.Core.Entities.Tables
             };
 
             var range = new TableIndexRange(index, index
-                    .WithRow(index.Row + values.Count - 1)
-                    .WithColumn(index.Column + values.Select(v => v.Count).Max() - 1));
+                .WithRow(index.Row + values.Count - 1)
+                .WithColumn(index.Column + values.Select(v => v.Count).Max() - 1));
 
             UpdateRequest request = SheetsService.Spreadsheets.Values.Update(body, SpreadsheetId, range.ToString());
             request.ValueInputOption = USERENTERED;
@@ -288,6 +315,50 @@ namespace SeaInk.Core.Entities.Tables
             return SheetsService.Spreadsheets.Get(SpreadsheetId).Execute();
         }
 
+        private string EstablishLocationForPath(List<string> path)
+        {
+            string location = null;
+            if (path != null)
+            {
+                foreach (string folder in path)
+                {
+                    FilesResource.ListRequest searchRequest = DriveService.Files.List();
+                    searchRequest.Q = @"mimeType='application/vnd.google-apps.folder'";
+                    searchRequest.Fields = "files(id, name, trashed)";
+
+                    List<string> folders = searchRequest.Execute().Files
+                        .Where(f => f.Name == folder && !(f.Trashed ?? false))
+                        .Select(f => f.Id)
+                        .ToList();
+
+                    if (folders.Any())
+                        location = folders.First();
+                    else
+                    {
+                        var folderFile = new GoogleFile
+                        {
+                            Name = folder,
+                            MimeType = "application/vnd.google-apps.folder",
+                        };
+                        if (location != null)
+                        {
+                            folderFile.Parents = new List<string> {location};
+                        }
+
+
+                        FilesResource.CreateRequest request = DriveService.Files.Create(folderFile);
+                        request.Fields = "id";
+
+
+                        location = request.Execute().Id;
+                        Logger.Log($"Created folder named: {folder}, with id: {location}");
+                    }
+                }
+            }
+
+            return location;
+        }
+
         private const string AllFields =
             @"userEnteredFormat
                 (
@@ -311,9 +382,9 @@ namespace SeaInk.Core.Entities.Tables
                             italic, 
                             strikethrough, 
                             underline
-                        ), 
-                    hyperlink
-                )";
+                        ),
+                ),
+            hyperlink";
 
         private const string Title = "title";
     }

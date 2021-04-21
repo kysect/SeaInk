@@ -4,8 +4,20 @@ namespace SeaInk.Core.Models.Tables
 {
     public class TableIndex
     {
-        public string SheetName { get; set; }
-        public int SheetId { get; set; }
+        public SheetIndex SheetIndex { get; private set; }
+
+        public string SheetName
+        {
+            get => SheetIndex.SheetName;
+            set => SheetIndex.SheetName = value;
+        }
+
+        public int SheetId
+        {
+            get => SheetIndex.SheetId;
+            set => SheetIndex.SheetId = value;
+        }
+
         public int Column { get; set; }
         public int Row { get; set; }
 
@@ -15,9 +27,11 @@ namespace SeaInk.Core.Models.Tables
         }
 
         public TableIndex(string sheetName, int sheetId, int column = 0, int row = 0)
+            : this(new SheetIndex(sheetName, sheetId), column, row) { }
+
+        public TableIndex(SheetIndex sheetIndex, int column = 0, int row = 0)
         {
-            SheetName = sheetName;
-            SheetId = sheetId;
+            SheetIndex = sheetIndex;
             Column = column;
             Row = row;
         }
@@ -31,7 +45,7 @@ namespace SeaInk.Core.Models.Tables
         public TableIndex WithRow(int row)
             => new TableIndex(SheetName, SheetId, Column, row);
 
-        
+
         public TableIndex WithColumnIncreasedBy(int column)
             => new TableIndex(SheetName, SheetId, Column + column, Row);
 
@@ -53,16 +67,5 @@ namespace SeaInk.Core.Models.Tables
 
             return result;
         }
-    }
-
-    public static class GoogleTableIndexExtension
-    {
-        public static SheetProperties ToGoogleSheetProperties(this TableIndex index)
-            => new SheetProperties
-            {
-                Title = index.SheetName,
-                SheetId = index.SheetId,
-                Index = index.SheetId
-            };
     }
 }

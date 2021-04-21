@@ -6,16 +6,12 @@ namespace SeaInk.Core.Entities
 {
     public class Mentor : UniversitySystemUser
     {
-        public List<Division> Divisions { get; set; } = new();
+        public List<Division> Divisions { get; set; } = new List<Division>();
 
-        public Mentor()
-        {
-            
-        }
+        public Mentor() { }
+
         public Mentor(int systemId, string token,
             string firstName, string lastName, string midName)
-            : base(systemId, token, firstName, lastName, midName)
-        {
-        }
+            : base(systemId, token, firstName, lastName, midName) { }
     }
 }
