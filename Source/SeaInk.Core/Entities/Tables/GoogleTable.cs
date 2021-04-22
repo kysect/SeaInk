@@ -315,44 +315,44 @@ namespace SeaInk.Core.Entities.Tables
             return SheetsService.Spreadsheets.Get(SpreadsheetId).Execute();
         }
 
-        private string EstablishLocationForPath(List<string> path)
+        private string EstablishLocationForPath(IReadOnlyCollection<string> path)
         {
             string location = null;
-            if (path != null)
+            if (path == null)
+                return null;
+            
+            foreach (string folder in path)
             {
-                foreach (string folder in path)
+                FilesResource.ListRequest searchRequest = DriveService.Files.List();
+                searchRequest.Q = @"mimeType='application/vnd.google-apps.folder'";
+                searchRequest.Fields = "files(id, name, trashed)";
+
+                var folderNames = searchRequest.Execute().Files
+                    .Where(f => f.Name == folder && !f.Trashed.Value)
+                    .Select(f => f.Id)
+                    .ToList();
+
+                if (folderNames.Any())
+                    location = folderNames.First();
+                else
                 {
-                    FilesResource.ListRequest searchRequest = DriveService.Files.List();
-                    searchRequest.Q = @"mimeType='application/vnd.google-apps.folder'";
-                    searchRequest.Fields = "files(id, name, trashed)";
-
-                    List<string> folders = searchRequest.Execute().Files
-                        .Where(f => f.Name == folder && !(f.Trashed ?? false))
-                        .Select(f => f.Id)
-                        .ToList();
-
-                    if (folders.Any())
-                        location = folders.First();
-                    else
+                    var folderFile = new GoogleFile
                     {
-                        var folderFile = new GoogleFile
-                        {
-                            Name = folder,
-                            MimeType = "application/vnd.google-apps.folder",
-                        };
-                        if (location != null)
-                        {
-                            folderFile.Parents = new List<string> {location};
-                        }
-
-
-                        FilesResource.CreateRequest request = DriveService.Files.Create(folderFile);
-                        request.Fields = "id";
-
-
-                        location = request.Execute().Id;
-                        Logger.Log($"Created folder named: {folder}, with id: {location}");
+                        Name = folder,
+                        MimeType = "application/vnd.google-apps.folder",
+                    };
+                    if (location != null)
+                    {
+                        folderFile.Parents = new List<string> {location};
                     }
+
+
+                    FilesResource.CreateRequest request = DriveService.Files.Create(folderFile);
+                    request.Fields = "id";
+
+
+                    location = request.Execute().Id;
+                    Logger.Log($"Created folder named: {folder}, with id: {location}");
                 }
             }
 

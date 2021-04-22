@@ -14,14 +14,15 @@ namespace SeaInk.Core.Models.Tables
             SheetId = sheetId;
         }
 
-        protected bool Equals(SheetIndex other)
-        {
-            return SheetName == other.SheetName && SheetId == other.SheetId;
-        }
-
         public override bool Equals(object obj)
         {
-            return obj != null && Equals((SheetIndex) obj);
+            var sheetIndex = obj as SheetIndex;
+            if (sheetIndex == null)
+            {
+                return false;
+            }
+            
+            return SheetName == sheetIndex.SheetName && SheetId == sheetIndex.SheetId;
         }
 
         public override int GetHashCode()
