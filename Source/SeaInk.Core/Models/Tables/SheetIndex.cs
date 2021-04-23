@@ -14,23 +14,19 @@ namespace SeaInk.Core.Models.Tables
             SheetId = sheetId;
         }
 
+        protected bool Equals(SheetIndex other)
+            => SheetName == other.SheetName && SheetId == other.SheetId;
+
+
         public override bool Equals(object obj)
-        {
-            var sheetIndex = obj as SheetIndex;
-            if (sheetIndex == null)
-            {
-                return false;
-            }
-            
-            return SheetName == sheetIndex.SheetName && SheetId == sheetIndex.SheetId;
-        }
+            => obj is SheetIndex sheet && Equals(sheet);
 
         public override int GetHashCode()
         {
             return HashCode.Combine(SheetName, SheetId);
         }
     }
-    
+
     public static class GoogleTableIndexExtension
     {
         public static SheetProperties ToGoogleSheetProperties(this SheetIndex index)
