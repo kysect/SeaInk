@@ -1,4 +1,5 @@
 using System;
+using ClosedXML.Excel;
 
 namespace SeaInk.Core.Models.Tables.Enums
 {
@@ -12,7 +13,7 @@ namespace SeaInk.Core.Models.Tables.Enums
         Dotted,
         Doubled
     }
-
+    
     public static class GoogleLineStyleExtension
     {
         public static string ToGoogleLineStyle(this LineStyle style)

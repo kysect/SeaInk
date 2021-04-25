@@ -5,20 +5,19 @@ namespace SeaInk.Core.Entities
 {
     public class Subject
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
+        public int Id { get; set; } = -1;
+        public string Title { get; set; }  = "";
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; } 
+        public DateTime StartDate { get; set; } = new DateTime();
+        public DateTime EndDate { get; set; } = new DateTime();
 
-        public List<StudyAssignment> Assignments { get; set; }
+        public List<StudyAssignment> Assignments { get; set; } = new List<StudyAssignment>();
 
         public Subject()
         {
-            Id = -1;
-            Assignments = new List<StudyAssignment>();
+            
         }
-        public Subject(int id, string title, DateTime startDate, DateTime endDate, List<StudyAssignment> assignments = null)
+        public Subject(int id, string title, DateTime startDate, DateTime endDate, List<StudyAssignment>? assignments = null)
         {
             Id = id;
             Title = title;
