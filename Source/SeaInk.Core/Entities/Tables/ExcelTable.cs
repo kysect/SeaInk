@@ -7,21 +7,14 @@ namespace SeaInk.Core.Entities.Tables
 {
     public class ExcelTable : ITable
     {
-        private XLWorkbook _workbook = null!;
-        private string _pathToFile;
+        private XLWorkbook _workbook;
+        private string _filePath;
 
 
         public int SheetCount => _workbook.Worksheets.Count;
-        
-        public int ColumnCount(TableIndex index)
-        {
-            return 0;
-        }
 
-        public int RowCount(TableIndex index)
-        {
-            return 0;
-        }
+        public int ColumnCount(TableIndex index) => 0;
+        public int RowCount(TableIndex index) => 0;
 
         public void CreateSheet(TableIndex index)
         {
@@ -33,67 +26,41 @@ namespace SeaInk.Core.Entities.Tables
         {
             _workbook.Worksheets.Delete(sheet.SheetName);
 
-            var oldPath = _pathToFile;
-            _pathToFile = SeparatePath(_pathToFile).path;
-            _pathToFile += "t.xlsx";
-            
+            var oldPath = _filePath;
+            _filePath = Path.Combine(Path.GetDirectoryName(_filePath)!, "t.xlsx");
+
             Save();
             File.Delete(oldPath);
             
-            Rename(SeparatePath(oldPath).name);
+            Rename(Path.GetFileName(oldPath));
 
         }
 
-        public void Load(string address)
+        public void Load(string path)
         {
-            _workbook = new XLWorkbook(address);
-            _pathToFile = address;
-            Save();
+            _workbook = new XLWorkbook(path);
+            _filePath = path;
         }
 
         public string Create(string path)
         {
+            _filePath = path;
+            
             _workbook = new XLWorkbook();
             _workbook.AddWorksheet("Important Sheet");
+            Save();
             
-            _pathToFile = path;
             return path;
         }
 
-        private (string path, string name) SeparatePath(string pathToFile)
-        {
-
-            var array = new List<string>();
-            var word = "";
-            for (var i = 0; i < pathToFile.Length; i++)
-            {
-                word += pathToFile[i];
-                if (pathToFile[i] == '\\' || i == pathToFile.Length - 1)
-                {
-                    array.Add(word);
-                    word = "";
-                }
-            }
-            
-            var path = "";
-            for (var i = 0; i < array.Count - 1; ++i)
-            {
-                path += array[i];
-            }
-
-            (string path, string name) t;
-            t.path = path;
-            t.name = array[^1];
-            return t;
-        }
-        
         public void Rename(string name)
         {
-            var oldPath = _pathToFile;
-            _pathToFile = SeparatePath(_pathToFile).path;
-            _pathToFile += name;
+            var oldPath = _filePath;
+            var newPath = Path.Combine(Path.GetDirectoryName(_filePath)!, name);
+            _filePath = newPath;
             
             Save();
+            
             File.Delete(oldPath);
         }
 
@@ -105,12 +72,7 @@ namespace SeaInk.Core.Entities.Tables
 
         private void Save()
         {
-            if (File.Exists(_pathToFile))
-            {
-                File.Delete(_pathToFile);
-            }
-
-            _workbook.SaveAs(_pathToFile);
+            _workbook.SaveAs(_filePath);
         }
 
         public T GetValueForCellAt<T>(TableIndex index)

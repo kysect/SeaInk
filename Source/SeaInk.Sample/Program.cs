@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using SeaInk.Core.Entities.Tables;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Sample
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             ITable table = new ExcelTable();
-            table.Create(@"E:\Desktop\Test.xlsx");
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            path = Path.Combine(path, "Test.xlsx");
+            table.Create(path);
 
             var sheet = new TableIndex("NEW", table.SheetCount + 1);
             
