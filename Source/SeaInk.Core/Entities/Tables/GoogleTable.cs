@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
-using Google.Apis.Util.Store;
 using SeaInk.Core.Models.Google.Exceptions;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Enums;
@@ -24,12 +21,6 @@ namespace SeaInk.Core.Entities.Tables
     /// <inheritdoc cref="ITable"/>
     public class GoogleTable : ITable
     {
-        private static readonly string[] Scopes =
-        {
-            SheetsService.Scope.Spreadsheets,
-            DriveService.Scope.Drive
-        };
-
         private const string ApplicationName = "Sea Ink";
 
         private string SpreadsheetId { get; set; }
@@ -39,19 +30,8 @@ namespace SeaInk.Core.Entities.Tables
         public int SheetCount => GetSpreadsheet().Sheets.Count;
 
 
-        public GoogleTable()
+        public GoogleTable(UserCredential credential)
         {
-            using var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read);
-            const string credPath = "token.json";
-            UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleClientSecrets.Load(stream).Secrets,
-                Scopes,
-                "user",
-                CancellationToken.None,
-                new FileDataStore(credPath, true)).Result;
-
-            Logger.Log("Credential file saved to: " + credPath);
-
             SheetsService = new SheetsService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
@@ -68,14 +48,14 @@ namespace SeaInk.Core.Entities.Tables
 
         public int ColumnCount(TableIndex index)
         {
-            int? count = GetSpreadsheet().Sheets[index.SheetId].Properties.GridProperties.ColumnCount;
+            int? count = GetSpreadsheet().Sheets[index.SheetIndex.Id].Properties.GridProperties.ColumnCount;
 
             return count ?? throw new NonExistingIndexException();
         }
 
         public int RowCount(TableIndex index)
         {
-            int? count = GetSpreadsheet().Sheets[index.SheetId].Properties.GridProperties.RowCount;
+            int? count = GetSpreadsheet().Sheets[index.SheetIndex.Id].Properties.GridProperties.RowCount;
 
             return count ?? throw new NonExistingIndexException();
         }
@@ -101,7 +81,7 @@ namespace SeaInk.Core.Entities.Tables
             {
                 DeleteSheet = new DeleteSheetRequest
                 {
-                    SheetId = index.SheetId
+                    SheetId = index.Id
                 }
             }.ToBody();
 
@@ -115,7 +95,7 @@ namespace SeaInk.Core.Entities.Tables
             SpreadsheetId = address.Id;
         }
 
-        public string Create(TableInfo tableInfo, List<string> path = null)
+        public string Create(TableInfo tableInfo, List<string> path)
         {
             if (!AuthService.HasDriveAccess())
                 throw new InsufficientPermissionException();
@@ -136,6 +116,8 @@ namespace SeaInk.Core.Entities.Tables
 
             return file.Id;
         }
+
+        public string Create(TableInfo tableInfo) => Create(tableInfo, new List<string>());
 
         public void Delete()
         {
@@ -170,7 +152,7 @@ namespace SeaInk.Core.Entities.Tables
                 {
                     Properties = new SheetProperties
                     {
-                        SheetId = index.SheetId,
+                        SheetId = index.Id,
                         Title = name
                     },
                     Fields = Title
@@ -178,7 +160,7 @@ namespace SeaInk.Core.Entities.Tables
             }.ToBody();
 
             SheetsService.Spreadsheets.BatchUpdate(requestBody, SpreadsheetId).Execute();
-            index.SheetName = name;
+            index.Name = name;
         }
 
         public T GetValueForCellAt<T>(TableIndex index)
@@ -280,7 +262,7 @@ namespace SeaInk.Core.Entities.Tables
                 {
                     Range = new GridRange
                     {
-                        SheetId = index.SheetId,
+                        SheetId = index.SheetIndex.Id,
                         StartRowIndex = index.Row,
                         EndRowIndex = index.Row + 1
                     },
@@ -299,7 +281,7 @@ namespace SeaInk.Core.Entities.Tables
                 {
                     Range = new GridRange
                     {
-                        SheetId = index.SheetId,
+                        SheetId = index.SheetIndex.Id,
                         StartColumnIndex = index.Column,
                         EndColumnIndex = index.Column + 1
                     },
@@ -315,11 +297,9 @@ namespace SeaInk.Core.Entities.Tables
             return SheetsService.Spreadsheets.Get(SpreadsheetId).Execute();
         }
 
-        private string EstablishLocationForPath(IReadOnlyCollection<string> path)
+        private string EstablishLocationForPath(IEnumerable<string> path)
         {
             string location = null;
-            if (path == null)
-                return null;
             
             foreach (string folder in path)
             {

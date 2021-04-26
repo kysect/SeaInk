@@ -4,6 +4,7 @@ using System.Drawing;
 using SeaInk.Core.Entities.Tables;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Styles;
+using SeaInk.Core.Services;
 
 namespace SeaInk.Sample
 {
@@ -11,7 +12,7 @@ namespace SeaInk.Sample
     {
         public static void Main(string[] args)
         {
-            ITable table = new GoogleTable();
+            ITable table = new GoogleTable(new CredentialService().GetGoogleCredentials().Result);
             var info = new TableInfo("test");
             table.Create(info, new List<string> {"Test", "a"});
 
@@ -56,7 +57,7 @@ namespace SeaInk.Sample
                 {
                     BackgroundColor = Color.Red
                 });
-                table.MergeCellsAt(new TableIndexRange(sheetIndex.SheetName, sheetIndex.SheetId, (0, 3), (0, 4)));
+                table.MergeCellsAt(new TableIndexRange(sheetIndex.Name, sheetIndex.Id, (0, 3), (0, 4)));
 
                 Console.WriteLine("Press ENTER to delete row");
                 Console.ReadLine();

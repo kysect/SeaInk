@@ -11,14 +11,14 @@ namespace SeaInk.Core.Models.Tables
 
         public string SheetName
         {
-            get => SheetIndex.SheetName;
-            set => SheetIndex.SheetName = value;
+            get => SheetIndex.Name;
+            set => SheetIndex.Name = value;
         }
 
         public int SheetId
         {
-            get => SheetIndex.SheetId;
-            set => SheetIndex.SheetId = value;
+            get => SheetIndex.Id;
+            set => SheetIndex.Id = value;
         }
 
         public (int Column, int Row) From { get; set; }

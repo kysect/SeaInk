@@ -5,26 +5,23 @@ namespace SeaInk.Core.Models.Tables
 {
     public class SheetIndex
     {
-        public string SheetName { get; set; }
-        public int SheetId { get; set; }
+        public string Name { get; set; }
+        public int Id { get; set; }
 
-        public SheetIndex(string sheetName, int sheetId)
+        public SheetIndex(string name, int id)
         {
-            SheetName = sheetName;
-            SheetId = sheetId;
+            Name = name;
+            Id = id;
         }
 
-        protected bool Equals(SheetIndex other)
-            => SheetName == other.SheetName && SheetId == other.SheetId;
-
+        public bool Equals(SheetIndex other)
+            => Name == other.Name && Id == other.Id;
 
         public override bool Equals(object obj)
             => obj is SheetIndex sheet && Equals(sheet);
 
         public override int GetHashCode()
-        {
-            return HashCode.Combine(SheetName, SheetId);
-        }
+            => HashCode.Combine(Id);
     }
 
     public static class GoogleTableIndexExtension
@@ -32,9 +29,9 @@ namespace SeaInk.Core.Models.Tables
         public static SheetProperties ToGoogleSheetProperties(this SheetIndex index)
             => new SheetProperties
             {
-                Title = index.SheetName,
-                SheetId = index.SheetId,
-                Index = index.SheetId
+                Title = index.Name,
+                SheetId = index.Id,
+                Index = index.Id
             };
     }
 }

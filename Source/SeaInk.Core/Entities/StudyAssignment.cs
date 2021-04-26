@@ -7,7 +7,7 @@ namespace SeaInk.Core.Entities
     {
         public int SystemId { get; set; }
         public string Title { get; set; }
-        public bool IsMilestone { get; set; } 
+        public bool IsMilestone { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -19,6 +19,7 @@ namespace SeaInk.Core.Entities
         {
             SystemId = -1;
         }
+
         public StudyAssignment(int id, string title, bool isMilestone, DateTime start,
             DateTime end, float min, float max)
         {

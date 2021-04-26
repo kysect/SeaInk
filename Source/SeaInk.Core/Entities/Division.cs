@@ -12,11 +12,8 @@ namespace SeaInk.Core.Entities
         public TableInfo TableInfo { get; set; }
 
         public Division()
-        {
-            Subject = new Subject();
-            Groups = new List<StudyGroup>();
-            TableInfo = null;
-        }
+            : this(new Subject(), new List<StudyGroup>(), null) { }
+
         public Division(Subject subject, List<StudyGroup> groups, TableInfo tableInfo)
         {
             Subject = subject;
