@@ -24,16 +24,8 @@ namespace SeaInk.Core.Entities.Tables
 
         public void DeleteSheet(TableIndex sheet)
         {
-            _workbook.Worksheets.Delete(sheet.SheetName);
-
-            var oldPath = _filePath;
-            _filePath = Path.Combine(Path.GetDirectoryName(_filePath)!, "t.xlsx");
-
+            _workbook.Worksheet(sheet.SheetName).Delete();
             Save();
-            File.Delete(oldPath);
-            
-            Rename(Path.GetFileName(oldPath));
-
         }
 
         public void Load(string path)
