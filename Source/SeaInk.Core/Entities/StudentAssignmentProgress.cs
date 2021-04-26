@@ -8,10 +8,8 @@ namespace SeaInk.Core.Entities
         public StudyAssignment Assignment { get; set; }
         public AssignmentProgress Progress { get; set; }
 
-        public StudentAssignmentProgress()
-        {
-            
-        }
+        public StudentAssignmentProgress() { }
+
         public StudentAssignmentProgress(Student student, StudyAssignment assignment, AssignmentProgress progress)
         {
             Student = student;

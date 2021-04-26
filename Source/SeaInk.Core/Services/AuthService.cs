@@ -3,7 +3,7 @@ using SeaInk.Core.Entities;
 
 namespace SeaInk.Core.Services
 {
-    public static class AuthService
+    public class AuthService
     {
         public static readonly UniversitySystemUser CurrentUser = null;
 
