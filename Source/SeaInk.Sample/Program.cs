@@ -6,7 +6,7 @@ using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Sample
 {
-    public static class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
