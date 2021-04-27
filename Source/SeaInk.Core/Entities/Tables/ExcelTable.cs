@@ -9,8 +9,7 @@ namespace SeaInk.Core.Entities.Tables
     {
         private XLWorkbook _workbook;
         private string _filePath;
-
-
+        
         public int SheetCount => _workbook.Worksheets.Count;
 
         public int ColumnCount(TableIndex index) => 0;
@@ -120,7 +119,7 @@ namespace SeaInk.Core.Entities.Tables
             {
                 for (var column = 0; column < height; column++)
                 {
-                    var newIndex = new TableIndex(index.SheetName, index.SheetId, index.Column + column + 1, index.Row +row + 1);
+                    var newIndex = new TableIndex(index.SheetName, index.SheetId, index.Column + column + 1, index.Row + row + 1);
                     SetValueForCellAt(newIndex, values[row][column]);
                 }
             }
