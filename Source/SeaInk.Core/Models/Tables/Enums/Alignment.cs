@@ -1,4 +1,5 @@
 using System;
+using ClosedXML.Excel;
 
 namespace SeaInk.Core.Models.Tables.Enums
 {
@@ -10,7 +11,7 @@ namespace SeaInk.Core.Models.Tables.Enums
         Top,
         Bottom
     }
-
+    
     public static class GoogleAlignmentExtension
     {
         public static string ToGoogleHorizontalAlignment(this Alignment alignment)
