@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using ClosedXML.Excel;
+using SeaInk.Core.Models.Google;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core.Entities.Tables
@@ -18,34 +19,46 @@ namespace SeaInk.Core.Entities.Tables
         //Method may not be implemented
         public int RowCount(TableIndex index) => 0;
 
-        public void CreateSheet(TableIndex index)
+        public void CreateSheet(SheetIndex index)
         {
-            _workbook.Worksheets.Add(index.SheetName);
+            _workbook.Worksheets.Add(index.Name);
             Save();
         }
 
-        public void DeleteSheet(TableIndex sheet)
+        public void DeleteSheet(SheetIndex sheet)
         {
-            _workbook.Worksheet(sheet.SheetName).Delete();
+            _workbook.Worksheet(sheet.Name).Delete();
             Save();
         }
 
-        public void Load(string path)
+        public void Load(TableInfo table)
         {
-            _workbook = new XLWorkbook(path);
-            _filePath = path;
+            _workbook = new XLWorkbook(table.Location);
+            _filePath = table.Location;
         }
 
-        public string Create(string path)
+        public string Create(TableInfo info, DrivePath path)
         {
-            _filePath = path;
+            //TODO: ensure it's ok
+            return Create(info);
+        }
+
+        public string Create(TableInfo table)
+        {
+            _filePath = table.Location;
             
             _workbook = new XLWorkbook();
             _workbook.AddWorksheet("Important Sheet");
             //In workbook must be at least one sheet.
             Save();
             
-            return path;
+            return table.Location;
+        }
+
+        public void Delete()
+        {
+            //TODO: ensure it's ok
+            throw new System.NotImplementedException();
         }
 
         public void Rename(string name)
@@ -59,9 +72,9 @@ namespace SeaInk.Core.Entities.Tables
             File.Delete(oldPath);
         }
 
-        public void RenameSheet(TableIndex index, string name)
+        public void RenameSheet(SheetIndex index, string name)
         {
-            _workbook.Worksheet(index.SheetName).Name = name;
+            _workbook.Worksheet(index.Name).Name = name;
             Save();
         }
 
@@ -72,7 +85,7 @@ namespace SeaInk.Core.Entities.Tables
 
         public T GetValueForCellAt<T>(TableIndex index)
         {
-            return (T) _workbook.Worksheet(index.SheetName).Cell(index.Row, index.Column).Value;
+            return (T) _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).Value;
         }
 
         public string GetValueForCellAt(TableIndex index)
@@ -110,7 +123,7 @@ namespace SeaInk.Core.Entities.Tables
 
         public void SetValueForCellAt<T>(TableIndex index, T value)
         {
-            _workbook.Worksheet(index.SheetName).Cell(index.Row, index.Column).Value = value;
+            _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).Value = value;
             Save();
         }
 
@@ -123,7 +136,7 @@ namespace SeaInk.Core.Entities.Tables
             {
                 for (var column = 0; column < height; column++)
                 {
-                    var newIndex = new TableIndex(index.SheetName, index.SheetId, index.Column + column + 1, index.Row + row + 1);
+                    var newIndex = new TableIndex(index.SheetIndex.Name, index.SheetIndex.Id, index.Column + column + 1, index.Row + row + 1);
                     SetValueForCellAt(newIndex, values[row][column]);
                 }
             }
@@ -157,13 +170,13 @@ namespace SeaInk.Core.Entities.Tables
 
         public void DeleteRowAt(TableIndex index)
         {
-            _workbook.Worksheet(index.SheetName).Row(index.Row + 1).Delete();
+            _workbook.Worksheet(index.SheetIndex.Name).Row(index.Row + 1).Delete();
             Save();
         }
 
         public void DeleteColumnAt(TableIndex index)
         {
-            _workbook.Worksheet(index.SheetName).Column(index.Column + 1).Delete();
+            _workbook.Worksheet(index.SheetIndex.Name).Column(index.Column + 1).Delete();
             Save();
         }
     }
