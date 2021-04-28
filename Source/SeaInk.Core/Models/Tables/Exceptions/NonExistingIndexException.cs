@@ -1,5 +1,3 @@
-using DocumentFormat.OpenXml.Office.CustomUI;
-
 namespace SeaInk.Core.Models.Tables.Exceptions
 {
     public class NonExistingIndexException : TableException

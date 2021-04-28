@@ -1,5 +1,4 @@
 using System;
-using ClosedXML.Excel;
 
 namespace SeaInk.Core.Models.Tables.Enums
 {
