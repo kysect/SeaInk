@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using SeaInk.Core.Entities.Tables;
+using SeaInk.Core.Models.Google;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Styles;
 using SeaInk.Core.Services;
@@ -15,7 +15,7 @@ namespace SeaInk.Sample
         {
             ITable table = new GoogleTable(new CredentialService().GetGoogleCredentials().Result);
             var info = new TableInfo("test");
-            table.Create(info, new List<string> {"Test", "a"});
+            table.Create(info, new DrivePath(new List<string> { "Test", "a" }));
 
             var sheetIndex = new SheetIndex("NEW", table.SheetCount + 1);
 
@@ -50,29 +50,8 @@ namespace SeaInk.Sample
             
                 table.Rename("rename test");
                 table.RenameSheet(sheetIndex, "NEW NEW");
-                table.FormatCellsAt(new TableIndexRange(new TableIndex(sheetIndex, 3, 1)), new DefaultCellStyle
-                
-                {
-                    new List<string>()
-                    {
-                        "Проверка", "Вставки"
-                    },
-                    new List<string>()
-                    {
-                        "Строковых", "Значений"
-                    }
-                });
-                table.FormatCellAt(new TableIndex(sheetIndex, 3), new DefaultCellStyle
-                {
-                    new List<int>()
-                    {
-                        10, 20, 25
-                    },
-                    new List<int>()
-                    {
-                        30, 40, 45
-                    }
-                });
+                table.FormatCellsAt(new TableIndexRange(new TableIndex(sheetIndex, 3, 1)), new DefaultCellStyle());
+                table.FormatCellAt(new TableIndex(sheetIndex, 3), new DefaultCellStyle());
                 table.MergeCellsAt(new TableIndexRange(sheetIndex.Name, sheetIndex.Id, (0, 3), (0, 4)));
 
                 Console.WriteLine("Press ENTER to delete row");
