@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SeaInk.Core.Models;
+using SeaInk.Core.Models.Google;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core.Entities.Tables
@@ -17,32 +18,36 @@ namespace SeaInk.Core.Entities.Tables
         /// </summary>
         /// <param name="index"> Must contain SheetName and SheetId parameters </param>
         /// <returns></returns>
-        void CreateSheet(TableIndex index);
+        void CreateSheet(SheetIndex index);
 
         /// <summary>
         /// Deletes a specified sheet.
         /// Must throw TableException if deleting cannot be performed.
         /// </summary>
         /// <param name="index"> Must contain SheetName and SheetId parameters </param>
-        void DeleteSheet(TableIndex index);
+        void DeleteSheet(SheetIndex index);
 
         /// <summary>
         /// Loads a sheet at given path.
         /// Must throw TableException if loading cannot be performed.
         /// </summary>
         /// <param name="address"></param>
-        void Load(string address);
+        void Load(TableInfo address);
 
         /// <summary>
         /// Creates and loads a new table.
         /// Must throw TableException if creating cannot be performed.
         /// </summary>
         /// <returns> Table identifier </returns>
-        string Create(string name);
+        string Create(TableInfo info, DrivePath path);
+
+        string Create(TableInfo info);
+
+        void Delete();
 
         void Rename(string name);
 
-        void RenameSheet(TableIndex index, string name);
+        void RenameSheet(SheetIndex index, string name);
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
@@ -56,18 +61,13 @@ namespace SeaInk.Core.Entities.Tables
         /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
         /// <param name="index"></param>
-        /// <typeparam name="T"></typeparam>
         /// <returns> Value casted to string </returns>
         string GetValueForCellAt(TableIndex index);
-        /// <param name="range"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
 
         /// <summary>
         /// Must throw NonExistingIndexException if index does not exists.
         /// </summary>
         /// <param name="range"></param>
-        /// <typeparam name="T"></typeparam>
         /// <returns> Value range casted to specified type </returns>
         List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range);
 

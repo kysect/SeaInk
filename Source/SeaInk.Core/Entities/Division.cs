@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core.Entities
 {
@@ -8,19 +9,16 @@ namespace SeaInk.Core.Entities
         public Subject Subject { get; set; }
         public List<StudyGroup> Groups { get; set; }
 
-        public string TableId { get; set; }
+        public TableInfo TableInfo { get; set; }
 
         public Division()
-        {
-            Subject = new Subject();
-            Groups = new List<StudyGroup>();
-            TableId = null;
-        }
-        public Division(Subject subject, List<StudyGroup> groups, string tableId)
+            : this(new Subject(), new List<StudyGroup>(), null) { }
+
+        public Division(Subject subject, List<StudyGroup> groups, TableInfo tableInfo)
         {
             Subject = subject;
             Groups = groups;
-            TableId = tableId;
+            TableInfo = tableInfo;
         }
     }
 }

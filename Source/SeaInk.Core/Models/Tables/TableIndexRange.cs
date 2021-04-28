@@ -7,8 +7,19 @@ namespace SeaInk.Core.Models.Tables
 {
     public class TableIndexRange : IEnumerable<TableIndex>
     {
-        public string SheetName { get; set; }
-        public int SheetId { get; set; }
+        public SheetIndex SheetIndex { get; private set; }
+
+        public string SheetName
+        {
+            get => SheetIndex.Name;
+            set => SheetIndex.Name = value;
+        }
+
+        public int SheetId
+        {
+            get => SheetIndex.Id;
+            set => SheetIndex.Id = value;
+        }
 
         public (int Column, int Row) From { get; set; }
         public (int Column, int Row) To { get; set; }
@@ -31,12 +42,9 @@ namespace SeaInk.Core.Models.Tables
                $"{TableIndex.ColumnStringFromInt(To.Column)}{To.Row + 1}";
 
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            => GetEnumerator();
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="sheetName"></param>
         /// <param name="sheetId"></param>
@@ -44,41 +52,42 @@ namespace SeaInk.Core.Models.Tables
         /// <param name="to"> Lower right corner </param>
         public TableIndexRange(string sheetName, int sheetId, (int column, int row) from, (int column, int row) to)
         {
-            SheetName = sheetName;
-            SheetId = sheetId;
+            SheetIndex = new SheetIndex(sheetName, sheetId);
             From = from;
             To = to;
         }
 
         /// <summary>
-        /// 
+        /// </summary>
+        /// <param name="sheetIndex"></param>
+        /// <param name="from"> Upper left corner </param>
+        /// <param name="to"> Lower right corner </param>
+        public TableIndexRange(SheetIndex sheetIndex, (int column, int row) from, (int column, int row) to)
+        {
+            SheetIndex = sheetIndex;
+            From = from;
+            To = to;
+        }
+
+        /// <summary>
         /// </summary>
         /// <param name="from"> Upper left corner </param>
         /// <param name="to"> Lower right corner </param>
         /// <exception cref="InvalidRangeBoundsException"> Being thrown if given indices located on different sheets </exception>
         public TableIndexRange(TableIndex from, TableIndex to)
         {
-            if (from.SheetName != to.SheetName &&
-                from.SheetName != "" && to.SheetName != "")
-                throw new InvalidRangeBoundsException($"{from.SheetName} - {to.SheetName}");
+            if (!Equals(from.SheetIndex, to.SheetIndex))
+                throw new InvalidRangeBoundsException($"Trying to create range with incompatible indices\n" +
+                                                      $"{System.Text.Json.JsonSerializer.Serialize(from)}\n\n" +
+                                                      $"{System.Text.Json.JsonSerializer.Serialize(to)}");
 
-            if (from.SheetId != to.SheetId &&
-                from.SheetId != -1 && to.SheetId != -1)
-                throw new InvalidRangeBoundsException($"{from.SheetId} - {to.SheetId}");
-
-            SheetName = from.SheetName == "" ? to.SheetName : from.SheetName;
-            SheetId = from.SheetId == -1 ? to.SheetId : from.SheetId;
+            SheetIndex = from.SheetIndex;
             From = (from.Column, from.Row);
             To = (to.Column, to.Row);
         }
 
         public TableIndexRange(TableIndex index)
-        {
-            SheetName = index.SheetName;
-            SheetId = index.SheetId;
-            From = (index.Column, index.Row);
-            To = (index.Column, index.Row);
-        }
+            : this(index, index) { }
     }
 
     public static class GoogleTableIndexRangeExtension

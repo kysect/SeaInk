@@ -4,39 +4,41 @@ namespace SeaInk.Core.Models.Tables
 {
     public class TableIndex
     {
-        public string SheetName { get; set; }
-        public int SheetId { get; set; }
+        public SheetIndex SheetIndex { get; private set; }
+
         public int Column { get; set; }
         public int Row { get; set; }
 
         public override string ToString()
         {
-            return SheetName + $"!{ColumnStringFromInt(Column)}{Row + 1}";
+            return SheetIndex.Name + $"!{ColumnStringFromInt(Column)}{Row + 1}";
         }
 
         public TableIndex(string sheetName, int sheetId, int column = 0, int row = 0)
+            : this(new SheetIndex(sheetName, sheetId), column, row) { }
+
+        public TableIndex(SheetIndex sheetIndex, int column = 0, int row = 0)
         {
-            SheetName = sheetName;
-            SheetId = sheetId;
+            SheetIndex = sheetIndex;
             Column = column;
             Row = row;
         }
 
-        public TableIndex WithSheet(string name, int id)
-            => new TableIndex(name, id, Column, Row);
+        public TableIndex WithSheet(SheetIndex index)
+            => new TableIndex(index, Column, Row);
 
         public TableIndex WithColumn(int column)
-            => new TableIndex(SheetName, SheetId, column, Row);
+            => new TableIndex(SheetIndex.Name, SheetIndex.Id, column, Row);
 
         public TableIndex WithRow(int row)
-            => new TableIndex(SheetName, SheetId, Column, row);
-
+            => new TableIndex(SheetIndex.Name, SheetIndex.Id, Column, row);
+        
         
         public TableIndex WithColumnIncreasedBy(int column)
-            => new TableIndex(SheetName, SheetId, Column + column, Row);
+            => new TableIndex(SheetIndex.Name, SheetIndex.Id, Column + column, Row);
 
         public TableIndex WithRowIncreasedBy(int row)
-            => new TableIndex(SheetName, SheetId, Column, Row + row);
+            => new TableIndex(SheetIndex.Name, SheetIndex.Id, Column, Row + row);
 
         public static string ColumnStringFromInt(int number)
         {
@@ -53,16 +55,5 @@ namespace SeaInk.Core.Models.Tables
 
             return result;
         }
-    }
-
-    public static class GoogleTableIndexExtension
-    {
-        public static SheetProperties ToGoogleSheetProperties(this TableIndex index)
-            => new SheetProperties
-            {
-                Title = index.SheetName,
-                SheetId = index.SheetId,
-                Index = index.SheetId
-            };
     }
 }
