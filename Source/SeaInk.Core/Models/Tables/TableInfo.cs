@@ -5,7 +5,6 @@ namespace SeaInk.Core.Models.Tables
         public string Name { get; set; }
         public string Id { get; set; }
         public string Location { get; set; }
-        public string MimeType => "application/vnd.google-apps.spreadsheet";
         public string Description { get; set; }
 
         public TableInfo(string name, string id = null, string description = null)

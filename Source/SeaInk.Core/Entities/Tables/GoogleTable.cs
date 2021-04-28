@@ -96,29 +96,22 @@ namespace SeaInk.Core.Entities.Tables
             SpreadsheetId = address.Id;
         }
 
-        public string Create(TableInfo tableInfo, List<string> path)
+        public string Create(TableInfo tableInfo, DrivePath path)
         {
             if (!AuthService.HasDriveAccess())
                 throw new InsufficientPermissionException();
 
-            tableInfo.Location = EstablishLocationForPath(path);
+            tableInfo.Location = EstablishLocationForPath(new DrivePath(path));
 
-            var file = new GoogleFile
-            {
-                Name = tableInfo.Name,
-                MimeType = tableInfo.MimeType,
-                Description = tableInfo.Description,
-                Parents = new List<string> {tableInfo.Location}
-            };
-
-            file = DriveService.Files.Create(file).Execute();
+            GoogleFile file = CreateFile(GoogleFileTypes.GoogleSpreadsheet, tableInfo.Name, tableInfo.Location,
+                tableInfo.Description);
             SpreadsheetId = file.Id;
             tableInfo.Id = file.Id;
 
             return file.Id;
         }
 
-        public string Create(TableInfo tableInfo) => Create(tableInfo, new List<string>());
+        public string Create(TableInfo tableInfo) => Create(tableInfo, new DrivePath(new List<string>()));
 
         public void Delete()
         {
@@ -298,50 +291,59 @@ namespace SeaInk.Core.Entities.Tables
             return SheetsService.Spreadsheets.Get(SpreadsheetId).Execute();
         }
 
-        private string EstablishLocationForPath(IEnumerable<string> path)
+        private string EstablishLocationForPath(DrivePath path)
         {
             string location = null;
 
             foreach (string folder in path)
             {
-                FilesResource.ListRequest searchRequest = DriveService.Files.List();
-                searchRequest.Q = $"mimeType = '{GoogleFileTypes.Folder}' and trashed = false and name = '{folder}'";
-                searchRequest.Fields = "files(id, name, trashed)";
-                if (location != null)
-                {
-                    searchRequest.Q += $" and '{location}' in parents";
-                }
+                string folderId = SearchFileId(GoogleFileTypes.Folder, folder, location);
 
-
-                var folderNames = searchRequest.Execute().Files
-                    .Select(f => f.Id)
-                    .ToList();
-
-                if (folderNames.Any())
-                    location = folderNames.First();
+                if (folderId != null)
+                    location = folderId;
                 else
                 {
-                    var folderFile = new GoogleFile
-                    {
-                        Name = folder,
-                        MimeType = GoogleFileTypes.Folder
-                    };
-                    if (location != null)
-                    {
-                        folderFile.Parents = new List<string> {location};
-                    }
-
-
-                    FilesResource.CreateRequest request = DriveService.Files.Create(folderFile);
-                    request.Fields = "id";
-
-
-                    location = request.Execute().Id;
+                    location = CreateFile(GoogleFileTypes.Folder, folder, "id", location).Id;
                     Logger.Log($"Created folder named: {folder}, with id: {location}");
                 }
             }
 
             return location;
+        }
+
+        private GoogleFile CreateFile(string type, string name, string fields, string parent = null,
+            string description = null)
+        {
+            var file = new GoogleFile
+            {
+                Name = name,
+                MimeType = type,
+                Description = description,
+            };
+            if (parent != null)
+            {
+                file.Parents = new List<string> {parent};
+            }
+
+            FilesResource.CreateRequest request = DriveService.Files.Create(file);
+            request.Fields = fields;
+
+            return request.Execute();
+        }
+
+        private string SearchFileId(string type, string name, string location = null, bool trashed = false)
+        {
+            FilesResource.ListRequest searchRequest = DriveService.Files.List();
+            searchRequest.Q = $"mimeType = '{type}' and trashed = {(trashed ? "true" : "false")} and name = '{name}'";
+            searchRequest.Fields = "files(id)";
+            if (location != null)
+            {
+                searchRequest.Q += $" and '{location}' in parents";
+            }
+
+            return searchRequest.Execute().Files
+                .Select(f => f.Id)
+                .SingleOrDefault();
         }
 
         private const string AllFields =

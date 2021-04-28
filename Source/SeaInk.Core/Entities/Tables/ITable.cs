@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SeaInk.Core.Models;
+using SeaInk.Core.Models.Google;
 using SeaInk.Core.Models.Tables;
 
 namespace SeaInk.Core.Entities.Tables
@@ -38,7 +39,9 @@ namespace SeaInk.Core.Entities.Tables
         /// Must throw TableException if creating cannot be performed.
         /// </summary>
         /// <returns> Table identifier </returns>
-        string Create(TableInfo name, List<string> path = null);
+        string Create(TableInfo info, DrivePath path);
+
+        string Create(TableInfo info);
 
         void Delete();
 
