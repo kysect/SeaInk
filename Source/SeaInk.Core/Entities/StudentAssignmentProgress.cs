@@ -1,4 +1,4 @@
-using SeaInk.Core.Models.Tables;
+using SeaInk.Core.Models;
 
 namespace SeaInk.Core.Entities
 {
