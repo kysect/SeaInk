@@ -42,7 +42,7 @@ namespace SeaInk.Core.Models.Tables
             return new LineConfiguration(Color, LineStyle); 
         }
     }
-
+    
     public static class GoogleLineConfigurationExtension
     {
         public static Border ToGoogleBorder(this LineConfiguration configuration)
