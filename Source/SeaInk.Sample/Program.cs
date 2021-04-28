@@ -77,7 +77,6 @@ namespace SeaInk.Sample
             }
             catch (Exception)
             {
-                table.DeleteSheet(sheetIndex);
                 table.Delete();
                 throw;
             }

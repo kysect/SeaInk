@@ -103,7 +103,7 @@ namespace SeaInk.Core.TableIntegrations.Google
 
             tableInfo.Location = EstablishLocationForPath(new DrivePath(path));
 
-            GoogleFile file = CreateFile(GoogleFileTypes.GoogleSpreadsheet, tableInfo.Name, tableInfo.Location,
+            GoogleFile file = CreateFile(GoogleFileTypes.GoogleSpreadsheet, tableInfo.Name, "id", tableInfo.Location,
                 tableInfo.Description);
             SpreadsheetId = file.Id;
             tableInfo.Id = file.Id;
