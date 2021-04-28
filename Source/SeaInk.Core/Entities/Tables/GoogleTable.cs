@@ -10,6 +10,7 @@ using SeaInk.Core.Models.Google.Exceptions;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Enums;
 using SeaInk.Core.Models.Tables.Exceptions;
+using SeaInk.Core.Models.Tables.Google;
 using SeaInk.Core.Services;
 using SeaInk.Core.Utils;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource;
@@ -300,15 +301,19 @@ namespace SeaInk.Core.Entities.Tables
         private string EstablishLocationForPath(IEnumerable<string> path)
         {
             string location = null;
-            
+
             foreach (string folder in path)
             {
                 FilesResource.ListRequest searchRequest = DriveService.Files.List();
-                searchRequest.Q = @"mimeType='application/vnd.google-apps.folder'";
+                searchRequest.Q = $"mimeType = '{GoogleFileTypes.Folder}' and trashed = false and name = '{folder}'";
                 searchRequest.Fields = "files(id, name, trashed)";
+                if (location != null)
+                {
+                    searchRequest.Q += $" and '{location}' in parents";
+                }
+
 
                 var folderNames = searchRequest.Execute().Files
-                    .Where(f => f.Name == folder && !f.Trashed.Value)
                     .Select(f => f.Id)
                     .ToList();
 
@@ -319,7 +324,7 @@ namespace SeaInk.Core.Entities.Tables
                     var folderFile = new GoogleFile
                     {
                         Name = folder,
-                        MimeType = "application/vnd.google-apps.folder",
+                        MimeType = GoogleFileTypes.Folder
                     };
                     if (location != null)
                     {
