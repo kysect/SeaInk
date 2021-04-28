@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 using SeaInk.Core.Entities.Tables;
 using SeaInk.Core.Models.Tables;
 using SeaInk.Core.Models.Tables.Styles;
 using SeaInk.Core.Services;
+
 
 namespace SeaInk.Sample
 {
@@ -50,12 +51,27 @@ namespace SeaInk.Sample
                 table.Rename("rename test");
                 table.RenameSheet(sheetIndex, "NEW NEW");
                 table.FormatCellsAt(new TableIndexRange(new TableIndex(sheetIndex, 3, 1)), new DefaultCellStyle
+                
                 {
-                    BackgroundColor = Color.Aqua
+                    new List<string>()
+                    {
+                        "Проверка", "Вставки"
+                    },
+                    new List<string>()
+                    {
+                        "Строковых", "Значений"
+                    }
                 });
                 table.FormatCellAt(new TableIndex(sheetIndex, 3), new DefaultCellStyle
                 {
-                    BackgroundColor = Color.Red
+                    new List<int>()
+                    {
+                        10, 20, 25
+                    },
+                    new List<int>()
+                    {
+                        30, 40, 45
+                    }
                 });
                 table.MergeCellsAt(new TableIndexRange(sheetIndex.Name, sheetIndex.Id, (0, 3), (0, 4)));
 

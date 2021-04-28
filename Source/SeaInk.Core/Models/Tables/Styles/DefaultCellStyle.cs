@@ -14,7 +14,7 @@ namespace SeaInk.Core.Models.Tables.Styles
         public Color BackgroundColor { get; set; } = Color.White;
 
         public BorderStyle BorderStyle { get; set; } =
-            new (new LineStyleCreator(Color.Black, LineStyle.Light));
+            new BorderStyle(new LineStyleCreator(Color.Black, LineStyle.Light));
 
         public Alignment VerticalAlignment { get; set; } = Alignment.Center;
         public Alignment HorizontalAlignment { get; set; } = Alignment.Center;

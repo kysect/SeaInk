@@ -6,11 +6,11 @@ namespace SeaInk.Core.Models.Tables
 {
     public class BorderStyle
     {
-        public LineConfiguration Leading { get; set; } = new();
-        public LineConfiguration Trailing { get; set; } = new();
+        public LineConfiguration Leading { get; set; } = new LineConfiguration();
+        public LineConfiguration Trailing { get; set; } = new LineConfiguration();
 
-        public LineConfiguration Bottom { get; set; } = new();
-        public LineConfiguration Top { get; set; } = new();
+        public LineConfiguration Bottom { get; set; } = new LineConfiguration();
+        public LineConfiguration Top { get; set; } = new LineConfiguration();
 
         public BorderStyle()
         {
