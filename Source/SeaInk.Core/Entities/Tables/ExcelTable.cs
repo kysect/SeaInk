@@ -12,7 +12,10 @@ namespace SeaInk.Core.Entities.Tables
         
         public int SheetCount => _workbook.Worksheets.Count;
 
+        //Method may not be implemented
         public int ColumnCount(TableIndex index) => 0;
+        
+        //Method may not be implemented
         public int RowCount(TableIndex index) => 0;
 
         public void CreateSheet(TableIndex index)
@@ -39,6 +42,7 @@ namespace SeaInk.Core.Entities.Tables
             
             _workbook = new XLWorkbook();
             _workbook.AddWorksheet("Important Sheet");
+            //In workbook must be at least one sheet.
             Save();
             
             return path;
@@ -47,7 +51,7 @@ namespace SeaInk.Core.Entities.Tables
         public void Rename(string name)
         {
             var oldPath = _filePath;
-            var newPath = Path.Combine(Path.GetDirectoryName(_filePath)!, name);
+            var newPath = Path.Combine(Path.GetDirectoryName(_filePath), name);
             _filePath = newPath;
             
             Save();
@@ -106,7 +110,7 @@ namespace SeaInk.Core.Entities.Tables
 
         public void SetValueForCellAt<T>(TableIndex index, T value)
         {
-            _workbook.Worksheet(index.SheetName).Cell(index.Row, index.Column).Value = value!.ToString();
+            _workbook.Worksheet(index.SheetName).Cell(index.Row, index.Column).Value = value;
             Save();
         }
 
@@ -125,13 +129,17 @@ namespace SeaInk.Core.Entities.Tables
             }
             Save();
         }
-
+        
         public void FormatCellAt(TableIndex index, ICellStyle style)
         {
+            //Method may not be implemented
+            //Throwing an exception crashes main program
         }
 
         public void FormatCellsAt(TableIndexRange range, ICellStyle style)
         {
+            //Method may not be implemented
+            //Throwing an exception crashes main program
         }
 
         public void MergeCellsAt(TableIndexRange range)
