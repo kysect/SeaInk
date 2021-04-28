@@ -1,4 +1,4 @@
-namespace SeaInk.Core.Models.Tables.Google
+namespace SeaInk.Core.Models.Google
 {
     public static class GoogleFileTypes
     {
