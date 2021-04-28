@@ -6,7 +6,7 @@ namespace SeaInk.Core.Entities
 {
     public class Mentor : UniversitySystemUser
     {
-        public List<Division> Divisions { get; set; } = new();
+        public List<Division> Divisions { get; set; } = new List<Division>();
 
         public Mentor()
         {
