@@ -1,4 +1,4 @@
-﻿using SeaInk.Core.Entities.Tables;
+﻿using SeaInk.Core.TableIntegrations;
 
 namespace SeaInk.Core.Services
 {
