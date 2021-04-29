@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using SeaInk.Core.Entities.Tables;
-using SeaInk.Core.Models.Google;
-using SeaInk.Core.Models.Tables;
-using SeaInk.Core.Models.Tables.Styles;
 using SeaInk.Core.Services;
+using SeaInk.Core.TableIntegrations;
+using SeaInk.Core.TableIntegrations.Google;
+using SeaInk.Core.TableIntegrations.Models;
+using SeaInk.Core.TableIntegrations.Models.Styles;
 
 
 namespace SeaInk.Sample
@@ -77,7 +77,6 @@ namespace SeaInk.Sample
             }
             catch (Exception)
             {
-                table.DeleteSheet(sheetIndex);
                 table.Delete();
                 throw;
             }
