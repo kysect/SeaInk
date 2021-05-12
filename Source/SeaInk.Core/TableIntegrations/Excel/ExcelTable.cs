@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using ClosedXML.Excel;
 using SeaInk.Core.TableIntegrations.Google;
@@ -76,6 +76,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
         public void RenameSheet(SheetIndex index, string name)
         {
             _workbook.Worksheet(index.Name).Name = name;
+            index.Name = name;
             Save();
         }
 
