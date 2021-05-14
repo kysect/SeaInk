@@ -172,11 +172,11 @@ namespace SeaInk.Core.TableIntegrations.Excel
             for (int rowIndex = range.From.Row+1; rowIndex<=range.To.Row+1; rowIndex++)
                 worksheet.Cell(rowIndex,columnIndex).Hyperlink = new XLHyperlink(style.HyperLink);
             
-            cellsRange.Style.Border.SetLeftBorder(style.BorderStyle.Leading.Style.ToExcelLineStyle());
-            cellsRange.Style.Border.SetLeftBorderColor(XLColor.FromColor(style.BorderStyle.Leading.Color));
+            cellsRange.Style.Border.SetLeftBorder(style.BorderStyle.Left.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetLeftBorderColor(XLColor.FromColor(style.BorderStyle.Left.Color));
             
-            cellsRange.Style.Border.SetRightBorder(style.BorderStyle.Trailing.Style.ToExcelLineStyle());
-            cellsRange.Style.Border.SetRightBorderColor(XLColor.FromColor(style.BorderStyle.Trailing.Color));
+            cellsRange.Style.Border.SetRightBorder(style.BorderStyle.Right.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetRightBorderColor(XLColor.FromColor(style.BorderStyle.Right.Color));
             
             cellsRange.Style.Border.SetTopBorder(style.BorderStyle.Top.Style.ToExcelLineStyle());
             cellsRange.Style.Border.SetTopBorderColor(XLColor.FromColor(style.BorderStyle.Top.Color));
