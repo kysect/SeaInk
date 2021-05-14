@@ -147,14 +147,52 @@ namespace SeaInk.Core.TableIntegrations.Excel
         
         public void FormatCellAt(TableIndex index, ICellStyle style)
         {
-            //Method may not be implemented
-            //Throwing an exception crashes main program
+           FormatCellsAt(new TableIndexRange(index), style);
         }
 
         public void FormatCellsAt(TableIndexRange range, ICellStyle style)
         {
-            //Method may not be implemented
-            //Throwing an exception crashes main program
+            var cellsRange = _workbook.Worksheet(range.SheetName).Range
+            (
+                range.From.Row + 1,
+                range.From.Column + 1,
+                range.To.Row + 1,
+                range.To.Column + 1
+            );
+            
+            var worksheet = _workbook.Worksheet(range.SheetIndex.Name);
+            for (int columnIndex = range.From.Column+1; columnIndex<=range.To.Column+1;columnIndex++)
+                worksheet.Column(columnIndex).Width = style.Width;
+            
+            for (int rowIndex = range.From.Row+1; rowIndex<=range.To.Row+1; rowIndex++)
+                worksheet.Row(rowIndex).Height = style.Height;
+
+            cellsRange.Style.Fill.SetBackgroundColor(XLColor.FromColor(style.BackgroundColor));
+            for (int columnIndex = range.From.Column+1; columnIndex<=range.To.Column+1;columnIndex++)
+            for (int rowIndex = range.From.Row+1; rowIndex<=range.To.Row+1; rowIndex++)
+                worksheet.Cell(rowIndex,columnIndex).Hyperlink = new XLHyperlink(style.HyperLink);
+            
+            cellsRange.Style.Border.SetLeftBorder(style.BorderStyle.Leading.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetLeftBorderColor(XLColor.FromColor(style.BorderStyle.Leading.Color));
+            
+            cellsRange.Style.Border.SetRightBorder(style.BorderStyle.Trailing.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetRightBorderColor(XLColor.FromColor(style.BorderStyle.Trailing.Color));
+            
+            cellsRange.Style.Border.SetTopBorder(style.BorderStyle.Top.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetTopBorderColor(XLColor.FromColor(style.BorderStyle.Top.Color));
+            
+            cellsRange.Style.Border.SetBottomBorder(style.BorderStyle.Bottom.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetBottomBorderColor(XLColor.FromColor(style.BorderStyle.Bottom.Color));
+
+            cellsRange.Style.Alignment.SetHorizontal(style.HorizontalAlignment.ToExcelHorizontalAlignment());
+            cellsRange.Style.Alignment.SetVertical(style.VerticalAlignment.ToExcelVerticalAlignment());
+
+            cellsRange.Style.Font.SetFontName(style.FontName);
+            cellsRange.Style.Font.SetFontSize(style.FontSize);
+            cellsRange.Style.Font.SetFontColor(XLColor.FromColor(style.FontColor));
+
+            cellsRange.Style.Alignment.WrapText = style.TextWrapping.ToExcelTextWrapping();
+            
         }
 
         public void MergeCellsAt(TableIndexRange range)
