@@ -1,4 +1,5 @@
 using System;
+using ClosedXML.Excel;
 
 namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
 {
@@ -27,5 +28,19 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
                 LineStyle.Doubled => "DOUBLE",
                 _ => throw new ArgumentOutOfRangeException(nameof(style), style, null)
             };
+    }
+
+    public static class ExcelLineStyleExtension
+    {
+        public static XLBorderStyleValues ToExcelLineStyle(this LineStyle style) => style switch
+        {
+            LineStyle.None => XLBorderStyleValues.None,
+            LineStyle.Light => XLBorderStyleValues.Thin,
+            LineStyle.Black => XLBorderStyleValues.Thick,
+            LineStyle.Dashed => XLBorderStyleValues.Dashed,
+            LineStyle.Dotted => XLBorderStyleValues.Dotted,
+            LineStyle.Doubled => XLBorderStyleValues.Double,
+            _ => throw new ArgumentOutOfRangeException(nameof(style), style, null)
+        };
     }
 }
