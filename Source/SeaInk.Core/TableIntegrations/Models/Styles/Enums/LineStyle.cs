@@ -8,7 +8,7 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
         None,
         Light,
         Bold,
-        Black,
+        Thick,
         Dashed,
         Dotted,
         Doubled
@@ -22,7 +22,7 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
                 LineStyle.None => "NONE",
                 LineStyle.Light => "SOLID",
                 LineStyle.Bold => "SOLID_MEDIUM",
-                LineStyle.Black => "SOLID_THICK",
+                LineStyle.Thick => "SOLID_THICK",
                 LineStyle.Dashed => "DASHED",
                 LineStyle.Dotted => "DOTTED",
                 LineStyle.Doubled => "DOUBLE",
@@ -36,7 +36,7 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
         {
             LineStyle.None => XLBorderStyleValues.None,
             LineStyle.Light => XLBorderStyleValues.Thin,
-            LineStyle.Black => XLBorderStyleValues.Thick,
+            LineStyle.Thick => XLBorderStyleValues.Thick,
             LineStyle.Dashed => XLBorderStyleValues.Dashed,
             LineStyle.Dotted => XLBorderStyleValues.Dotted,
             LineStyle.Doubled => XLBorderStyleValues.Double,

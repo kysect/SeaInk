@@ -5,9 +5,9 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
 {
     public enum Alignment
     {
-        Leading,
+        Left,
         Center,
-        Trailing,
+        Right,
         Top,
         Bottom
     }
@@ -17,9 +17,9 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
         public static string ToGoogleHorizontalAlignment(this Alignment alignment)
             => alignment switch
             {
-                Alignment.Leading => "LEFT",
+                Alignment.Left => "LEFT",
                 Alignment.Center => "CENTER",
-                Alignment.Trailing => "RIGHT",
+                Alignment.Right => "RIGHT",
                 _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
             };
 
@@ -38,9 +38,9 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
         public static XLAlignmentHorizontalValues ToExcelHorizontalAlignment(this Alignment alignment)
             => alignment switch
             {
-                Alignment.Leading => XLAlignmentHorizontalValues.Left,
+                Alignment.Left => XLAlignmentHorizontalValues.Left,
                 Alignment.Center => XLAlignmentHorizontalValues.Center,
-                Alignment.Trailing => XLAlignmentHorizontalValues.Right,
+                Alignment.Right => XLAlignmentHorizontalValues.Right,
                 _ => throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null)
             };
 
