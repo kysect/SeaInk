@@ -62,8 +62,8 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public void Delete()
         {
-            //TODO: ensure it's ok
-            throw new System.NotImplementedException();
+            //NOTE: If you use any other method after delete,file will be recreated
+            File.Delete(_filePath);
         }
 
         public void Rename(string name)
