@@ -86,7 +86,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public T GetValueForCellAt<T>(TableIndex index)
         {
-            return (T) _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).Value;
+            return _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).GetValue<T>();
         }
 
         public string GetValueForCellAt(TableIndex index)
