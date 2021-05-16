@@ -14,12 +14,16 @@ namespace SeaInk.Core.TableIntegrations.Excel
         private string _filePath;
         
         public int SheetCount => _workbook.Worksheets.Count;
-
-        //Method may not be implemented
-        public int ColumnCount(TableIndex index) => 0;
         
-        //Method may not be implemented
-        public int RowCount(TableIndex index) => 0;
+        public int ColumnCount(TableIndex index)
+        {
+            return _workbook.Worksheet(index.SheetIndex.Name).LastColumnUsed().ColumnNumber();
+        }
+        
+        public int RowCount(TableIndex index)
+        {
+            return _workbook.Worksheet(index.SheetIndex.Name).LastRowUsed().RowNumber();
+        }
 
         public void CreateSheet(SheetIndex index)
         {
