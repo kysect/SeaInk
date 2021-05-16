@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using ClosedXML.Excel;
 using SeaInk.Core.TableIntegrations.Google;
@@ -45,13 +45,12 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public string Create(TableInfo info, DrivePath path)
         {
-            //TODO: ensure it's ok
             return Create(info);
         }
 
         public string Create(TableInfo table)
         {
-            _filePath = table.Location;
+            _filePath = table.GetFullPath();
             
             _workbook = new XLWorkbook();
             _workbook.AddWorksheet("Important Sheet");
