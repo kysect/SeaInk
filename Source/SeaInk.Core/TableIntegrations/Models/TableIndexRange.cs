@@ -35,6 +35,22 @@ namespace SeaInk.Core.TableIntegrations.Models
             }
         }
 
+        public IEnumerable EnumerateRows()
+        {
+            for (int row = From.Row; row < To.Row; row++)
+            {
+                yield return row;
+            }
+        }
+        
+        public IEnumerable EnumerateColumns()
+        {
+            for (int column = From.Column; column < To.Column; column++)
+            {
+                yield return column;
+            }
+        }
+
         public override string ToString()
             => SheetName +
                $"!{TableIndex.ColumnStringFromInt(From.Column)}{From.Row + 1}" +

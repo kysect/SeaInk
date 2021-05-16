@@ -4,6 +4,7 @@ using ClosedXML.Excel;
 using SeaInk.Core.TableIntegrations.Google;
 using SeaInk.Core.TableIntegrations.Models;
 using SeaInk.Core.TableIntegrations.Models.Styles;
+using SeaInk.Core.TableIntegrations.Models.Styles.Enums;
 
 namespace SeaInk.Core.TableIntegrations.Excel
 {
@@ -67,9 +68,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
             var oldPath = _filePath;
             var newPath = Path.Combine(Path.GetDirectoryName(_filePath), name);
             _filePath = newPath;
-            
             Save();
-            
             File.Delete(oldPath);
         }
 
@@ -98,21 +97,15 @@ namespace SeaInk.Core.TableIntegrations.Excel
         public List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range)
         {
             var values = new List<List<T>>();
-            var counter = 0;
-            var width = range.From.Column - range.To.Column;
-
-            var line = new List<T>();
-            foreach (var index in range)
+            foreach (int rowIndex in range.EnumerateRows())
             {
-                line.Add(GetValueForCellAt<T>(index));
-                counter++;
-
-                if (counter == width)
+                var newRow = new List<T>();
+                foreach (int columnIndex in range.EnumerateColumns())
                 {
-                    counter = 0;
-                    values.Add(line);
-                    line.Clear();
+                    newRow.Add(GetValueForCellAt<T>(new TableIndex(range.SheetIndex, columnIndex+1, rowIndex+1)));
                 }
+
+                values.Add(newRow);
             }
             
             return values;
@@ -164,13 +157,12 @@ namespace SeaInk.Core.TableIntegrations.Excel
             for (int columnIndex = range.From.Column+1; columnIndex<=range.To.Column+1;columnIndex++)
                 worksheet.Column(columnIndex).Width = style.Width;
             
-            for (int rowIndex = range.From.Row+1; rowIndex<=range.To.Row+1; rowIndex++)
+            foreach (int rowIndex in range.EnumerateRows())
                 worksheet.Row(rowIndex).Height = style.Height;
 
             cellsRange.Style.Fill.SetBackgroundColor(XLColor.FromColor(style.BackgroundColor));
-            for (int columnIndex = range.From.Column+1; columnIndex<=range.To.Column+1;columnIndex++)
-            for (int rowIndex = range.From.Row+1; rowIndex<=range.To.Row+1; rowIndex++)
-                worksheet.Cell(rowIndex,columnIndex).Hyperlink = new XLHyperlink(style.HyperLink);
+            foreach (var cellIndex in range)
+                worksheet.Cell(cellIndex.Row,cellIndex.Column).Hyperlink = new XLHyperlink(style.HyperLink);
             
             cellsRange.Style.Border.SetLeftBorder(style.BorderStyle.Left.Style.ToExcelLineStyle());
             cellsRange.Style.Border.SetLeftBorderColor(XLColor.FromColor(style.BorderStyle.Left.Color));
