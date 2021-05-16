@@ -100,10 +100,10 @@ namespace SeaInk.Core.TableIntegrations.Excel
         public List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range)
         {
             var values = new List<List<T>>();
-            foreach (int rowIndex in range.EnumerateRows())
+            foreach (int rowIndex in range.EnumerateRowsIndices())
             {
                 var newRow = new List<T>();
-                foreach (int columnIndex in range.EnumerateColumns())
+                foreach (int columnIndex in range.EnumerateColumnsIndices())
                 {
                     newRow.Add(GetValueForCellAt<T>(new TableIndex(range.SheetIndex, columnIndex+1, rowIndex+1)));
                 }
@@ -157,10 +157,10 @@ namespace SeaInk.Core.TableIntegrations.Excel
             );
             
             var worksheet = _workbook.Worksheet(range.SheetIndex.Name);
-            for (int columnIndex = range.From.Column+1; columnIndex<=range.To.Column+1;columnIndex++)
+            foreach (int columnIndex in range.EnumerateColumnsIndices())
                 worksheet.Column(columnIndex).Width = style.Width;
             
-            foreach (int rowIndex in range.EnumerateRows())
+            foreach (int rowIndex in range.EnumerateRowsIndices())
                 worksheet.Row(rowIndex).Height = style.Height;
 
             cellsRange.Style.Fill.SetBackgroundColor(XLColor.FromColor(style.BackgroundColor));
