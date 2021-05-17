@@ -56,8 +56,7 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public bool Equals(TableIndex rhs)
         {
-            return this is SheetIndex a && rhs is SheetIndex b &&
-                   a.Equals(b) &&
+            return base.Equals(rhs) &&
                    Column == rhs.Column &&
                    Row == rhs.Row;
         }
