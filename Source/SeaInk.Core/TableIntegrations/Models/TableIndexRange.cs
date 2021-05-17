@@ -23,7 +23,7 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public (int Column, int Row) From { get; set; }
         public (int Column, int Row) To { get; set; }
-
+        
         public IEnumerator<TableIndex> GetEnumerator()
         {
             for (int column = From.Column; column < To.Column; ++column)
@@ -32,6 +32,38 @@ namespace SeaInk.Core.TableIntegrations.Models
                 {
                     yield return new TableIndex(SheetName, SheetId, column, row);
                 }
+            }
+        }
+
+        public IEnumerable EnumerateRows()
+        {
+            for (int row = From.Row; row < To.Row; row++)
+            {
+                yield return new TableIndexRange(SheetName, SheetId, (From.Column, row), (To.Column, row));
+            }
+        }
+        
+        public IEnumerable EnumerateColumns()
+        {
+            for (int column = From.Column; column < To.Column; column++)
+            {
+                yield return new TableIndexRange(SheetName, SheetId, (column, From.Row), (column, To.Row));
+            }
+        }
+        
+        public IEnumerable EnumerateRowsIndices()
+        {
+            for (int row = From.Row; row < To.Row; row++)
+            {
+                yield return row;
+            }
+        }
+        
+        public IEnumerable EnumerateColumnsIndices()
+        {
+            for (int column = From.Column; column < To.Column; column++)
+            {
+                yield return column;
             }
         }
 
