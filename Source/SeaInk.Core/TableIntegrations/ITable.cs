@@ -9,8 +9,8 @@ namespace SeaInk.Core.TableIntegrations
     {
         int SheetCount { get; }
 
-        int ColumnCount(TableIndex index);
-        int RowCount(TableIndex index);
+        int ColumnCount(SheetIndex index);
+        int RowCount(SheetIndex index);
 
         /// <summary>
         /// Creates a new sheet.

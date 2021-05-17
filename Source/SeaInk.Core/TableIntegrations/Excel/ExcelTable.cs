@@ -15,14 +15,14 @@ namespace SeaInk.Core.TableIntegrations.Excel
         
         public int SheetCount => _workbook.Worksheets.Count;
         
-        public int ColumnCount(TableIndex index)
+        public int ColumnCount(SheetIndex index)
         {
-            return _workbook.Worksheet(index.SheetIndex.Name).LastColumnUsed().ColumnNumber();
+            return _workbook.Worksheet(index.Name).LastColumnUsed().ColumnNumber();
         }
         
-        public int RowCount(TableIndex index)
+        public int RowCount(SheetIndex index)
         {
-            return _workbook.Worksheet(index.SheetIndex.Name).LastRowUsed().RowNumber();
+            return _workbook.Worksheet(index.Name).LastRowUsed().RowNumber();
         }
 
         public void CreateSheet(SheetIndex index)
@@ -89,7 +89,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public T GetValueForCellAt<T>(TableIndex index)
         {
-            return _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).GetValue<T>();
+            return _workbook.Worksheet(index.Name).Cell(index.Row, index.Column).GetValue<T>();
         }
 
         public string GetValueForCellAt(TableIndex index)
@@ -105,7 +105,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
                 var newRow = new List<T>();
                 foreach (int columnIndex in range.EnumerateColumnsIndices())
                 {
-                    newRow.Add(GetValueForCellAt<T>(new TableIndex(range.SheetIndex, columnIndex+1, rowIndex+1)));
+                    newRow.Add(GetValueForCellAt<T>(new TableIndex(range, columnIndex+1, rowIndex+1)));
                 }
 
                 values.Add(newRow);
@@ -121,7 +121,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public void SetValueForCellAt<T>(TableIndex index, T value)
         {
-            _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).Value = value;
+            _workbook.Worksheet(index.Name).Cell(index.Row, index.Column).Value = value;
             Save();
         }
 
@@ -134,7 +134,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
             {
                 for (var column = 0; column < height; column++)
                 {
-                    var newIndex = new TableIndex(index.SheetIndex.Name, index.SheetIndex.Id, index.Column + column + 1, index.Row + row + 1);
+                    var newIndex = new TableIndex(index.Name, index.Id, index.Column + column + 1, index.Row + row + 1);
                     SetValueForCellAt(newIndex, values[row][column]);
                 }
             }
@@ -148,7 +148,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public void FormatCellsAt(TableIndexRange range, ICellStyle style)
         {
-            var cellsRange = _workbook.Worksheet(range.SheetName).Range
+            var cellsRange = _workbook.Worksheet(range.Name).Range
             (
                 range.From.Row + 1,
                 range.From.Column + 1,
@@ -156,7 +156,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
                 range.To.Column + 1
             );
             
-            var worksheet = _workbook.Worksheet(range.SheetIndex.Name);
+            var worksheet = _workbook.Worksheet(range.Name);
             foreach (int columnIndex in range.EnumerateColumnsIndices())
                 worksheet.Column(columnIndex).Width = style.Width;
             
@@ -192,7 +192,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public void MergeCellsAt(TableIndexRange range)
         {
-            _workbook.Worksheet(range.SheetName).Range
+            _workbook.Worksheet(range.Name).Range
             (
                 range.From.Row + 1,
                 range.From.Column + 1,
@@ -205,13 +205,13 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public void DeleteRowAt(TableIndex index)
         {
-            _workbook.Worksheet(index.SheetIndex.Name).Row(index.Row + 1).Delete();
+            _workbook.Worksheet(index.Name).Row(index.Row + 1).Delete();
             Save();
         }
 
         public void DeleteColumnAt(TableIndex index)
         {
-            _workbook.Worksheet(index.SheetIndex.Name).Column(index.Column + 1).Delete();
+            _workbook.Worksheet(index.Name).Column(index.Column + 1).Delete();
             Save();
         }
     }

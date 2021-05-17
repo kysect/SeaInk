@@ -5,32 +5,18 @@ using SeaInk.Core.TableIntegrations.Models.Exceptions;
 
 namespace SeaInk.Core.TableIntegrations.Models
 {
-    public class TableIndexRange : IEnumerable<TableIndex>
+    public class TableIndexRange : SheetIndex, IEnumerable<TableIndex>
     {
-        public SheetIndex SheetIndex { get; private set; }
-
-        public string SheetName
-        {
-            get => SheetIndex.Name;
-            set => SheetIndex.Name = value;
-        }
-
-        public int SheetId
-        {
-            get => SheetIndex.Id;
-            set => SheetIndex.Id = value;
-        }
-
         public (int Column, int Row) From { get; set; }
         public (int Column, int Row) To { get; set; }
-        
+
         public IEnumerator<TableIndex> GetEnumerator()
         {
             for (int column = From.Column; column < To.Column; ++column)
             {
                 for (int row = From.Row; row < To.Row; ++row)
                 {
-                    yield return new TableIndex(SheetName, SheetId, column, row);
+                    yield return new TableIndex(Name, Id, column, row);
                 }
             }
         }
@@ -39,18 +25,18 @@ namespace SeaInk.Core.TableIntegrations.Models
         {
             for (int row = From.Row; row < To.Row; row++)
             {
-                yield return new TableIndexRange(SheetName, SheetId, (From.Column, row), (To.Column, row));
+                yield return new TableIndexRange(Name, Id, (From.Column, row), (To.Column, row));
             }
         }
-        
+
         public IEnumerable EnumerateColumns()
         {
             for (int column = From.Column; column < To.Column; column++)
             {
-                yield return new TableIndexRange(SheetName, SheetId, (column, From.Row), (column, To.Row));
+                yield return new TableIndexRange(Name, Id, (column, From.Row), (column, To.Row));
             }
         }
-        
+
         public IEnumerable EnumerateRowsIndices()
         {
             for (int row = From.Row; row < To.Row; row++)
@@ -58,7 +44,7 @@ namespace SeaInk.Core.TableIntegrations.Models
                 yield return row;
             }
         }
-        
+
         public IEnumerable EnumerateColumnsIndices()
         {
             for (int column = From.Column; column < To.Column; column++)
@@ -68,7 +54,7 @@ namespace SeaInk.Core.TableIntegrations.Models
         }
 
         public override string ToString()
-            => SheetName +
+            => Name +
                $"!{TableIndex.ColumnStringFromInt(From.Column)}{From.Row + 1}" +
                ":" +
                $"{TableIndex.ColumnStringFromInt(To.Column)}{To.Row + 1}";
@@ -83,8 +69,8 @@ namespace SeaInk.Core.TableIntegrations.Models
         /// <param name="from"> Upper left corner </param>
         /// <param name="to"> Lower right corner </param>
         public TableIndexRange(string sheetName, int sheetId, (int column, int row) from, (int column, int row) to)
+            : base(sheetName, sheetId)
         {
-            SheetIndex = new SheetIndex(sheetName, sheetId);
             From = from;
             To = to;
         }
@@ -95,11 +81,7 @@ namespace SeaInk.Core.TableIntegrations.Models
         /// <param name="from"> Upper left corner </param>
         /// <param name="to"> Lower right corner </param>
         public TableIndexRange(SheetIndex sheetIndex, (int column, int row) from, (int column, int row) to)
-        {
-            SheetIndex = sheetIndex;
-            From = from;
-            To = to;
-        }
+            : this(sheetIndex.Name, sheetIndex.Id, from, to) { }
 
         /// <summary>
         /// </summary>
@@ -108,12 +90,13 @@ namespace SeaInk.Core.TableIntegrations.Models
         /// <exception cref="InvalidRangeBoundsException"> Being thrown if given indices located on different sheets </exception>
         public TableIndexRange(TableIndex from, TableIndex to)
         {
-            if (!Equals(from.SheetIndex, to.SheetIndex))
+            if (from is SheetIndex lhs && to is SheetIndex rhs && !Equals(lhs, rhs))
                 throw new InvalidRangeBoundsException($"Trying to create range with incompatible indices\n" +
                                                       $"{System.Text.Json.JsonSerializer.Serialize(from)}\n\n" +
                                                       $"{System.Text.Json.JsonSerializer.Serialize(to)}");
 
-            SheetIndex = from.SheetIndex;
+            Name = from.Name;
+            Id = from.Id;
             From = (from.Column, from.Row);
             To = (to.Column, to.Row);
         }
@@ -127,7 +110,7 @@ namespace SeaInk.Core.TableIntegrations.Models
         public static GridRange ToGoogleGridRange(this TableIndexRange range)
             => new GridRange
             {
-                SheetId = range.SheetId,
+                SheetId = range.Id,
                 StartColumnIndex = range.From.Column,
                 StartRowIndex = range.From.Row,
                 EndColumnIndex = range.To.Column + 1,
