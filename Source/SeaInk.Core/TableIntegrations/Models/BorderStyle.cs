@@ -6,8 +6,8 @@ namespace SeaInk.Core.TableIntegrations.Models
 {
     public class BorderStyle
     {
-        public LineConfiguration Leading { get; set; } = new LineConfiguration();
-        public LineConfiguration Trailing { get; set; } = new LineConfiguration();
+        public LineConfiguration Left { get; set; } = new LineConfiguration();
+        public LineConfiguration Right { get; set; } = new LineConfiguration();
 
         public LineConfiguration Bottom { get; set; } = new LineConfiguration();
         public LineConfiguration Top { get; set; } = new LineConfiguration();
@@ -18,18 +18,18 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public BorderStyle(LineStyleCreator creator)
         {
-            Leading = creator.Create();
-            Trailing = creator.Create();
+            Left = creator.Create();
+            Right = creator.Create();
 
             Bottom = creator.Create();
             Top = creator.Create();
         }
 
-        public BorderStyle(LineConfiguration leading, LineConfiguration trailing, LineConfiguration bottom,
+        public BorderStyle(LineConfiguration left, LineConfiguration right, LineConfiguration bottom,
             LineConfiguration top)
         {
-            Leading = leading;
-            Trailing = trailing;
+            Left = left;
+            Right = right;
 
             Bottom = bottom;
             Top = top;
@@ -38,8 +38,8 @@ namespace SeaInk.Core.TableIntegrations.Models
         public BorderStyle(LineStyle leading, LineStyle trailing, LineStyle bottom,
             LineStyle top)
         {
-            Leading = new LineConfiguration(Color.Black, leading);
-            Trailing = new LineConfiguration(Color.Black, trailing);
+            Left = new LineConfiguration(Color.Black, leading);
+            Right = new LineConfiguration(Color.Black, trailing);
 
             Bottom = new LineConfiguration(Color.Black, bottom);
             Top = new LineConfiguration(Color.Black, top);
@@ -53,8 +53,8 @@ namespace SeaInk.Core.TableIntegrations.Models
             {
                Top = style.Top.ToGoogleBorder(),
                Bottom = style.Bottom.ToGoogleBorder(),
-               Left = style.Leading.ToGoogleBorder(),
-               Right = style.Trailing.ToGoogleBorder()
+               Left = style.Left.ToGoogleBorder(),
+               Right = style.Right.ToGoogleBorder()
             };
     }
 }

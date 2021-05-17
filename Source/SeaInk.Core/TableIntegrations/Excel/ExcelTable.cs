@@ -4,6 +4,7 @@ using ClosedXML.Excel;
 using SeaInk.Core.TableIntegrations.Google;
 using SeaInk.Core.TableIntegrations.Models;
 using SeaInk.Core.TableIntegrations.Models.Styles;
+using SeaInk.Core.TableIntegrations.Models.Styles.Enums;
 
 namespace SeaInk.Core.TableIntegrations.Excel
 {
@@ -13,12 +14,16 @@ namespace SeaInk.Core.TableIntegrations.Excel
         private string _filePath;
         
         public int SheetCount => _workbook.Worksheets.Count;
-
-        //Method may not be implemented
-        public int ColumnCount(TableIndex index) => 0;
         
-        //Method may not be implemented
-        public int RowCount(TableIndex index) => 0;
+        public int ColumnCount(TableIndex index)
+        {
+            return _workbook.Worksheet(index.SheetIndex.Name).LastColumnUsed().ColumnNumber();
+        }
+        
+        public int RowCount(TableIndex index)
+        {
+            return _workbook.Worksheet(index.SheetIndex.Name).LastRowUsed().RowNumber();
+        }
 
         public void CreateSheet(SheetIndex index)
         {
@@ -40,13 +45,12 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public string Create(TableInfo info, DrivePath path)
         {
-            //TODO: ensure it's ok
             return Create(info);
         }
 
         public string Create(TableInfo table)
         {
-            _filePath = table.Location;
+            _filePath = table.GetFullPath();
             
             _workbook = new XLWorkbook();
             _workbook.AddWorksheet("Important Sheet");
@@ -58,8 +62,8 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public void Delete()
         {
-            //TODO: ensure it's ok
-            throw new System.NotImplementedException();
+            //NOTE: If you use any other method after delete,file will be recreated
+            File.Delete(_filePath);
         }
 
         public void Rename(string name)
@@ -67,15 +71,14 @@ namespace SeaInk.Core.TableIntegrations.Excel
             var oldPath = _filePath;
             var newPath = Path.Combine(Path.GetDirectoryName(_filePath), name);
             _filePath = newPath;
-            
             Save();
-            
             File.Delete(oldPath);
         }
 
         public void RenameSheet(SheetIndex index, string name)
         {
             _workbook.Worksheet(index.Name).Name = name;
+            index.Name = name;
             Save();
         }
 
@@ -86,7 +89,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
 
         public T GetValueForCellAt<T>(TableIndex index)
         {
-            return (T) _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).Value;
+            return _workbook.Worksheet(index.SheetIndex.Name).Cell(index.Row, index.Column).GetValue<T>();
         }
 
         public string GetValueForCellAt(TableIndex index)
@@ -97,21 +100,15 @@ namespace SeaInk.Core.TableIntegrations.Excel
         public List<List<T>> GetValuesForCellsAt<T>(TableIndexRange range)
         {
             var values = new List<List<T>>();
-            var counter = 0;
-            var width = range.From.Column - range.To.Column;
-
-            var line = new List<T>();
-            foreach (var index in range)
+            foreach (int rowIndex in range.EnumerateRowsIndices())
             {
-                line.Add(GetValueForCellAt<T>(index));
-                counter++;
-
-                if (counter == width)
+                var newRow = new List<T>();
+                foreach (int columnIndex in range.EnumerateColumnsIndices())
                 {
-                    counter = 0;
-                    values.Add(line);
-                    line.Clear();
+                    newRow.Add(GetValueForCellAt<T>(new TableIndex(range.SheetIndex, columnIndex+1, rowIndex+1)));
                 }
+
+                values.Add(newRow);
             }
             
             return values;
@@ -146,14 +143,51 @@ namespace SeaInk.Core.TableIntegrations.Excel
         
         public void FormatCellAt(TableIndex index, ICellStyle style)
         {
-            //Method may not be implemented
-            //Throwing an exception crashes main program
+           FormatCellsAt(new TableIndexRange(index), style);
         }
 
         public void FormatCellsAt(TableIndexRange range, ICellStyle style)
         {
-            //Method may not be implemented
-            //Throwing an exception crashes main program
+            var cellsRange = _workbook.Worksheet(range.SheetName).Range
+            (
+                range.From.Row + 1,
+                range.From.Column + 1,
+                range.To.Row + 1,
+                range.To.Column + 1
+            );
+            
+            var worksheet = _workbook.Worksheet(range.SheetIndex.Name);
+            foreach (int columnIndex in range.EnumerateColumnsIndices())
+                worksheet.Column(columnIndex).Width = style.Width;
+            
+            foreach (int rowIndex in range.EnumerateRowsIndices())
+                worksheet.Row(rowIndex).Height = style.Height;
+
+            cellsRange.Style.Fill.SetBackgroundColor(XLColor.FromColor(style.BackgroundColor));
+            foreach (var cellIndex in range)
+                worksheet.Cell(cellIndex.Row,cellIndex.Column).Hyperlink = new XLHyperlink(style.HyperLink);
+            
+            cellsRange.Style.Border.SetLeftBorder(style.BorderStyle.Left.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetLeftBorderColor(XLColor.FromColor(style.BorderStyle.Left.Color));
+            
+            cellsRange.Style.Border.SetRightBorder(style.BorderStyle.Right.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetRightBorderColor(XLColor.FromColor(style.BorderStyle.Right.Color));
+            
+            cellsRange.Style.Border.SetTopBorder(style.BorderStyle.Top.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetTopBorderColor(XLColor.FromColor(style.BorderStyle.Top.Color));
+            
+            cellsRange.Style.Border.SetBottomBorder(style.BorderStyle.Bottom.Style.ToExcelLineStyle());
+            cellsRange.Style.Border.SetBottomBorderColor(XLColor.FromColor(style.BorderStyle.Bottom.Color));
+
+            cellsRange.Style.Alignment.SetHorizontal(style.HorizontalAlignment.ToExcelHorizontalAlignment());
+            cellsRange.Style.Alignment.SetVertical(style.VerticalAlignment.ToExcelVerticalAlignment());
+
+            cellsRange.Style.Font.SetFontName(style.FontName);
+            cellsRange.Style.Font.SetFontSize(style.FontSize);
+            cellsRange.Style.Font.SetFontColor(XLColor.FromColor(style.FontColor));
+
+            cellsRange.Style.Alignment.WrapText = style.TextWrapping.ToExcelTextWrapping();
+            
         }
 
         public void MergeCellsAt(TableIndexRange range)
