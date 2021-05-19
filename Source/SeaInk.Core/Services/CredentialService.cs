@@ -16,7 +16,7 @@ namespace SeaInk.Core.Services
             SheetsService.Scope.Spreadsheets,
             DriveService.Scope.Drive
         };
-        
+
         public async Task<UserCredential> GetGoogleCredentials()
         {
             await using var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read);

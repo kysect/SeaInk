@@ -8,6 +8,8 @@ namespace SeaInk.Core.TableIntegrations.Models
         public string Name { get; set; }
         public int Id { get; set; }
 
+        protected SheetIndex() { }
+
         public SheetIndex(string name, int id)
         {
             Name = name;
@@ -18,7 +20,7 @@ namespace SeaInk.Core.TableIntegrations.Models
             => Name == other.Name && Id == other.Id;
 
         public override bool Equals(object obj)
-            => obj is SheetIndex sheet && Equals(sheet);
+            => obj is SheetIndex rhs && Equals(rhs);
 
         public override int GetHashCode()
             => HashCode.Combine(Id);

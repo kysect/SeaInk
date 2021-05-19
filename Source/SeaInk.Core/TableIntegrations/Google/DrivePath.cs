@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace SeaInk.Core.TableIntegrations.Google
 {
-    public class DrivePath: IEnumerable<string>
+    public class DrivePath : IEnumerable<string>
     {
         private readonly IEnumerable<string> _path;
-        
+
         public DrivePath(IEnumerable<string> path)
         {
             _path = path;
@@ -22,10 +22,10 @@ namespace SeaInk.Core.TableIntegrations.Google
         {
             _path = pathString.Split("/").ToList();
         }
-        
+
         public IEnumerator<string> GetEnumerator()
         {
-           return _path.GetEnumerator();
+            return _path.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

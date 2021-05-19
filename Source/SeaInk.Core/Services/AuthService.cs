@@ -12,7 +12,7 @@ namespace SeaInk.Core.Services
             //TODO: Resolve safety cringe
             return true;
         }
-        
+
         public static void AuthWithUniversitySystem()
         {
             throw new NotImplementedException();
