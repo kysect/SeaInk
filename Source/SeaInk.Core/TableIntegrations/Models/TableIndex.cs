@@ -54,12 +54,12 @@ namespace SeaInk.Core.TableIntegrations.Models
             return result;
         }
 
-        public bool Equals(TableIndex rhs)
+        public bool Equals(TableIndex other)
         {
-            return rhs is not null &&
-                   base.Equals(rhs) &&
-                   Column == rhs.Column &&
-                   Row == rhs.Row;
+            return other is not null &&
+                   base.Equals(other) &&
+                   Column == other.Column &&
+                   Row == other.Row;
         }
 
         public override bool Equals(object obj)
