@@ -12,9 +12,7 @@ namespace SeaInk.Core.TableIntegrations.Models
         public LineConfiguration Bottom { get; set; } = new LineConfiguration();
         public LineConfiguration Top { get; set; } = new LineConfiguration();
 
-        public BorderStyle()
-        {
-        }
+        public BorderStyle() { }
 
         public BorderStyle(LineStyleCreator creator)
         {
@@ -51,10 +49,10 @@ namespace SeaInk.Core.TableIntegrations.Models
         public static Borders ToGoogleBorder(this BorderStyle style)
             => new Borders
             {
-               Top = style.Top.ToGoogleBorder(),
-               Bottom = style.Bottom.ToGoogleBorder(),
-               Left = style.Left.ToGoogleBorder(),
-               Right = style.Right.ToGoogleBorder()
+                Top = style.Top.ToGoogleBorder(),
+                Bottom = style.Bottom.ToGoogleBorder(),
+                Left = style.Left.ToGoogleBorder(),
+                Right = style.Right.ToGoogleBorder()
             };
     }
 }

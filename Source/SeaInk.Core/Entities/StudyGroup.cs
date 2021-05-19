@@ -1,4 +1,3 @@
-  
 using System.Collections.Generic;
 
 namespace SeaInk.Core.Entities
@@ -15,6 +14,7 @@ namespace SeaInk.Core.Entities
             SystemId = -1;
             Students = new List<Student>();
         }
+
         public StudyGroup(int id, string name, Student admin, List<Student> students)
         {
             SystemId = id;

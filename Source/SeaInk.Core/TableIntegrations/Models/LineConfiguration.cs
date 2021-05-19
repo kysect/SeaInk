@@ -11,15 +11,14 @@ namespace SeaInk.Core.TableIntegrations.Models
         public Color Color { get; set; } = Color.Black;
         public LineStyle Style { get; set; } = LineStyle.Light;
 
-        public LineConfiguration()
-        {
-        }
+        public LineConfiguration() { }
 
         public LineConfiguration(LineStyle style)
         {
             Color = Color.Black;
             Style = style;
         }
+
         public LineConfiguration(Color color, LineStyle style)
         {
             Color = color;
@@ -40,10 +39,10 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public LineConfiguration Create()
         {
-            return new LineConfiguration(Color, LineStyle); 
+            return new LineConfiguration(Color, LineStyle);
         }
     }
-    
+
     public static class GoogleLineConfigurationExtension
     {
         public static Border ToGoogleBorder(this LineConfiguration configuration)
