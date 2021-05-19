@@ -47,16 +47,16 @@ namespace SeaInk.Core.TableIntegrations.Google
         }
 
 
-        public int ColumnCount(TableIndex index)
+        public int ColumnCount(SheetIndex index)
         {
-            int? count = GetSpreadsheet().Sheets[index.SheetIndex.Id].Properties.GridProperties.ColumnCount;
+            int? count = GetSpreadsheet().Sheets[index.Id].Properties.GridProperties.ColumnCount;
 
             return count ?? throw new NonExistingIndexException();
         }
 
-        public int RowCount(TableIndex index)
+        public int RowCount(SheetIndex index)
         {
-            int? count = GetSpreadsheet().Sheets[index.SheetIndex.Id].Properties.GridProperties.RowCount;
+            int? count = GetSpreadsheet().Sheets[index.Id].Properties.GridProperties.RowCount;
 
             return count ?? throw new NonExistingIndexException();
         }
@@ -256,7 +256,7 @@ namespace SeaInk.Core.TableIntegrations.Google
                 {
                     Range = new GridRange
                     {
-                        SheetId = index.SheetIndex.Id,
+                        SheetId = index.Id,
                         StartRowIndex = index.Row,
                         EndRowIndex = index.Row + 1
                     },
@@ -275,7 +275,7 @@ namespace SeaInk.Core.TableIntegrations.Google
                 {
                     Range = new GridRange
                     {
-                        SheetId = index.SheetIndex.Id,
+                        SheetId = index.Id,
                         StartColumnIndex = index.Column,
                         EndColumnIndex = index.Column + 1
                     },

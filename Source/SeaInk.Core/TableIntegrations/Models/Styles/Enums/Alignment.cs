@@ -11,7 +11,7 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
         Top,
         Bottom
     }
-    
+
     public static class GoogleAlignmentExtension
     {
         public static string ToGoogleHorizontalAlignment(this Alignment alignment)

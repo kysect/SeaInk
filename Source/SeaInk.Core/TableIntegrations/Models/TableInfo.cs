@@ -9,7 +9,7 @@ namespace SeaInk.Core.TableIntegrations.Models
         public string Location { get; set; }
         public string Description { get; set; }
 
-        public TableInfo(string name, string location = null,  string id = null, string description = null)
+        public TableInfo(string name, string location = null, string id = null, string description = null)
         {
             Name = name;
             Location = location;
