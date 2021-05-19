@@ -2,7 +2,7 @@ using System;
 
 namespace SeaInk.Core.TableIntegrations.Models
 {
-    public class TableIndex: SheetIndex
+    public class TableIndex : SheetIndex
     {
         public int Column { get; set; }
         public int Row { get; set; }
@@ -19,7 +19,7 @@ namespace SeaInk.Core.TableIntegrations.Models
             Row = row;
         }
 
-        public TableIndex(SheetIndex sheetIndex, int column = 0, int row = 0) 
+        public TableIndex(SheetIndex sheetIndex, int column = 0, int row = 0)
             : this(sheetIndex.Name, sheetIndex.Id, column, row) { }
 
         public TableIndex WithSheet(SheetIndex index)
@@ -30,8 +30,8 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public TableIndex WithRow(int row)
             => new TableIndex(Name, Id, Column, row);
-        
-        
+
+
         public TableIndex WithColumnIncreasedBy(int column)
             => new TableIndex(Name, Id, Column + column, Row);
 

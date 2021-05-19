@@ -13,7 +13,7 @@ namespace SeaInk.Core.TableIntegrations.Models.Styles.Enums
         Dotted,
         Doubled
     }
-    
+
     public static class GoogleLineStyleExtension
     {
         public static string ToGoogleLineStyle(this LineStyle style)

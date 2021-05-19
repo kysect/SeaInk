@@ -12,14 +12,14 @@ namespace SeaInk.Core.TableIntegrations.Excel
     {
         private XLWorkbook _workbook;
         private string _filePath;
-        
+
         public int SheetCount => _workbook.Worksheets.Count;
-        
+
         public int ColumnCount(SheetIndex index)
         {
             return _workbook.Worksheet(index.Name).LastColumnUsed().ColumnNumber();
         }
-        
+
         public int RowCount(SheetIndex index)
         {
             return _workbook.Worksheet(index.Name).LastRowUsed().RowNumber();
@@ -51,12 +51,12 @@ namespace SeaInk.Core.TableIntegrations.Excel
         public string Create(TableInfo table)
         {
             _filePath = table.GetFullPath();
-            
+
             _workbook = new XLWorkbook();
             _workbook.AddWorksheet("Important Sheet");
             //In workbook must be at least one sheet.
             Save();
-            
+
             return table.Location;
         }
 
@@ -105,12 +105,12 @@ namespace SeaInk.Core.TableIntegrations.Excel
                 var newRow = new List<T>();
                 foreach (int columnIndex in range.EnumerateColumnsIndices())
                 {
-                    newRow.Add(GetValueForCellAt<T>(new TableIndex(range, columnIndex+1, rowIndex+1)));
+                    newRow.Add(GetValueForCellAt<T>(new TableIndex(range, columnIndex + 1, rowIndex + 1)));
                 }
 
                 values.Add(newRow);
             }
-            
+
             return values;
         }
 
@@ -129,7 +129,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
         {
             var width = values.Count;
             var height = values[0].Count;
-            
+
             for (var row = 0; row < width; row++)
             {
                 for (var column = 0; column < height; column++)
@@ -138,12 +138,13 @@ namespace SeaInk.Core.TableIntegrations.Excel
                     SetValueForCellAt(newIndex, values[row][column]);
                 }
             }
+
             Save();
         }
-        
+
         public void FormatCellAt(TableIndex index, ICellStyle style)
         {
-           FormatCellsAt(new TableIndexRange(index), style);
+            FormatCellsAt(new TableIndexRange(index), style);
         }
 
         public void FormatCellsAt(TableIndexRange range, ICellStyle style)
@@ -155,27 +156,27 @@ namespace SeaInk.Core.TableIntegrations.Excel
                 range.To.Row + 1,
                 range.To.Column + 1
             );
-            
+
             var worksheet = _workbook.Worksheet(range.Name);
             foreach (int columnIndex in range.EnumerateColumnsIndices())
                 worksheet.Column(columnIndex).Width = style.Width;
-            
+
             foreach (int rowIndex in range.EnumerateRowsIndices())
                 worksheet.Row(rowIndex).Height = style.Height;
 
             cellsRange.Style.Fill.SetBackgroundColor(XLColor.FromColor(style.BackgroundColor));
             foreach (var cellIndex in range)
-                worksheet.Cell(cellIndex.Row,cellIndex.Column).Hyperlink = new XLHyperlink(style.HyperLink);
-            
+                worksheet.Cell(cellIndex.Row, cellIndex.Column).Hyperlink = new XLHyperlink(style.HyperLink);
+
             cellsRange.Style.Border.SetLeftBorder(style.BorderStyle.Left.Style.ToExcelLineStyle());
             cellsRange.Style.Border.SetLeftBorderColor(XLColor.FromColor(style.BorderStyle.Left.Color));
-            
+
             cellsRange.Style.Border.SetRightBorder(style.BorderStyle.Right.Style.ToExcelLineStyle());
             cellsRange.Style.Border.SetRightBorderColor(XLColor.FromColor(style.BorderStyle.Right.Color));
-            
+
             cellsRange.Style.Border.SetTopBorder(style.BorderStyle.Top.Style.ToExcelLineStyle());
             cellsRange.Style.Border.SetTopBorderColor(XLColor.FromColor(style.BorderStyle.Top.Color));
-            
+
             cellsRange.Style.Border.SetBottomBorder(style.BorderStyle.Bottom.Style.ToExcelLineStyle());
             cellsRange.Style.Border.SetBottomBorderColor(XLColor.FromColor(style.BorderStyle.Bottom.Color));
 
@@ -187,7 +188,6 @@ namespace SeaInk.Core.TableIntegrations.Excel
             cellsRange.Style.Font.SetFontColor(XLColor.FromColor(style.FontColor));
 
             cellsRange.Style.Alignment.WrapText = style.TextWrapping.ToExcelTextWrapping();
-            
         }
 
         public void MergeCellsAt(TableIndexRange range)
@@ -199,7 +199,7 @@ namespace SeaInk.Core.TableIntegrations.Excel
                 range.To.Row + 1,
                 range.To.Column + 1
             ).Merge();
-            
+
             Save();
         }
 
