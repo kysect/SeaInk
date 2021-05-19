@@ -2,7 +2,7 @@ using System;
 
 namespace SeaInk.Core.TableIntegrations.Models
 {
-    public class TableIndex : SheetIndex
+    public class TableIndex : SheetIndex, IEquatable<TableIndex>
     {
         public int Column { get; set; }
         public int Row { get; set; }
@@ -56,7 +56,8 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public bool Equals(TableIndex rhs)
         {
-            return base.Equals(rhs) &&
+            return rhs is not null &&
+                   base.Equals(rhs) &&
                    Column == rhs.Column &&
                    Row == rhs.Row;
         }
