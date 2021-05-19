@@ -3,7 +3,7 @@ using Google.Apis.Sheets.v4.Data;
 
 namespace SeaInk.Core.TableIntegrations.Models
 {
-    public class SheetIndex
+    public class SheetIndex : IEquatable<SheetIndex>
     {
         public string Name { get; set; }
         public int Id { get; set; }
