@@ -6,7 +6,7 @@ using SeaInk.Core.TableIntegrations.Models.Exceptions;
 
 namespace SeaInk.Core.TableIntegrations.Models
 {
-    public class TableIndexRange : SheetIndex, IEnumerable<TableIndex>, IEquatable<TableIndexRange>
+    public sealed class TableIndexRange : SheetIndex, IEnumerable<TableIndex>, IEquatable<TableIndexRange>
     {
         public (int Column, int Row) From { get; set; }
         public (int Column, int Row) To { get; set; }
@@ -105,12 +105,12 @@ namespace SeaInk.Core.TableIntegrations.Models
         public TableIndexRange(TableIndex index)
             : this(index, index) { }
 
-        public bool Equals(TableIndexRange rhs)
+        public bool Equals(TableIndexRange other)
         {
-            return rhs is not null &&
-                   base.Equals(rhs) &&
-                   From == rhs.From &&
-                   To == rhs.To;
+            return other is not null &&
+                   base.Equals(other) &&
+                   From == other.From &&
+                   To == other.To;
         }
 
         public override bool Equals(object obj)
