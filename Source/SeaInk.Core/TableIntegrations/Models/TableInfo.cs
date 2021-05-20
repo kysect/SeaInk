@@ -10,18 +10,22 @@ namespace SeaInk.Core.TableIntegrations.Models
         public string Description { get; set; }
 
         public TableInfo(string name, string location, string id, string description)
+        : this(name, description)
         {
-            Name = name;
             Location = location;
             Id = id;
-            Description = description;
         }
 
         public TableInfo(string name, string description)
-            : this(name, null, null, description) { }
-        
+            : this(name)
+        {
+            Description = description;
+        }
+
         public TableInfo(string name)
-            : this(name, null, null, null) { }
+        {
+            Name = name;
+        }
 
         public string GetFullPath()
         {
