@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Google.Apis.Sheets.v4.Data;
@@ -5,7 +6,7 @@ using SeaInk.Core.TableIntegrations.Models.Exceptions;
 
 namespace SeaInk.Core.TableIntegrations.Models
 {
-    public class TableIndexRange : SheetIndex, IEnumerable<TableIndex>
+    public sealed class TableIndexRange : SheetIndex, IEnumerable<TableIndex>, IEquatable<TableIndexRange>
     {
         public (int Column, int Row) From { get; set; }
         public (int Column, int Row) To { get; set; }
@@ -103,6 +104,24 @@ namespace SeaInk.Core.TableIntegrations.Models
 
         public TableIndexRange(TableIndex index)
             : this(index, index) { }
+
+        public bool Equals(TableIndexRange other)
+        {
+            return other is not null &&
+                   base.Equals(other) &&
+                   From == other.From &&
+                   To == other.To;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TableIndexRange rhs && Equals(rhs);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), From, To);
+        }
     }
 
     public static class GoogleTableIndexRangeExtension
