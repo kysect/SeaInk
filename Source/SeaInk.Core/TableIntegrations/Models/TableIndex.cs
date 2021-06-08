@@ -54,6 +54,11 @@ namespace SeaInk.Core.TableIntegrations.Models
             return result;
         }
 
+        public bool IsSamePage(TableIndex rhs)
+        {
+            return Id == rhs.Id && Name == rhs.Name;
+        }
+
         public bool Equals(TableIndex other)
         {
             return other is not null &&
