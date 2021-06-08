@@ -91,7 +91,7 @@ namespace SeaInk.Core.TableIntegrations.Models
         /// <exception cref="InvalidRangeBoundsException"> Being thrown if given indices located on different sheets </exception>
         public TableIndexRange(TableIndex from, TableIndex to)
         {
-            if (from is SheetIndex lhs && to is SheetIndex rhs && !Equals(lhs, rhs))
+            if (!from.IsSamePage(to))
                 throw new InvalidRangeBoundsException($"Trying to create range with incompatible indices\n" +
                                                       $"{System.Text.Json.JsonSerializer.Serialize(from)}\n\n" +
                                                       $"{System.Text.Json.JsonSerializer.Serialize(to)}");
