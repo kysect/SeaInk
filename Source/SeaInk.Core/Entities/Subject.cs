@@ -7,7 +7,7 @@ namespace SeaInk.Core.Entities
     public class Subject: IUniversityEntity
     {
         [Key]
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         public int UniversityId { get; init; }
 
