@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeaInk.Core.Models
 {
+    [ComplexType]
     public class AssignmentProgress
     {
         public DateTime CompletionDate;

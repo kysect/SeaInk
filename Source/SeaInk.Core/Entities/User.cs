@@ -1,0 +1,20 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SeaInk.Core.Entities
+{
+    public class User: IUniversityEntity
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public int UniversityId { get; init; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MidName { get; set; }
+
+        [NotMapped]
+        public string FullName => LastName + " " + FirstName + " " + MidName;
+    }
+}

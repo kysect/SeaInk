@@ -1,10 +1,15 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeaInk.Core.Entities
 {
-    public class StudyAssignment
+    public class StudyAssignment: IUniversityEntity
     {
-        public int SystemId { get; set; }
+        [Key]
+        public int Id { get; init; }
+
+        public int UniversityId { get; init; }
+
         public string Title { get; set; }
         public bool IsMilestone { get; set; }
 
@@ -13,22 +18,5 @@ namespace SeaInk.Core.Entities
 
         public float MinPoints { get; set; }
         public float MaxPoints { get; set; }
-
-        public StudyAssignment()
-        {
-            SystemId = -1;
-        }
-
-        public StudyAssignment(int id, string title, bool isMilestone, DateTime start,
-            DateTime end, float min, float max)
-        {
-            SystemId = id;
-            Title = title;
-            IsMilestone = isMilestone;
-            StartDate = start;
-            EndDate = end;
-            MinPoints = min;
-            MaxPoints = max;
-        }
     }
 }
