@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -103,11 +104,14 @@ namespace Infrastructure.APIs
                 .CustomInstantiator(faker => new StudyGroup
                 {
                     UniversityId = Interlocked.Increment(ref _currentId),
-                    Name = faker.Lorem.Letter() + faker.Random.Number(1000, 9999),
-                    Students = faker.Random.ArrayElements(Students.Where(s => s.Group is null).ToArray(),
-                                                          faker.Random.Int(15, 25)).ToList()
+                    Name = faker.Lorem.Letter() + faker.Random.Number(1000, 9999)
                 })
-                .RuleFor(g => g.Admin, (f, g) => f.Random.ArrayElement(g.Students.ToArray()))
+                .Rules((f, g) =>
+                {
+                    List<Student> freeStudents = Students.Where(s => s.Group is null).ToList();
+                    g.Students = f.Random.ArrayElements(freeStudents.ToArray(), Math.Min(f.Random.Int(15, 25), freeStudents.Count)).ToList();
+                    g.Admin = f.Random.ArrayElement(g.Students.ToArray());
+                })
                 .FinishWith((_, g) =>
                 {
                     foreach (Student student in g.Students)
@@ -172,7 +176,7 @@ namespace Infrastructure.APIs
         private void GenerateInitialData()
         {
             Users.AddRange(_userFaker.Generate(50));
-            Students.AddRange(_studentFaker.Generate(200));
+            Students.AddRange(_studentFaker.Generate(300));
             Mentors.AddRange(_mentorFaker.Generate(5));
             Groups.AddRange(_groupFaker.Generate(15));
             Assignments.AddRange(_assignmentsFaker.Generate(50));
