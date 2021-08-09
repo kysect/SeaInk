@@ -1,20 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using SeaInk.Core.Models;
 
 namespace SeaInk.Core.Entities
 {
-    public class StudentAssignmentProgress
+    public class StudentAssignmentProgress: IEntity
     {
-        public Student Student { get; set; }
-        public StudyAssignment Assignment { get; set; }
-        public AssignmentProgress Progress { get; set; }
+        [Key]
+        public int Id { get; }
 
-        public StudentAssignmentProgress() { }
-
-        public StudentAssignmentProgress(Student student, StudyAssignment assignment, AssignmentProgress progress)
-        {
-            Student = student;
-            Assignment = assignment;
-            Progress = progress;
-        }
+        public virtual Student Student { get; set; }
+        public virtual StudyAssignment Assignment { get; set; }
+        public virtual AssignmentProgress Progress { get; set; }
     }
 }

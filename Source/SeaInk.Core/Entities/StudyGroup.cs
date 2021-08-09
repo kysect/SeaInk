@@ -1,26 +1,18 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeaInk.Core.Entities
 {
-    public class StudyGroup
+    public class StudyGroup: IUniversityEntity
     {
-        public int SystemId { get; set; }
+        [Key]
+        public int Id { get; init; }
+
+        public int UniversityId { get; init; }
+
         public string Name { get; set; }
-        public Student Admin { get; set; }
-        public List<Student> Students { get; set; }
 
-        public StudyGroup()
-        {
-            SystemId = -1;
-            Students = new List<Student>();
-        }
-
-        public StudyGroup(int id, string name, Student admin, List<Student> students)
-        {
-            SystemId = id;
-            Name = name;
-            Admin = admin;
-            Students = students;
-        }
+        public virtual Student Admin { get; set; }
+        public virtual List<Student> Students { get; set; } = new();
     }
 }

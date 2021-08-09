@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SeaInk.Infrastructure\SeaInk.Infrastructure.csproj" />
     <ProjectReference Include="..\..\SeaInk.Core\SeaInk.Core.csproj" />
     <ProjectReference Include="..\Client\SeaInk.Endpoints.Client.csproj" />
   </ItemGroup>
