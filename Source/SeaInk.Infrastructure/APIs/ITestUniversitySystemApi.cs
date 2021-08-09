@@ -14,6 +14,9 @@ namespace Infrastructure.APIs
         List<Subject> Subjects { get; }
         List<StudentAssignmentProgress> StudentAssignmentProgresses { get; }
 
+        delegate void HandleLog(string message);
+        event HandleLog Log;
+
         public int TotalCallCount { get; }
 
         public int GetUserCallCount { get; }

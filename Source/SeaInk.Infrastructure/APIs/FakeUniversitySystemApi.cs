@@ -71,6 +71,8 @@ namespace Infrastructure.APIs
         public int SaveStudentAssignmentProgressCallCount => _saveStudentAssignmentProgressCallCount;
         public int SaveDivisionCallCount => _saveDivisionCallCount;
 
+        public event ITestUniversitySystemApi.HandleLog Log;
+
         public FakeUniversitySystemApi()
         {
             _userFaker = new Faker<User>("ru")
@@ -189,6 +191,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getUserCallCount);
+            Log?.Invoke("Got user");
             return Users.SingleOrDefault(u => u.UniversityId == id);
         }
 
@@ -196,6 +199,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getStudentCallCount);
+            Log?.Invoke("Got student");
             return Students.SingleOrDefault(x => x.UniversityId == id);
         }
 
@@ -203,6 +207,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getMentorCallCount);
+            Log?.Invoke("Got mentor");
             return Mentors.SingleOrDefault(x => x.UniversityId == id);
         }
 
@@ -210,6 +215,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getStudyGroupCallCount);
+            Log?.Invoke("Got study group");
             return Groups.SingleOrDefault(x => x.UniversityId == id);
         }
 
@@ -217,6 +223,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getStudyAssignmentCallCount);
+            Log?.Invoke("Got study assignment");
             return Assignments.SingleOrDefault(x => x.UniversityId == id);
         }
 
@@ -224,6 +231,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getSubjectCallCount);
+            Log?.Invoke("Got subject");
             return Subjects.SingleOrDefault(x => x.UniversityId == id);
         }
 
@@ -231,6 +239,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getStudentAssignmentProgressCallCount);
+            Log?.Invoke("Got student assignment progress");
             return StudentAssignmentProgresses
                 .SingleOrDefault(p => p.Student.UniversityId == studentId && p.Assignment.UniversityId == assignmentId);
         }
@@ -239,6 +248,7 @@ namespace Infrastructure.APIs
         {
             Interlocked.Increment(ref _totalCallCount);
             Interlocked.Increment(ref _getDivisionCallCount);
+            Log?.Invoke("Got division");
             return Divisions.SingleOrDefault(d => d.Mentor.UniversityId == mentorId && d.Subject.UniversityId == subjectId);
         }
 
@@ -297,9 +307,5 @@ namespace Infrastructure.APIs
             Interlocked.Increment(ref _saveStudentAssignmentProgressCallCount);
             Log?.Invoke($"Saved {nameof(progress)}");
         }
-
-        public delegate void LogHandler(string message);
-
-        public event LogHandler Log;
     }
 }
