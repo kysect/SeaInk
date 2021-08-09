@@ -13,6 +13,7 @@ namespace Infrastructure.APIs
         List<StudyAssignment> Assignments { get; }
         List<Subject> Subjects { get; }
         List<StudentAssignmentProgress> StudentAssignmentProgresses { get; }
+        List<Division> Divisions { get; }
 
         delegate void HandleLog(string message);
         event HandleLog Log;

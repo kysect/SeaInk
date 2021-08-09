@@ -157,10 +157,10 @@ namespace Infrastructure.APIs
                 })
                 .RuleFor(p => p.Progress,
                          (f, p) => new AssignmentProgress
-                         (
-                             f.Date.Between(p.Assignment.StartDate, p.Assignment.EndDate),
-                             f.Random.Float(p.Assignment.MinPoints, p.Assignment.MaxPoints)
-                         ));
+                         {
+                             CompletionDate = f.Date.Between(p.Assignment.StartDate, p.Assignment.EndDate),
+                             Points = f.Random.Float(p.Assignment.MinPoints, p.Assignment.MaxPoints)
+                         });
 
             _divisionFaker = new Faker<Division>()
                 .CustomInstantiator(faker => new Division
