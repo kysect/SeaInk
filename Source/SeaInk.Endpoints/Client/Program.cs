@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SeaInk.Endpoints.Client
 {
-    public class Program
+    public static class Program
     {
         public static async Task Main(string[] args)
         {
