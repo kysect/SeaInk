@@ -23,6 +23,8 @@ namespace SeaInk.Tests.Infrastructure
                 throw new ArgumentException("Using not testing API in testing");
 
             _api = api;
+
+            _api.Log += Console.WriteLine;
         }
 
         [Test]
