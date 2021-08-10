@@ -15,7 +15,7 @@ namespace Infrastructure.Extensions
         {
             collection
                 .AddSingleton<IUniversitySystemApi, FakeUniversitySystemApi>()
-                .AddDbContext<DatabaseContext>(o => o.UseInMemoryDatabase("SeaInk"))
+                .AddDbContext<DatabaseContext>(o => o.UseInMemoryDatabase(databaseName))
                 .AddScoped<IEntityRepository<User>, DbUserRepository>()
                 .AddScoped<IEntityRepository<Student>, DbStudentRepository>()
                 .AddScoped<IEntityRepository<Mentor>, DbMentorRepository>()
