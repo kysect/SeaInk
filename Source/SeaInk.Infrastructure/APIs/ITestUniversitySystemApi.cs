@@ -16,26 +16,27 @@ namespace Infrastructure.APIs
         List<Division> Divisions { get; }
 
         delegate void HandleLog(string message);
+
         event HandleLog Log;
 
-        public int TotalCallCount { get; }
-
-        public int GetUserCallCount { get; }
-        public int GetStudentCallCount { get; }
-        public int GetMentorCallCount { get; }
-        public int GetStudyGroupCallCount { get; }
-        public int GetStudyAssignmentCallCount { get; }
-        public int GetSubjectCallCount { get; }
-        public int GetStudentAssignmentProgressCallCount { get; }
-        public int GetDivisionCallCount { get; }
-
-        public int SaveUserCallCount { get; }
-        public int SaveStudentCallCount { get; }
-        public int SaveMentorCallCount { get; }
-        public int SaveStudyGroupCallCount { get; }
-        public int SaveStudyAssignmentCallCount { get; }
-        public int SaveSubjectCallCount { get; }
-        public int SaveStudentAssignmentProgressCallCount { get; }
-        public int SaveDivisionCallCount { get; }
+        int TotalCallCount { get; }
+        
+        int GetUserCallCount { get; }
+        int GetStudentCallCount { get; }
+        int GetMentorCallCount { get; }
+        int GetStudyGroupCallCount { get; }
+        int GetStudyAssignmentCallCount { get; }
+        int GetSubjectCallCount { get; }
+        int GetStudentAssignmentProgressCallCount { get; }
+        int GetDivisionCallCount { get; }
+        
+        int SaveUserCallCount { get; }
+        int SaveStudentCallCount { get; }
+        int SaveMentorCallCount { get; }
+        int SaveStudyGroupCallCount { get; }
+        int SaveStudyAssignmentCallCount { get; }
+        int SaveSubjectCallCount { get; }
+        int SaveStudentAssignmentProgressCallCount { get; }
+        int SaveDivisionCallCount { get; }
     }
 }
