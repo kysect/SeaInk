@@ -16,14 +16,14 @@ namespace Infrastructure.Extensions
             collection
                 .AddSingleton<IUniversitySystemApi, FakeUniversitySystemApi>()
                 .AddDbContext<DatabaseContext>(o => o.UseInMemoryDatabase("SeaInk"))
-                .AddSingleton<IEntityRepository<User>, DbUserRepository>()
-                .AddSingleton<IEntityRepository<Student>, DbStudentRepository>()
-                .AddSingleton<IEntityRepository<Mentor>, DbMentorRepository>()
-                .AddSingleton<IEntityRepository<Division>, DbDivisionRepository>()
-                .AddSingleton<IEntityRepository<Subject>, DbSubjectRepository>()
-                .AddSingleton<IEntityRepository<StudyGroup>, DbStudyGroupRepository>()
-                .AddSingleton<IEntityRepository<StudyAssignment>, DbStudyAssignmentRepository>()
-                .AddSingleton<IEntityRepository<StudentAssignmentProgress>, DbStudentAssignmentProgressRepository>();
+                .AddScoped<IEntityRepository<User>, DbUserRepository>()
+                .AddScoped<IEntityRepository<Student>, DbStudentRepository>()
+                .AddScoped<IEntityRepository<Mentor>, DbMentorRepository>()
+                .AddScoped<IEntityRepository<Division>, DbDivisionRepository>()
+                .AddScoped<IEntityRepository<Subject>, DbSubjectRepository>()
+                .AddScoped<IEntityRepository<StudyGroup>, DbStudyGroupRepository>()
+                .AddScoped<IEntityRepository<StudyAssignment>, DbStudyAssignmentRepository>()
+                .AddScoped<IEntityRepository<StudentAssignmentProgress>, DbStudentAssignmentProgressRepository>();
 
             return collection;
         }
