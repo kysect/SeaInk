@@ -13,14 +13,9 @@ namespace Infrastructure.Extensions
     {
         public static IServiceCollection AddTestServices(this IServiceCollection collection, string databaseName = "SeaInk")
         {
-            DbContextOptions<DatabaseContext> options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName)
-                .Options;
-
-
             collection
                 .AddSingleton<IUniversitySystemApi, FakeUniversitySystemApi>()
-                .AddSingleton(new DatabaseContext(options))
+                .AddDbContext<DatabaseContext>(o => o.UseInMemoryDatabase("SeaInk"))
                 .AddSingleton<IEntityRepository<User>, DbUserRepository>()
                 .AddSingleton<IEntityRepository<Student>, DbStudentRepository>()
                 .AddSingleton<IEntityRepository<Mentor>, DbMentorRepository>()
