@@ -1,11 +1,7 @@
 using Infrastructure.APIs;
 using Infrastructure.Database;
-using Infrastructure.Repositories.Db;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SeaInk.Core.APIs;
-using SeaInk.Core.Entities;
-using SeaInk.Core.Repositories;
 
 namespace Infrastructure.Extensions
 {
@@ -15,15 +11,7 @@ namespace Infrastructure.Extensions
         {
             collection
                 .AddSingleton<IUniversitySystemApi, FakeUniversitySystemApi>()
-                .AddDbContext<DatabaseContext>(o => o.UseInMemoryDatabase(databaseName))
-                .AddScoped<IEntityRepository<User>, DbUserRepository>()
-                .AddScoped<IEntityRepository<Student>, DbStudentRepository>()
-                .AddScoped<IEntityRepository<Mentor>, DbMentorRepository>()
-                .AddScoped<IEntityRepository<Division>, DbDivisionRepository>()
-                .AddScoped<IEntityRepository<Subject>, DbSubjectRepository>()
-                .AddScoped<IEntityRepository<StudyGroup>, DbStudyGroupRepository>()
-                .AddScoped<IEntityRepository<StudyAssignment>, DbStudyAssignmentRepository>()
-                .AddScoped<IEntityRepository<StudentAssignmentProgress>, DbStudentAssignmentProgressRepository>();
+                .AddDbContext<DatabaseContext>(_ => DatabaseContext.GetTestContext(databaseName));
 
             return collection;
         }

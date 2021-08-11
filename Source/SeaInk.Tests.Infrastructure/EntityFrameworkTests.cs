@@ -2,32 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.APIs;
-using Infrastructure.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using SeaInk.Core.APIs;
 using SeaInk.Core.Entities;
-using SeaInk.Core.Repositories;
 using SeaInk.Tests.Infrastructure.Extensions;
 
 namespace SeaInk.Tests.Infrastructure
 {
     public class EntityFrameworkTests
     {
-        private IServiceProvider _provider;
+        private DatabaseContext _context;
         private ITestUniversitySystemApi _api;
 
         [SetUp]
         public void Setup()
         {
-            _provider = new ServiceCollection()
-                .AddTestServices()
-                .BuildServiceProvider();
-
-            if (_provider.GetRequiredService<IUniversitySystemApi>() is not ITestUniversitySystemApi api)
-                throw new ArgumentException("Using not testing API in testing");
-
-            _api = api;
+            _context = DatabaseContext.GetTestContext("SeaInk");
+            _api = new FakeUniversitySystemApi();
 
             _api.Log += Console.WriteLine;
         }
@@ -35,12 +27,12 @@ namespace SeaInk.Tests.Infrastructure
         [Test]
         public void StudentAssignmentProgressRepositoryTest_SAP_AddedToDatabase()
         {
-            var repository = _provider.GetRequiredService<IEntityRepository<StudentAssignmentProgress>>();
+            DbSet<StudentAssignmentProgress> repository = _context.StudentAssignmentProgresses;
             
             StudentAssignmentProgress progress = _api.StudentAssignmentProgresses.First();
-            repository.Create(progress);
-            
-            StudentAssignmentProgress createdProgress = repository[progress.Id];
+            repository.Add(progress);
+
+            StudentAssignmentProgress createdProgress = repository.Find(progress.Id);
 
             Assert.NotNull(createdProgress);
             Assert.AreEqual(progress.Id, createdProgress.Id);
@@ -52,12 +44,12 @@ namespace SeaInk.Tests.Infrastructure
         [Test]
         public void DivisionRepositoryTest_DivisionAddedToDatabase()
         {
-            var repository = _provider.GetRequiredService<IEntityRepository<Division>>();
+            DbSet<Division> repository = _context.Divisions;
             
             Division division = _api.Divisions.First();
-            repository.Create(division);
+            repository.Add(division);
 
-            Division createdDivision = repository[division.Id];
+            Division createdDivision = repository.Find(division.Id);
             
             Assert.NotNull(division);
             Assert.AreEqual(division.Id, createdDivision.Id);
