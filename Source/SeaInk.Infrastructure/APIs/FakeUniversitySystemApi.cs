@@ -9,7 +9,6 @@ using SeaInk.Core.Models;
 namespace Infrastructure.APIs
 {
     public class FakeUniversitySystemApi: ITestUniversitySystemApi
-
     {
         private int _currentId;
 
