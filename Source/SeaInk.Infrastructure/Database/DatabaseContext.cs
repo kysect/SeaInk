@@ -21,6 +21,16 @@ namespace Infrastructure.Database
             Database.EnsureCreated();
         }
 
+        public static DatabaseContext GetTestContext(string name)
+        {
+            DbContextOptions options = new DbContextOptionsBuilder()
+                .UseInMemoryDatabase(name)
+                .UseLazyLoadingProxies()
+                .Options;
+
+            return new DatabaseContext(options);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasOne(s => s.Group);
