@@ -1,35 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeaInk.Core.Entities
 {
-    public class Subject
+    public class Subject: IUniversityEntity
     {
+        [Key]
         public int Id { get; set; }
+
+        public int UniversityId { get; init; }
+
         public string Title { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public List<StudyAssignment> Assignments { get; set; }
-
-        public Subject()
-        {
-            Id = -1;
-            Assignments = new List<StudyAssignment>();
-        }
-
-        public Subject(int id, string title, DateTime startDate, DateTime endDate, List<StudyAssignment> assignments)
-        {
-            Id = id;
-            Title = title;
-            StartDate = startDate;
-            EndDate = endDate;
-
-            Assignments = assignments;
-        }
-
-        public Subject(int id, string title, DateTime startDate, DateTime endDate)
-            : this(id, title, startDate, endDate, new List<StudyAssignment>()) { }
+        public virtual List<StudyAssignment> Assignments { get; set; } = new();
     }
 }
