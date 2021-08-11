@@ -77,7 +77,7 @@ namespace SeaInk.Tests.Infrastructure
                 foreach (var studentPair in matchedStudents)
                 {
                     Assert.AreEqual(studentPair.found.FirstName, studentPair.created.FirstName);
-                    Assert.AreEqual(studentPair.found.MidName, studentPair.created.MidName);
+                    Assert.AreEqual(studentPair.found.MiddleName, studentPair.created.MiddleName);
                     Assert.AreEqual(studentPair.found.LastName, studentPair.created.LastName);
                     Assert.AreEqual(studentPair.found.UniversityId, studentPair.created.UniversityId);
                 }

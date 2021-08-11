@@ -79,7 +79,7 @@ namespace Infrastructure.APIs
                 {
                     UniversityId = Interlocked.Increment(ref _currentId),
                     FirstName = faker.Person.FirstName,
-                    MidName = faker.Person.UserName,
+                    MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
                 });
 
@@ -88,7 +88,7 @@ namespace Infrastructure.APIs
                 {
                     UniversityId = Interlocked.Increment(ref _currentId),
                     FirstName = faker.Person.FirstName,
-                    MidName = faker.Person.UserName,
+                    MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
                 });
 
@@ -97,7 +97,7 @@ namespace Infrastructure.APIs
                 {
                     UniversityId = Interlocked.Increment(ref _currentId),
                     FirstName = faker.Person.FirstName,
-                    MidName = faker.Person.UserName,
+                    MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
                 });
 

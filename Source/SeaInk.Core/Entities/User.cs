@@ -12,9 +12,9 @@ namespace SeaInk.Core.Entities
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MidName { get; set; }
+        public string MiddleName { get; set; }
 
         [NotMapped]
-        public string FullName => LastName + " " + FirstName + " " + MidName;
+        public string FullName => $"{FirstName} {LastName} {MiddleName}";
     }
 }
