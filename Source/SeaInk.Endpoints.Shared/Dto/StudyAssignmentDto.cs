@@ -5,7 +5,7 @@ namespace SeaInk.Endpoints.Shared.Dto
 {
     public class StudyAssignmentDto
     {
-        public int SystemId { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public bool IsMilestone { get; set; }
 
@@ -17,12 +17,12 @@ namespace SeaInk.Endpoints.Shared.Dto
 
         public StudyAssignmentDto()
         {
-            SystemId = -1;
+            Id = -1;
         }
 
         public StudyAssignmentDto(StudyAssignment sa)
         {
-            SystemId = sa.SystemId;
+            Id = sa.Id;
             Title = sa.Title;
             IsMilestone = sa.IsMilestone;
             StartDate = sa.StartDate;
