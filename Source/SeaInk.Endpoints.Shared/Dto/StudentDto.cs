@@ -4,16 +4,16 @@ namespace SeaInk.Endpoints.Shared.Dto
 {
     public class StudentDto
     {
-        [Key] public int SystemId { get; set; }
+        [Key] public int Id { get; set; }
         
-        public string Token { get; set; }
+        
         public string FirstName { get; set; }
         
         public string LastName { get; set; }
         
-        public string MidName { get; set; }
+        public string MiddleName { get; set; }
 
-        public string FullName => LastName + " " + FirstName + " " + MidName;
+        public string FullName => LastName + " " + FirstName + " " + MiddleName;
 
         public int GroupId { get; set; }
 
@@ -22,17 +22,16 @@ namespace SeaInk.Endpoints.Shared.Dto
 
         public StudentDto()
         {
-            SystemId = -1;
+            Id = -1;
             GroupId = -1;
         }
 
         public StudentDto(Student student)
         {
-            SystemId = student.SystemId;
-            Token = student.Token;
+            Id = student.Id;
             FirstName = student.FirstName;
-            MidName = student.MidName;
-            GroupId = student.Group.SystemId;
+            MiddleName = student.MiddleName;
+            GroupId = student.Group.Id;
             GroupName = student.Group.Name;
         }
     }
