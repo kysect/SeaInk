@@ -1,6 +1,4 @@
-﻿using Infrastructure.APIs;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace SeaInk.Endpoints.Server
@@ -12,7 +10,6 @@ namespace SeaInk.Endpoints.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args)
             => Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .ConfigureServices((_, services) => services.AddScoped<ITestUniversitySystemApi, FakeUniversitySystemApi>());
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
