@@ -11,7 +11,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         
         public StudentDto Admin { get; set; }
         
-        public IReadonlyList<StudentDto> Students { get; }
+        public IEnumerable<StudentDto> Students { get; }
         
         public StudyGroupDto()
         {
