@@ -2,15 +2,8 @@
 
 namespace SeaInk.Core.Entities
 {
-    public class Mentor : UniversitySystemUser
+    public class Mentor: User
     {
-        public List<Division> Divisions { get; set; } = new List<Division>();
-
-        public Mentor()
-            : base() { }
-
-        public Mentor(int systemId, string token,
-            string firstName, string lastName, string midName)
-            : base(systemId, token, firstName, lastName, midName) { }
+        public virtual List<Division> Divisions { get; set; } = new();
     }
 }

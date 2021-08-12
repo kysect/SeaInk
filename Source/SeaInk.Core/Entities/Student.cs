@@ -1,18 +1,7 @@
-using System.Text.Json.Serialization;
-
 namespace SeaInk.Core.Entities
 {
-    public class Student : UniversitySystemUser
+    public class Student: User
     {
-        [JsonIgnore] public StudyGroup Group { get; set; }
-
-        public Student() { }
-
-        public Student(int systemId, StudyGroup group, string token,
-            string firstName, string lastName, string midName)
-            : base(systemId, token, firstName, lastName, midName)
-        {
-            Group = group;
-        }
+        public virtual StudyGroup Group { get; set; }
     }
 }
