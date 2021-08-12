@@ -1,23 +1,15 @@
 using System.Collections.Generic;
-using SeaInk.Core.TableIntegrations.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeaInk.Core.Entities
 {
-    public class Division
+    public class Division: IEntity
     {
-        public Subject Subject { get; set; }
-        public List<StudyGroup> Groups { get; set; }
-
-        public TableInfo TableInfo { get; set; }
-
-        public Division()
-            : this(new Subject(), new List<StudyGroup>(), null) { }
-
-        public Division(Subject subject, List<StudyGroup> groups, TableInfo tableInfo)
-        {
-            Subject = subject;
-            Groups = groups;
-            TableInfo = tableInfo;
-        }
+        [Key]
+        public int Id { get; set; }
+        public string SpreadsheetId { get; set; }
+        public virtual Mentor Mentor { get; set; }
+        public virtual Subject Subject { get; set; }
+        public virtual List<StudyGroup> Groups { get; set; } = new();
     }
 }

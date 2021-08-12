@@ -5,11 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML.Report" Version="0.2.1" />
+    <PackageReference Include="ClosedXML.Report" Version="0.2.2" />
     <PackageReference Include="Bogus" Version="33.0.2" />
-    <PackageReference Include="Google.Apis.Drive.v3" Version="1.51.0.2265" />
-    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.51.0.2272" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.9" />
   </ItemGroup>
 
 </Project>

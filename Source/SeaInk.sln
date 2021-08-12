@@ -5,15 +5,21 @@ VisualStudioVersion = 16.0.31025.218
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Core", "SeaInk.Core\SeaInk.Core.csproj", "{E12408EF-2A05-489F-9FB5-85E3E8114E93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Sample", "SeaInk.Sample\SeaInk.Sample.csproj", "{0EBBE205-9FAC-4691-820B-92C232D774F5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Endpoints", "Endpoints", "{A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeaInk.Endpoints", "SeaInk.Endpoints", "{A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Server", "SeaInk.Endpoints\Server\SeaInk.Endpoints.Server.csproj", "{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Client", "SeaInk.Endpoints\Client\SeaInk.Endpoints.Client.csproj", "{0201A570-8659-4EB8-AEE7-FAD911218E5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Endpoints.Shared", "SeaInk.Endpoints.Shared\SeaInk.Endpoints.Shared.csproj", "{753E95DD-A448-4C2F-BC05-4E2B190E2AAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Utility", "SeaInk.Utility\SeaInk.Utility.csproj", "{324700AB-468E-49C4-8BEB-BD3EFFB2A511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Infrastructure", "SeaInk.Infrastructure\SeaInk.Infrastructure.csproj", "{6D553912-ABEF-4678-8183-B002C0374E13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeaInk.Tests", "SeaInk.Tests", "{CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Tests.Infrastructure", "SeaInk.Tests.Infrastructure\SeaInk.Tests.Infrastructure.csproj", "{D033F4C0-C704-487F-B453-20E2F422F1B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +31,6 @@ Global
 		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E12408EF-2A05-489F-9FB5-85E3E8114E93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EBBE205-9FAC-4691-820B-92C232D774F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +43,18 @@ Global
 		{753E95DD-A448-4C2F-BC05-4E2B190E2AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{753E95DD-A448-4C2F-BC05-4E2B190E2AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{753E95DD-A448-4C2F-BC05-4E2B190E2AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324700AB-468E-49C4-8BEB-BD3EFFB2A511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324700AB-468E-49C4-8BEB-BD3EFFB2A511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324700AB-468E-49C4-8BEB-BD3EFFB2A511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324700AB-468E-49C4-8BEB-BD3EFFB2A511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D553912-ABEF-4678-8183-B002C0374E13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D553912-ABEF-4678-8183-B002C0374E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D553912-ABEF-4678-8183-B002C0374E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D553912-ABEF-4678-8183-B002C0374E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +63,7 @@ Global
 		{5C15498E-0EC8-44E2-B2DA-0D33A9A4BB59} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
 		{0201A570-8659-4EB8-AEE7-FAD911218E5B} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
 		{753E95DD-A448-4C2F-BC05-4E2B190E2AAB} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
+		{D033F4C0-C704-487F-B453-20E2F422F1B4} = {CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C15B403-3B6F-477C-B338-BDD7F3B3CB66}
