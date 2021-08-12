@@ -13,7 +13,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         
-        public IReadonlyList<StudyAssignmentDto> Assignments { get; }
+        public IEnumerable<StudyAssignmentDto> Assignments { get; }
 
         public SubjectDto()
         {
