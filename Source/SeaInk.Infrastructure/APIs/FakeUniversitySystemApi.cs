@@ -10,7 +10,14 @@ namespace Infrastructure.APIs
 {
     public class FakeUniversitySystemApi: ITestUniversitySystemApi
     {
-        private int _currentId;
+        private int _currentUserId = -1;
+        private int _currentStudentId = -1;
+        private int _currentMentorId = -1;
+        private int _currentGroupId = -1;
+        private int _currentAssignmentId = -1;
+        private int _currentSubjectId = -1;
+        private int _currentStudentAssignmentProgressId = -1;
+        private int _currentDivisionId = -1;
 
         private readonly Faker<User> _userFaker;
         private readonly Faker<Student> _studentFaker;
@@ -77,7 +84,7 @@ namespace Infrastructure.APIs
             _userFaker = new Faker<User>("ru")
                 .CustomInstantiator(faker => new User
                 {
-                    UniversityId = Interlocked.Increment(ref _currentId),
+                    UniversityId = Interlocked.Increment(ref _currentUserId),
                     FirstName = faker.Person.FirstName,
                     MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
@@ -86,7 +93,7 @@ namespace Infrastructure.APIs
             _studentFaker = new Faker<Student>("ru")
                 .CustomInstantiator(faker => new Student
                 {
-                    UniversityId = Interlocked.Increment(ref _currentId),
+                    UniversityId = Interlocked.Increment(ref _currentStudentId),
                     FirstName = faker.Person.FirstName,
                     MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
@@ -95,7 +102,7 @@ namespace Infrastructure.APIs
             _mentorFaker = new Faker<Mentor>("ru")
                 .CustomInstantiator(faker => new Mentor
                 {
-                    UniversityId = Interlocked.Increment(ref _currentId),
+                    UniversityId = Interlocked.Increment(ref _currentMentorId),
                     FirstName = faker.Person.FirstName,
                     MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
@@ -104,7 +111,7 @@ namespace Infrastructure.APIs
             _groupFaker = new Faker<StudyGroup>()
                 .CustomInstantiator(faker => new StudyGroup
                 {
-                    UniversityId = Interlocked.Increment(ref _currentId),
+                    UniversityId = Interlocked.Increment(ref _currentGroupId),
                     Name = faker.Lorem.Letter() + faker.Random.Number(1000, 9999)
                 })
                 .Rules((f, g) =>
@@ -122,7 +129,7 @@ namespace Infrastructure.APIs
             _assignmentsFaker = new Faker<StudyAssignment>("ru")
                 .CustomInstantiator(faker => new StudyAssignment
                 {
-                    UniversityId = Interlocked.Increment(ref _currentId),
+                    UniversityId = Interlocked.Increment(ref _currentAssignmentId),
                     Title = faker.Name.JobType(),
                     IsMilestone = faker.Random.Bool(),
                     MaxPoints = faker.Random.Float(5, 10),
@@ -132,7 +139,7 @@ namespace Infrastructure.APIs
             _subjectFaker = new Faker<Subject>("ru")
                 .CustomInstantiator(faker => new Subject
                 {
-                    UniversityId = Interlocked.Increment(ref _currentId),
+                    UniversityId = Interlocked.Increment(ref _currentSubjectId),
                     Title = faker.Name.JobArea(),
                     StartDate = faker.Date.Past(),
                     EndDate = faker.Date.Future(),
@@ -151,6 +158,7 @@ namespace Infrastructure.APIs
             _studentAssignmentProgressFaker = new Faker<StudentAssignmentProgress>()
                 .CustomInstantiator(faker => new StudentAssignmentProgress
                 {
+                    Id = Interlocked.Increment(ref _currentStudentAssignmentProgressId),
                     Assignment = faker.Random.ArrayElement(Assignments.ToArray()),
                     Student = faker.Random.ArrayElement(Students.ToArray())
                 })
@@ -164,6 +172,7 @@ namespace Infrastructure.APIs
             _divisionFaker = new Faker<Division>()
                 .CustomInstantiator(faker => new Division
                 {
+                    Id = Interlocked.Increment(ref _currentDivisionId),
                     SpreadsheetId = faker.Internet.Url(),
                     Subject = faker.Random.ArrayElement(Subjects.ToArray()),
                     Mentor = faker.Random.ArrayElement(Mentors.ToArray()),
