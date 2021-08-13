@@ -3,32 +3,15 @@ using SeaInk.Core.Entities;
 
 namespace SeaInk.Endpoints.Shared.Dto
 {
-    public class StudyAssignmentDto
+    public record StudyAssignmentDto(int Id, string Title, bool IsMilestone, DateTime StartDate, DateTime EndDate,
+        float MinPoints, float MaxPoints);
+
+    public static class StudyAssignmentExtension
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public bool IsMilestone { get; set; }
-
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-
-        public float MinPoints { get; set; }
-        public float MaxPoints { get; set; }
-
-        public StudyAssignmentDto()
+        public static StudyAssignmentDto ToDto(this StudyAssignment sa)
         {
-            Id = -1;
-        }
-
-        public StudyAssignmentDto(StudyAssignment sa)
-        {
-            Id = sa.Id;
-            Title = sa.Title;
-            IsMilestone = sa.IsMilestone;
-            StartDate = sa.StartDate;
-            EndDate = sa.EndDate;
-            MinPoints = sa.MinPoints;
-            MaxPoints = sa.MaxPoints;
+            return new StudyAssignmentDto(sa.Id, sa.Title, sa.IsMilestone, sa.StartDate, sa.EndDate,
+                sa.MinPoints, sa.MaxPoints);
         }
     }
 }

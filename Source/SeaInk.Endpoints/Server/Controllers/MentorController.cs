@@ -33,7 +33,7 @@ namespace SeaInk.Endpoints.Server.Controllers
         }
 
         List<Division> mentorDivisions = mentor.Divisions;
-        return mentorDivisions.Select(x => new SubjectDto(x.Subject)).ToList();
+        return mentorDivisions.Select(x => x.Subject.ToDto()).ToList();
         }
         
         [HttpGet("{mentorId}/subject/{subjectId}/groups")]
@@ -51,7 +51,7 @@ namespace SeaInk.Endpoints.Server.Controllers
                 .Where(division => division.Subject.Id == subjectId)
                 .SelectMany(division => division.Groups)
                 .DistinctBy(group => group.Id)
-                .Select(x => new StudyGroupDto(x))
+                .Select(x => x.ToDto())
                 .ToList();
         }
     }
