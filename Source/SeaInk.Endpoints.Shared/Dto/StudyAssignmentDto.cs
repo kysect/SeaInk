@@ -8,10 +8,10 @@ namespace SeaInk.Endpoints.Shared.Dto
 
     public static class StudyAssignmentExtension
     {
-        public static StudyAssignmentDto ToDto(this StudyAssignment sa)
+        public static StudyAssignmentDto ToDto(this StudyAssignment assignment)
         {
-            return new StudyAssignmentDto(sa.Id, sa.Title, sa.IsMilestone, sa.StartDate, sa.EndDate,
-                sa.MinPoints, sa.MaxPoints);
+            return new StudyAssignmentDto(assignment.Id, assignment.Title, assignment.IsMilestone, assignment.StartDate, assignment.EndDate,
+                assignment.MinPoints, assignment.MaxPoints);
         }
     }
 }
