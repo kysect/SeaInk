@@ -12,7 +12,7 @@ using SeaInk.Endpoints.Shared.Dto;
 namespace SeaInk.Endpoints.Server.Controllers
 {
     [Route("[controller]")]
-    public class MentorController: Controller
+    public class MentorController : Controller
     {
         private readonly IUniversitySystemApi _api;
 
@@ -25,21 +25,20 @@ namespace SeaInk.Endpoints.Server.Controllers
         [HttpGet("{mentorId}/subjects")]
         public List<SubjectDto> GetSubjectsList(int mentorId)
         {
-    
-        Mentor mentor = _api.GetMentor(mentorId);
-        
-        if (mentor is null)
-            return new List<SubjectDto>();
+            Mentor mentor = _api.GetMentor(mentorId);
 
-        List<Division> mentorDivisions = mentor.Divisions;
-        return mentorDivisions.Select(x => x.Subject.ToDto()).ToList();
+            if (mentor is null)
+                return new List<SubjectDto>();
+
+            List<Division> mentorDivisions = mentor.Divisions;
+            return mentorDivisions.Select(x => x.Subject.ToDto()).ToList();
         }
-        
+
         [HttpGet("{mentorId}/subject/{subjectId}/groups")]
         public List<StudyGroupDto> GetGroupsList(int mentorId, int subjectId)
         {
             Mentor mentor = _api.GetMentor(mentorId);
-            
+
             if (mentor is null)
                 return new List<StudyGroupDto>();
 
