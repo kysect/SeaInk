@@ -5,28 +5,15 @@ using SeaInk.Core.Entities;
 
 namespace SeaInk.Endpoints.Shared.Dto
 {
-    public class SubjectDto
+    public record SubjectDto(int Id, string Title, DateTime StartDate, DateTime EndDate,
+        IEnumerable<StudyAssignmentDto> Assignments);
+
+    public static class SubjectExtension
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        
-        public IEnumerable<StudyAssignmentDto> Assignments { get; }
-
-        public SubjectDto()
+        public static SubjectDto ToDto(this Subject subject)
         {
-            Id = -1;
-        }
-
-        public SubjectDto(Subject subject)
-        {
-            Id = subject.Id;
-            Title = subject.Title;
-            StartDate = subject.StartDate;
-            EndDate = subject.EndDate;
-            Assignments = subject.Assignments.Select(assaignment => new StudyAssignmentDto(assaignment)).ToList();
+            return new SubjectDto(subject.Id, subject.Title, subject.StartDate, subject.EndDate,
+                subject.Assignments.Select(assignment => assignment.ToDto()).ToList());
         }
     }
 }

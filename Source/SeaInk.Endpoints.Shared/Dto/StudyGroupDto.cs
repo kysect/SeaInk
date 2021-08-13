@@ -4,26 +4,14 @@ using SeaInk.Core.Entities;
 
 namespace SeaInk.Endpoints.Shared.Dto
 {
-    public class StudyGroupDto
+    public record StudyGroupDto(int Id, string Name, StudentDto Admin, IEnumerable<StudentDto> Students);
+    
+    public static class StudyGroupExtension
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        
-        public StudentDto Admin { get; set; }
-        
-        public IEnumerable<StudentDto> Students { get; }
-        
-        public StudyGroupDto()
+        public static StudyGroupDto ToDto(this StudyGroup group)
         {
-            Id = -1;
-        }
-
-        public StudyGroupDto(StudyGroup group)
-        {
-            Id = group.Id;
-            Name = group.Name;
-            Admin = new StudentDto(group.Admin);
-            Students = group.Students.Select(student => new StudentDto(student)).ToList();
+            return new StudyGroupDto(group.Id, group.Name, group.Admin.ToDto(),
+                group.Students.Select(student => student.ToDto()).ToList());
         }
     }
 }
