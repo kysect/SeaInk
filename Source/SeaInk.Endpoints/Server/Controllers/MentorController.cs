@@ -27,10 +27,9 @@ namespace SeaInk.Endpoints.Server.Controllers
         {
     
         Mentor mentor = _api.GetMentor(mentorId);
+        
         if (mentor is null)
-        {
             return new List<SubjectDto>();
-        }
 
         List<Division> mentorDivisions = mentor.Divisions;
         return mentorDivisions.Select(x => x.Subject.ToDto()).ToList();
@@ -42,10 +41,8 @@ namespace SeaInk.Endpoints.Server.Controllers
             Mentor mentor = _api.GetMentor(mentorId);
             
             if (mentor is null)
-            {
                 return new List<StudyGroupDto>();
-            }
-            
+
             List<Division> mentorDivisions = _api.GetMentor(mentorId).Divisions;
             return mentorDivisions
                 .Where(division => division.Subject.Id == subjectId)
