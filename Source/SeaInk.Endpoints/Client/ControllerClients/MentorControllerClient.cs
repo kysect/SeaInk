@@ -30,8 +30,9 @@ namespace SeaInk.Endpoints.Client.ControllerClients
             if (response.StatusCode is not HttpStatusCode.OK)
                 throw new IOException($"{response.StatusCode.ToString()} {response.ReasonPhrase}");
             
-            return JsonSerializer.Deserialize<List<SubjectDto>>(await response.Content.ReadAsStringAsync(),
-                _caseInsensitiveOptions);
+            string json = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<SubjectDto>>(json, _caseInsensitiveOptions);
         }
 
         public async Task<List<StudyGroupDto>> GetGroupsListAsync(int mentorId, int subjectId)
@@ -41,7 +42,9 @@ namespace SeaInk.Endpoints.Client.ControllerClients
             if (response.StatusCode is not HttpStatusCode.OK)
                 throw new IOException($"{response.StatusCode.ToString()} {response.ReasonPhrase}");
             
-            return JsonSerializer.Deserialize<List<StudyGroupDto>>(await response.Content.ReadAsStringAsync(), _caseInsensitiveOptions);
+            string json = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<StudyGroupDto>>(json, _caseInsensitiveOptions);
         }
     }
 }
