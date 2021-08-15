@@ -12,14 +12,12 @@ namespace SeaInk.Endpoints.Client.ControllerClients
     {
         private readonly HttpClient _client;
 
-        private static readonly JsonSerializerOptions _caseInsensitiveOptions = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
+        private JsonSerializerOptions _jsonSerializerOptions;
 
-        public MentorControllerClient(HttpClient client)
+        public MentorControllerClient(HttpClient client, JsonSerializerOptions jsonSerializerOptions)
         {
             _client = client;
+            _jsonSerializerOptions = jsonSerializerOptions;
         }
 
         public async Task<List<SubjectDto>> GetSubjectsListAsync(int mentorId)
@@ -31,7 +29,7 @@ namespace SeaInk.Endpoints.Client.ControllerClients
 
             string json = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<SubjectDto>>(json, _caseInsensitiveOptions);
+            return JsonSerializer.Deserialize<List<SubjectDto>>(json, _jsonSerializerOptions);
         }
 
         public async Task<List<StudyGroupDto>> GetGroupsListAsync(int mentorId, int subjectId)
@@ -43,7 +41,7 @@ namespace SeaInk.Endpoints.Client.ControllerClients
 
             string json = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<StudyGroupDto>>(json, _caseInsensitiveOptions);
+            return JsonSerializer.Deserialize<List<StudyGroupDto>>(json, _jsonSerializerOptions);
         }
     }
 }
