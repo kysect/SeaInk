@@ -12,15 +12,14 @@ namespace SeaInk.Endpoints.Client.ControllerClients
     {
         private readonly HttpClient _client;
 
-        private readonly JsonSerializerOptions _caseInsensitiveOptions;
+        private static readonly JsonSerializerOptions _caseInsensitiveOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         public MentorControllerClient(HttpClient client)
         {
             _client = client;
-            _caseInsensitiveOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
         }
 
         public async Task<List<SubjectDto>> GetSubjectsListAsync(int mentorId)

@@ -23,14 +23,26 @@ namespace Infrastructure.Database
 
         public static DatabaseContext GetTestContext(string name)
         {
-            DbContextOptions options = new DbContextOptionsBuilder()
-                .UseInMemoryDatabase(name)
-                .UseLazyLoadingProxies()
-                .Options;
+            DbContextOptions options = GetTestOptions(name);
 
             return new DatabaseContext(options);
         }
 
+        public static DbContextOptions GetTestOptions(string name)
+        {
+            DbContextOptions options = ConfigureTestBuilder(new DbContextOptionsBuilder(), name)
+                .Options;
+
+            return options;
+        }
+
+        public static DbContextOptionsBuilder ConfigureTestBuilder(DbContextOptionsBuilder builder, string name)
+        {
+            return builder
+                .UseInMemoryDatabase(name)
+                .UseLazyLoadingProxies();
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasOne(s => s.Group);

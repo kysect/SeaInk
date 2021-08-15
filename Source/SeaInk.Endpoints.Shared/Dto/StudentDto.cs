@@ -1,7 +1,13 @@
 using SeaInk.Core.Entities;
+
 namespace SeaInk.Endpoints.Shared.Dto
 {
-    public record StudentDto(int Id, string FirstName, string LastName, string MiddleName, string FullName, int GroupId,
+    public record StudentDto(int Id,
+        string FirstName,
+        string LastName,
+        string MiddleName,
+        string FullName,
+        int GroupId,
         string GroupName);
 
     public static class StudentExtension
