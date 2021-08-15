@@ -20,8 +20,6 @@ namespace SeaInk.Endpoints.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddScoped<IUniversitySystemApi, FakeUniversitySystemApi>();
-
             services.AddDbContext<DatabaseContext>(builder => DatabaseContext.ConfigureTestBuilder(builder, "SeaInk"));
             services.AddControllersWithViews();
             services.AddRazorPages();
