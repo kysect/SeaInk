@@ -2,7 +2,8 @@ using SeaInk.Core.Entities;
 
 namespace SeaInk.Endpoints.Shared.Dto
 {
-    public record StudentDto(int Id,
+    public record StudentDto(
+        int Id,
         string FirstName,
         string LastName,
         string MiddleName,

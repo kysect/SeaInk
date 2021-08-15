@@ -12,18 +12,18 @@ namespace SeaInk.Endpoints.Server.Controllers
     [Route("[controller]")]
     public class MentorController : Controller
     {
-        private readonly DatabaseContext _db;
+        private readonly DatabaseContext _databaseContext;
 
-        public MentorController(DatabaseContext db)
+        public MentorController(DatabaseContext databaseContext)
         {
-            _db = db;
+            _databaseContext = databaseContext;
         }
 
 
         [HttpGet("{mentorId}/subjects")]
         public List<SubjectDto> GetSubjectsList(int mentorId)
         {
-            Mentor mentor = _db.Mentors.Find(mentorId);
+            Mentor mentor = _databaseContext.Mentors.Find(mentorId);
 
             if (mentor is null)
                 return new List<SubjectDto>();
@@ -35,7 +35,7 @@ namespace SeaInk.Endpoints.Server.Controllers
         [HttpGet("{mentorId}/subject/{subjectId}/groups")]
         public List<StudyGroupDto> GetGroupsList(int mentorId, int subjectId)
         {
-            Mentor mentor = _db.Mentors.Find(mentorId);
+            Mentor mentor = _databaseContext.Mentors.Find(mentorId);
 
             if (mentor is null)
                 return new List<StudyGroupDto>();
