@@ -25,7 +25,7 @@ namespace SeaInk.Endpoints.Client
 
             builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             
-            builder.Services.AddSingleton(_ => new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+            builder.Services.AddSingleton(_ => new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             builder.Services.AddScoped<MentorControllerClient>();
             
