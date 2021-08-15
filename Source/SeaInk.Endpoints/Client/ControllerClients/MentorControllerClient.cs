@@ -12,7 +12,7 @@ namespace SeaInk.Endpoints.Client.ControllerClients
     {
         private readonly HttpClient _client;
 
-        private JsonSerializerOptions _jsonSerializerOptions;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public MentorControllerClient(HttpClient client, JsonSerializerOptions jsonSerializerOptions)
         {
