@@ -16,8 +16,6 @@ namespace Infrastructure.APIs
         private int _currentGroupId = -1;
         private int _currentAssignmentId = -1;
         private int _currentSubjectId = -1;
-        private int _currentStudentAssignmentProgressId = -1;
-        private int _currentDivisionId = -1;
 
         private readonly Faker<User> _userFaker;
         private readonly Faker<Student> _studentFaker;
@@ -158,7 +156,6 @@ namespace Infrastructure.APIs
             _studentAssignmentProgressFaker = new Faker<StudentAssignmentProgress>()
                 .CustomInstantiator(faker => new StudentAssignmentProgress
                 {
-                    Id = Interlocked.Increment(ref _currentStudentAssignmentProgressId),
                     Assignment = faker.Random.ArrayElement(Assignments.ToArray()),
                     Student = faker.Random.ArrayElement(Students.ToArray())
                 })
@@ -172,7 +169,6 @@ namespace Infrastructure.APIs
             _divisionFaker = new Faker<Division>()
                 .CustomInstantiator(faker => new Division
                 {
-                    Id = Interlocked.Increment(ref _currentDivisionId),
                     SpreadsheetId = faker.Internet.Url(),
                     Subject = faker.Random.ArrayElement(Subjects.ToArray()),
                     Mentor = faker.Random.ArrayElement(Mentors.ToArray()),

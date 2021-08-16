@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using SeaInk.Endpoints.Client.ControllerClients;
+using SeaInk.Endpoints.Client.Controllers;
 
 namespace SeaInk.Endpoints.Client
 {
@@ -28,7 +28,7 @@ namespace SeaInk.Endpoints.Client
             builder.Services.AddSingleton(_ => new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             builder.Services.AddScoped<MentorControllerClient>();
-            
+
             await builder.Build().RunAsync();
         }
     }

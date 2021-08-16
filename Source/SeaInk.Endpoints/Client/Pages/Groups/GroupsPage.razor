@@ -1,0 +1,20 @@
+@page "/groups"
+@using SeaInk.Endpoints.Shared.Dto
+<h3>Groups</h3>
+
+<Select TValue="SubjectDto" 
+        SelectedValue="_selectedSubject"
+        SelectedValueChanged="@(async s => await OnSelectedSubjectChanged(s))">
+    @foreach (SubjectDto subject in _subjects)
+    {
+        <SelectItem Value="subject">@(subject.Title)</SelectItem>
+    }
+</Select>
+
+<Select TValue="DivisionDto" @bind-SelectedValue="@_selectedDivision">
+    @foreach (DivisionDto division in _divisions)
+    {
+        <SelectItem Value="division">@(division.Title)</SelectItem>
+    }
+</Select>
+

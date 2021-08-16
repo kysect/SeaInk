@@ -7,6 +7,8 @@ namespace SeaInk.Core.Entities
     {
         [Key]
         public int Id { get; set; }
+
+        public string Title { get; set; }
         public string SpreadsheetId { get; set; }
         public virtual Mentor Mentor { get; set; }
         public virtual Subject Subject { get; set; }

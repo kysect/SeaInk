@@ -40,6 +40,7 @@ namespace Infrastructure.Database
         {
             return builder
                 .UseInMemoryDatabase(name)
+                .EnableSensitiveDataLogging()
                 .UseLazyLoadingProxies();
         }
         

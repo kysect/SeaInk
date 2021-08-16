@@ -16,7 +16,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         public static StudentDto ToDto(this Student student)
         {
             return new StudentDto(student.Id, student.FirstName, student.LastName, student.MiddleName,
-                student.FullName, student.Group.Id, student.Group.Name);
+                                  student.FullName, student.Group.Id, student.Group.Name);
         }
     }
 }
