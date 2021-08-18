@@ -12,7 +12,7 @@ namespace SeaInk.Core.Entities
 
         public string Name { get; set; }
 
-        public virtual Student Admin { get; set; }
+        public int AdminId { get; set; }
         public virtual List<Student> Students { get; set; } = new();
     }
 }

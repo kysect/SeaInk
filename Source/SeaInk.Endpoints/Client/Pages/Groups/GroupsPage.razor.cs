@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,32 +13,45 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         public MentorControllerClient Controller { get; set; }
 
         private MentorDto _currentMentor;
-        
+
         private IReadOnlyList<SubjectDto> _subjects;
         private SubjectDto _selectedSubject;
 
         private IReadOnlyList<DivisionDto> _divisions;
         private DivisionDto _selectedDivision;
-        
-        private StudyGroupDto _selectedGroup;
+
+        private IReadOnlyList<StudyGroupDto> _groups;
+        private string _selectedGroupId;
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            _subjects = await GetSubjects();
-            _selectedSubject = _subjects[0];
-            _currentMentor = await Controller.GetMentorAsync(0);
+            _currentMentor = await Controller.GetCurrentMentorAsync();
+            _subjects = await Controller.GetSubjectsAsync(_currentMentor.Id);
+
+            if (_subjects.Count != 0)
+                OnSelectedSubjectChangedAsync(_subjects[0].Id);
         }
 
-        private async Task OnSelectedSubjectChanged(SubjectDto subject)
+        private void OnSelectedSubjectChangedAsync(int subjectId)
         {
-            _divisions = await GetDivisions(subject.Id);
+            _selectedSubject = _subjects.Single(s => s.Id == subjectId);
+            _divisions = _currentMentor.Divisions.Where(d => d.Subject.Id == subjectId).ToList();
+            if (_divisions.Count != 0)
+                OnSelectedDivisionChanged(_divisions[0].Id);
         }
-        
-        private Task<IReadOnlyList<SubjectDto>> GetSubjects()
-            => Controller.GetSubjectsAsync(_currentMentor.Id);
 
-        private Task<IReadOnlyList<DivisionDto>> GetDivisions(int subjectId)
-            => Controller.GetDivisionsAsync(_currentMentor.Id, subjectId);
+        private void OnSelectedDivisionChanged(int divisionId)
+        {
+            _selectedDivision = _divisions.Single(d => d.Id == divisionId);
+            _groups = _selectedDivision.Groups;
+            if (_groups.Count != 0)
+                OnSelectedGroupChanged(_groups[0].Id.ToString());
+        }
+
+        private void OnSelectedGroupChanged(string groupId)
+        {
+            _selectedGroupId = groupId;
+        }
     }
 }

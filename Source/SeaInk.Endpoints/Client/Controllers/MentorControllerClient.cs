@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -20,17 +21,14 @@ namespace SeaInk.Endpoints.Client.Controllers
             _jsonSerializerOptions = jsonSerializerOptions;
         }
 
+        public Task<MentorDto> GetCurrentMentorAsync()
+            => GetValueAsync<MentorDto>("/mentors/current");
+
         public Task<MentorDto> GetMentorAsync(int mentorId)
             => GetValueAsync<MentorDto>($"/mentors/{mentorId}");
 
         public Task<IReadOnlyList<SubjectDto>> GetSubjectsAsync(int mentorId)
             => GetValueAsync<IReadOnlyList<SubjectDto>>($"/mentors/{mentorId}/subjects");
-
-        public Task<IReadOnlyList<DivisionDto>> GetDivisionsAsync(int mentorId, int subjectId)
-            => GetValueAsync<IReadOnlyList<DivisionDto>>($"/mentors/{mentorId}/subjects/{subjectId}/divisions");
-
-        public Task<IReadOnlyList<StudyGroupDto>> GetGroupsListAsync(int mentorId, int subjectId, int divisionId)
-            => GetValueAsync<IReadOnlyList<StudyGroupDto>>($"/mentors/{mentorId}/subject/{subjectId}/divisions/{divisionId}/groups");
 
         private async Task<T> GetValueAsync<T>(string uri)
         {
@@ -40,8 +38,9 @@ namespace SeaInk.Endpoints.Client.Controllers
                 throw new IOException($"{response.StatusCode.ToString()} {response.ReasonPhrase}");
 
             string json = await response.Content.ReadAsStringAsync();
+            await File.WriteAllTextAsync("file.txt", json);
 
-            return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions) ?? default(T);
         }
     }
 }
