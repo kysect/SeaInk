@@ -15,7 +15,6 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         private MentorDto _currentMentor;
 
         private IReadOnlyList<SubjectDto> _subjects;
-        private SubjectDto _selectedSubject;
 
         private IReadOnlyList<DivisionDto> _divisions;
         private DivisionDto _selectedDivision;
@@ -35,7 +34,6 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
 
         private void OnSelectedSubjectChangedAsync(int subjectId)
         {
-            _selectedSubject = _subjects.Single(s => s.Id == subjectId);
             _divisions = _currentMentor.Divisions.Where(d => d.Subject.Id == subjectId).ToList();
             if (_divisions.Count != 0)
                 OnSelectedDivisionChanged(_divisions[0].Id);
