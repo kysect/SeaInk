@@ -17,8 +17,13 @@ namespace SeaInk.Endpoints.Shared.Dto
     {
         public static MentorDto ToDto(this Mentor mentor)
         {
-            return new MentorDto(mentor.Id, mentor.UniversityId, mentor.FirstName, mentor.LastName, mentor.MiddleName, 
-                                 mentor.FullName, mentor.Divisions.Select(d => d.ToDto()).ToList());
+            return new MentorDto(mentor.Id,
+                                 mentor.UniversityId, 
+                                 mentor.FirstName, 
+                                 mentor.LastName, 
+                                 mentor.MiddleName, 
+                                 mentor.FullName,
+                                 mentor.Divisions.Select(d => d.ToDto()).ToList());
         }
     }
 }

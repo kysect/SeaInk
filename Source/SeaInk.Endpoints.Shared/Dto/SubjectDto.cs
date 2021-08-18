@@ -16,7 +16,10 @@ namespace SeaInk.Endpoints.Shared.Dto
     {
         public static SubjectDto ToDto(this Subject subject)
         {
-            return new SubjectDto(subject.Id, subject.Title, subject.StartDate, subject.EndDate,
+            return new SubjectDto(subject.Id, 
+                                  subject.Title, 
+                                  subject.StartDate, 
+                                  subject.EndDate,
                                   subject.Assignments.Select(assignment => assignment.ToDto()).ToList());
         }
     }

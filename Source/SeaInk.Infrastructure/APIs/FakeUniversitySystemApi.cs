@@ -110,13 +110,12 @@ namespace Infrastructure.APIs
                 .CustomInstantiator(faker => new StudyGroup
                 {
                     UniversityId = Interlocked.Increment(ref _currentGroupId),
-                    Name = faker.Lorem.Letter() + faker.Random.Number(1000, 9999)
+                    Name = faker.Lorem.Letter().ToUpper() + faker.Random.Number(1000, 9999)
                 })
                 .Rules((f, g) =>
                 {
                     List<Student> freeStudents = Students.Where(s => s.Group is null).ToList();
                     g.Students = f.Random.ArrayElements(freeStudents.ToArray(), Math.Min(f.Random.Int(15, 25), freeStudents.Count)).ToList();
-                    g.Admin = f.Random.ArrayElement(g.Students.ToArray());
                 })
                 .FinishWith((_, g) =>
                 {
@@ -134,7 +133,7 @@ namespace Infrastructure.APIs
                     MinPoints = faker.Random.Float(0, 5)
                 });
 
-            _subjectFaker = new Faker<Subject>("ru")
+            _subjectFaker = new Faker<Subject>()
                 .CustomInstantiator(faker => new Subject
                 {
                     UniversityId = Interlocked.Increment(ref _currentSubjectId),
@@ -166,7 +165,7 @@ namespace Infrastructure.APIs
                              f.Random.Float(p.Assignment.MinPoints, p.Assignment.MaxPoints)
                          ));
 
-            _divisionFaker = new Faker<Division>()
+            _divisionFaker = new Faker<Division>("ru")
                 .CustomInstantiator(faker => new Division
                 {
                     SpreadsheetId = faker.Internet.Url(),

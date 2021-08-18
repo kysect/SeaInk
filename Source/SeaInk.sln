@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeaInk.Tests", "SeaInk.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Tests.Infrastructure", "SeaInk.Tests.Infrastructure\SeaInk.Tests.Infrastructure.csproj", "{D033F4C0-C704-487F-B453-20E2F422F1B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Tests.Endpoints", "SeaInk.Tests.Endpoints\SeaInk.Tests.Endpoints.csproj", "{D56D94AA-F9F4-429C-A8DC-13FECB56122C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D033F4C0-C704-487F-B453-20E2F422F1B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{0201A570-8659-4EB8-AEE7-FAD911218E5B} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
 		{753E95DD-A448-4C2F-BC05-4E2B190E2AAB} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
 		{D033F4C0-C704-487F-B453-20E2F422F1B4} = {CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}
+		{D56D94AA-F9F4-429C-A8DC-13FECB56122C} = {CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C15B403-3B6F-477C-B338-BDD7F3B3CB66}

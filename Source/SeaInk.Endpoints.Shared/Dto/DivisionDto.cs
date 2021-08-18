@@ -17,8 +17,13 @@ namespace SeaInk.Endpoints.Shared.Dto
     {
         public static DivisionDto ToDto(this Division division)
         {
-            return new DivisionDto(division.Id, division.Title, division.SpreadsheetId, division.Mentor.Id, division.Mentor.FullName,
-                                   division.Subject.ToDto(), division.Groups.Select(g => g.ToDto()).ToList());
+            return new DivisionDto(division.Id,
+                                   division.Title,
+                                   division.SpreadsheetId,
+                                   division.Mentor.Id,
+                                   division.Mentor.FullName,
+                                   division.Subject.ToDto(),
+                                   division.Groups.Select(g => g.ToDto()).ToList());
         }
     }
 }

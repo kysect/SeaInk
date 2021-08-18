@@ -14,8 +14,12 @@ namespace SeaInk.Endpoints.Shared.Dto
     {
         public static UserDto ToDto(this User user)
         {
-            return new UserDto(user.Id, user.UniversityId, user.FirstName, 
-                               user.LastName, user.MiddleName, user.FullName);
+            return new UserDto(user.Id, 
+                               user.UniversityId,
+                               user.FirstName, 
+                               user.LastName, 
+                               user.MiddleName, 
+                               user.FullName);
         }
     }
 }

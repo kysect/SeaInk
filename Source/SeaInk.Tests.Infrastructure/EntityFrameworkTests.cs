@@ -48,10 +48,11 @@ namespace SeaInk.Tests.Infrastructure
             
             Division division = _api.Divisions.First();
             repository.Add(division);
+            _context.SaveChanges();
 
             Division createdDivision = repository.Find(division.Id);
             
-            Assert.NotNull(division);
+            Assert.NotNull(createdDivision);
             Assert.AreEqual(division.Id, createdDivision.Id);
             Assert.AreEqual(division.Mentor.Id, createdDivision.Mentor.Id);
             Assert.AreEqual(division.Mentor.UniversityId, createdDivision.Mentor.UniversityId);
@@ -66,7 +67,7 @@ namespace SeaInk.Tests.Infrastructure
             foreach (var groupPair in matchedGroups)
             {
                 Assert.AreEqual(groupPair.found.Name, groupPair.created.Name);
-                Assert.AreEqual(groupPair.found.Admin.Id, groupPair.created.Admin.Id);
+                Assert.AreEqual(groupPair.found.AdminId, groupPair.created.AdminId);
                 Assert.AreEqual(groupPair.found.UniversityId, groupPair.created.UniversityId);
                 Assert.True(groupPair.found.Students.ToIds().ToHashSet()
                                 .SetEquals(groupPair.created.Students.ToIds()));

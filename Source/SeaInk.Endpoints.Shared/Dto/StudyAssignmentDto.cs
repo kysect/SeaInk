@@ -16,8 +16,13 @@ namespace SeaInk.Endpoints.Shared.Dto
     {
         public static StudyAssignmentDto ToDto(this StudyAssignment assignment)
         {
-            return new StudyAssignmentDto(assignment.Id, assignment.Title, assignment.IsMilestone, assignment.StartDate,
-                                          assignment.EndDate, assignment.MinPoints, assignment.MaxPoints);
+            return new StudyAssignmentDto(assignment.Id, 
+                                          assignment.Title, 
+                                          assignment.IsMilestone,
+                                          assignment.StartDate,
+                                          assignment.EndDate,
+                                          assignment.MinPoints, 
+                                          assignment.MaxPoints);
         }
     }
 }

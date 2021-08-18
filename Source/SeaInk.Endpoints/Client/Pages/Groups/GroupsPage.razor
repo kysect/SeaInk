@@ -1,20 +1,57 @@
 @page "/groups"
 @using SeaInk.Endpoints.Shared.Dto
-<h3>Groups</h3>
 
-<Select TValue="SubjectDto" 
-        SelectedValue="_selectedSubject"
-        SelectedValueChanged="@(async s => await OnSelectedSubjectChanged(s))">
-    @foreach (SubjectDto subject in _subjects)
-    {
-        <SelectItem Value="subject">@(subject.Title)</SelectItem>
-    }
-</Select>
+<Fields>
+    <Field>
+        <FieldLabel>Subject</FieldLabel>
+        <Select TValue="int"
+                SelectedValueChanged="@(OnSelectedSubjectChangedAsync)">
+            @if (_subjects is not null)
+            {
+                @foreach (SubjectDto subject in _subjects)
+                {
+                    <SelectItem Value="@subject.Id">@(subject.Title)</SelectItem>
+                }
+            }
+        </Select>
+    </Field>
 
-<Select TValue="DivisionDto" @bind-SelectedValue="@_selectedDivision">
-    @foreach (DivisionDto division in _divisions)
-    {
-        <SelectItem Value="division">@(division.Title)</SelectItem>
-    }
-</Select>
+    <Field>
+        <FieldLabel>Division</FieldLabel>
+        <Select TValue="int"
+                SelectedValueChanged="@(OnSelectedDivisionChanged)">
+            @if (_divisions is not null)
+            {
+                @foreach (DivisionDto division in _divisions)
+                {
+                    <SelectItem Value="division.Id">@(division.Id)</SelectItem>
+                }
+            }
+        </Select>
+    </Field>
+</Fields>
 
+<Tabs
+    SelectedTab="@_selectedGroupId"
+    SelectedTabChanged="@(OnSelectedGroupChanged)">
+    <Items>
+        @if (_groups is not null)
+        {
+            @foreach (StudyGroupDto group in _groups)
+            {
+                <Tab Name="@(group.Id.ToString())">@(group.Name)</Tab>
+            }
+        }
+    </Items>
+    <Content>
+        @if (_groups is not null)
+        {
+            @foreach (StudyGroupDto group in _groups)
+            {
+                <TabPanel Name="@(group.Id.ToString())">
+                    <GroupViewComponent Group="@group"></GroupViewComponent>
+                </TabPanel>
+            }
+        }
+    </Content>
+</Tabs>
