@@ -10,7 +10,7 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
     public partial class GroupsPage
     {
         [Inject]
-        public MentorControllerClient Controller { get; set; }
+        public MentorControllerClient Client { get; set; }
 
         private MentorDto _currentMentor;
 
@@ -25,14 +25,14 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            _currentMentor = await Controller.GetCurrentMentorAsync();
-            _subjects = await Controller.GetSubjectsAsync(_currentMentor.Id);
+            _currentMentor = await Client.GetCurrentMentorAsync();
+            _subjects = await Client.GetSubjectsAsync(_currentMentor.Id);
 
             if (_subjects.Count != 0)
-                OnSelectedSubjectChangedAsync(_subjects[0].Id);
+                OnSelectedSubjectChanged(_subjects[0].Id);
         }
 
-        private void OnSelectedSubjectChangedAsync(int subjectId)
+        private void OnSelectedSubjectChanged(int subjectId)
         {
             _divisions = _currentMentor.Divisions.Where(d => d.Subject.Id == subjectId).ToList();
             if (_divisions.Count != 0)
@@ -44,7 +44,10 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
             _selectedDivision = _divisions.Single(d => d.Id == divisionId);
             _groups = _selectedDivision.Groups;
             if (_groups.Count != 0)
+            {
+                _groups = _groups.OrderBy(g => g.Name).ToList();
                 OnSelectedGroupChanged(_groups[0].Id.ToString());
+            }
         }
 
         private void OnSelectedGroupChanged(string groupId)
