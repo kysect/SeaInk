@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -38,7 +37,6 @@ namespace SeaInk.Endpoints.Client.Controllers
                 throw new IOException($"{response.StatusCode.ToString()} {response.ReasonPhrase}");
 
             string json = await response.Content.ReadAsStringAsync();
-            await File.WriteAllTextAsync("file.txt", json);
 
             return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions) ?? default(T);
         }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoreLinq;
 using SeaInk.Core.Entities;
@@ -8,7 +9,7 @@ using SeaInk.Endpoints.Shared.Dto;
 
 namespace SeaInk.Endpoints.Server.Controllers
 {
-    [Route("[controller]s")]
+    [Route("mentors")]
     public class MentorController: Controller
     {
         private readonly DatabaseContext _databaseContext;
@@ -18,6 +19,7 @@ namespace SeaInk.Endpoints.Server.Controllers
             _databaseContext = databaseContext;
         }
 
+        //Temporary solution
         [HttpGet("current")]
         public MentorDto GetCurrentMentor()
         {
@@ -30,7 +32,10 @@ namespace SeaInk.Endpoints.Server.Controllers
         public MentorDto GetMentor(int mentorId)
         {
             Mentor mentor = _databaseContext.Mentors.Find(mentorId);
-            return mentor?.ToDto();
+            if (mentor is null)
+                throw new BadHttpRequestException("Mentor with given id not found");
+
+            return mentor.ToDto();
         }
 
         [HttpGet("{mentorId}/subjects")]
