@@ -19,12 +19,11 @@ namespace SeaInk.Endpoints.Server.Controllers
             _databaseContext = databaseContext;
         }
 
-        //Temporary solution
+        //TODO: Proper current mentor
         [HttpGet("current")]
         public MentorDto GetCurrentMentor()
         {
-            Mentor mentor = _databaseContext.Mentors
-                .First(m => m.Divisions.Count > 1 && m.Divisions.Any(d => d.Groups.Count > 1));
+            Mentor mentor = _databaseContext.Mentors.MaxBy(m => m.Divisions.Count);
             return mentor.ToDto();
         }
 

@@ -11,7 +11,7 @@ namespace SeaInk.Core.Entities
 
         public int UniversityId { get; init; }
 
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

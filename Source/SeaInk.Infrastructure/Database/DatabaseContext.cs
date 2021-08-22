@@ -45,7 +45,7 @@ namespace Infrastructure.Database
                 .UseLazyLoadingProxies();
         }
         
-        public static void Seed(DatabaseContext databaseContext)
+        public static DatabaseContext Seed(DatabaseContext databaseContext)
         {
             databaseContext.Database.EnsureDeleted();
             databaseContext.Database.EnsureCreated();
@@ -60,6 +60,8 @@ namespace Infrastructure.Database
             databaseContext.StudentAssignmentProgresses.AddRange(api.StudentAssignmentProgresses);
             databaseContext.Divisions.AddRange(api.Divisions);
             databaseContext.SaveChanges();
+
+            return databaseContext;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
