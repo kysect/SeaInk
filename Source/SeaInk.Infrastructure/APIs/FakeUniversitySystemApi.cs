@@ -188,6 +188,7 @@ namespace Infrastructure.APIs
             int assignmentCount = subjectCount * 6;
             int studentAssignmentProgressCount = assignmentCount * 15;
 
+            Users.AddRange(_userFaker.Generate(20));
             Students.AddRange(_studentFaker.Generate(studentCount));
             Mentors.AddRange(_mentorFaker.Generate(mentorCount));
             Groups.AddRange(_groupFaker.Generate(groupCount));
