@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using SeaInk.Core.Entities;
 
 namespace SeaInk.Endpoints.Shared.Dto
@@ -11,19 +12,30 @@ namespace SeaInk.Endpoints.Shared.Dto
         string LastName,
         string MiddleName,
         string FullName,
-        IReadOnlyList<DivisionDto> Divisions);
+        //SubjectId -> Subject
+        IReadOnlyDictionary<int, SubjectDto> Subjects,
+        //SubjectId -> Divisions
+        IReadOnlyDictionary<int, IReadOnlyList<DivisionDto>> Divisions);
 
     public static class MentorExtension
     {
         public static MentorDto ToDto(this Mentor mentor)
         {
             return new MentorDto(mentor.Id,
-                                 mentor.UniversityId, 
-                                 mentor.FirstName, 
-                                 mentor.LastName, 
-                                 mentor.MiddleName, 
+                                 mentor.UniversityId,
+                                 mentor.FirstName,
+                                 mentor.LastName,
+                                 mentor.MiddleName,
                                  mentor.FullName,
-                                 mentor.Divisions.Select(d => d.ToDto()).ToList());
+                                 mentor.Divisions
+                                     .Select(d => d.Subject)
+                                     .DistinctBy(s => s.Id)
+                                     .ToDictionary(s => s.Id, s => s.ToDto()),
+                                 mentor.Divisions
+                                     .GroupBy(d => d.Subject)
+                                     .ToDictionary(g => g.Key.Id,
+                                                   g => g.Select(d => d.ToDto())
+                                                            .ToList() as IReadOnlyList<DivisionDto>));
         }
     }
 }

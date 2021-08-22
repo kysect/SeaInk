@@ -13,11 +13,12 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         public MentorControllerClient Client { get; set; }
 
         private MentorDto _currentMentor;
-
+        
         private IReadOnlyList<SubjectDto> _subjects;
+        private int _selectedSubjectId;
 
         private IReadOnlyList<DivisionDto> _divisions;
-        private DivisionDto _selectedDivision;
+        private int _selectedDivisionId;
 
         private IReadOnlyList<StudyGroupDto> _groups;
         private string _selectedGroupId;
@@ -26,7 +27,7 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         {
             await base.OnInitializedAsync();
             _currentMentor = await Client.GetCurrentMentorAsync();
-            _subjects = await Client.GetSubjectsAsync(_currentMentor.Id);
+            _subjects = _currentMentor.Subjects.Values.ToList();
 
             if (_subjects.Count != 0)
                 OnSelectedSubjectChanged(_subjects[0].Id);
@@ -34,20 +35,25 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
 
         private void OnSelectedSubjectChanged(int subjectId)
         {
-            _divisions = _currentMentor.Divisions.Where(d => d.Subject.Id == subjectId).ToList();
+            _selectedSubjectId = subjectId;
+            _divisions = _currentMentor.Divisions[_selectedSubjectId];
+            
             if (_divisions.Count != 0)
                 OnSelectedDivisionChanged(_divisions[0].Id);
         }
 
         private void OnSelectedDivisionChanged(int divisionId)
         {
-            _selectedDivision = _divisions.Single(d => d.Id == divisionId);
-            _groups = _selectedDivision.Groups;
-            if (_groups.Count != 0)
-            {
-                _groups = _groups.OrderBy(g => g.Name).ToList();
-                OnSelectedGroupChanged(_groups[0].Id.ToString());
-            }
+            _selectedDivisionId = divisionId;
+            _groups = _currentMentor.Divisions[_selectedSubjectId]
+                .Single(d => d.Id == _selectedDivisionId)
+                .Groups;
+
+            if (_groups.Count == 0)
+                return;
+
+            _groups = _groups.OrderBy(g => g.Name).ToList();
+            OnSelectedGroupChanged(_groups[0].Id.ToString());
         }
 
         private void OnSelectedGroupChanged(string groupId)

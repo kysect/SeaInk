@@ -1,0 +1,103 @@
+@startuml
+interface IEntity
+{
+    #Id: int
+}
+
+IUniversityEntity <|-[#blue]- IEntity
+interface IUniversityEntity
+{
+    #UniversityId: int
+}
+
+User <|-[#blue]- IUniversityEntity
+class User 
+{
+    +Id: int
+    +UniversityId: int
+    +FirstName: string
+    +LastName: string
+    +MiddleName: string
+}
+
+Student <-[#blue]- User
+class Student 
+{
+    +GroupId: int
+}
+
+Mentor <-[#blue]- User
+class Mentor
+{
+    
+}
+
+Subject <|-[#blue]- IUniversityEntity
+class Subject
+{
+    #Id: int
+    #UniversityId: int
+    #Name: string
+    #StartDate: Date
+    #EndDate: Date
+}
+
+StudyGroup <|-[#blue]- IUniversityEntity
+class StudyGroup
+{
+    #Id: int
+    #UniversityId: int
+    #Name: string
+    #_AdminId_: int
+    #DivisionId: int
+}
+
+StudyAssignment <|--[#blue]- IUniversityEntity
+class StudyAssignment
+{
+    #Id: int
+    #UniversityId: int
+    #Title: string
+    #IsMilestone: bool
+    #StartDate: Date
+    #EndDate: Date
+    #MinPoints: double
+    #MaxPoint: double
+}
+
+StudentAssignmentProgress <|-[#blue]- IEntity
+class StudentAssignmentProgress
+{
+    #Id: int
+    #StudentId: int
+    #StudyAssingmentId: int
+}
+
+AssignmentProgress -[#blue]-* StudentAssignmentProgress
+class AssignmentProgress
+{
+    #CompletionDate: Date
+    #Points: double
+}
+
+Division <|-[#blue]- IEntity
+class Division
+{
+    #Id: int
+    #Name: string
+    #SpreadsheetId: string
+    #MentorId: int
+    #SubjectId: int 
+}
+
+StudyGroup ||-[thickness=2]-o{ Student
+
+StudentAssignmentProgress }o-[thickness=2]|| Student
+StudentAssignmentProgress }o-[thickness=2]|| StudyAssignment
+
+Division }-[thickness=2]|| Mentor
+Division }-[thickness=2]-|| Subject
+
+
+
+@enduml

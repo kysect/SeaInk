@@ -77,7 +77,7 @@ namespace Infrastructure.APIs
 
         public event ITestUniversitySystemApi.HandleLog Log;
 
-        public FakeUniversitySystemApi()
+        public FakeUniversitySystemApi(int mentorCount = 1)
         {
             _userFaker = new Faker<User>("ru")
                 .CustomInstantiator(faker => new User
@@ -137,7 +137,7 @@ namespace Infrastructure.APIs
                 .CustomInstantiator(faker => new Subject
                 {
                     UniversityId = Interlocked.Increment(ref _currentSubjectId),
-                    Title = faker.Name.JobArea(),
+                    Name = faker.Name.JobArea(),
                     StartDate = faker.Date.Past(),
                     EndDate = faker.Date.Future(),
                     Assignments = faker.Random.ArrayElements(Assignments.ToArray(), faker.Random.Int(5, 10)).ToList()
@@ -162,7 +162,7 @@ namespace Infrastructure.APIs
                          (f, p) => new AssignmentProgress
                          (
                              f.Date.Between(p.Assignment.StartDate, p.Assignment.EndDate),
-                             f.Random.Float(p.Assignment.MinPoints, p.Assignment.MaxPoints)
+                             f.Random.Double(p.Assignment.MinPoints, p.Assignment.MaxPoints)
                          ));
 
             _divisionFaker = new Faker<Division>("ru")
@@ -175,19 +175,26 @@ namespace Infrastructure.APIs
                 })
                 .FinishWith((_, d) => { d.Mentor.Divisions.Add(d); });
 
-            GenerateInitialData();
+            GenerateInitialData(mentorCount);
         }
 
-        private void GenerateInitialData()
+        private void GenerateInitialData(int mentorCount)
         {
-            Users.AddRange(_userFaker.Generate(50));
-            Students.AddRange(_studentFaker.Generate(300));
-            Mentors.AddRange(_mentorFaker.Generate(5));
-            Groups.AddRange(_groupFaker.Generate(15));
-            Assignments.AddRange(_assignmentsFaker.Generate(50));
-            Subjects.AddRange(_subjectFaker.Generate(5));
-            StudentAssignmentProgresses.AddRange(_studentAssignmentProgressFaker.Generate(200));
-            Divisions.AddRange(_divisionFaker.Generate(5));
+            int subjectCount = mentorCount * 2;
+            int divisionCount = subjectCount * 2;
+            int groupCount = divisionCount * divisionCount * 6;
+            int studentCount = groupCount * 20;
+
+            int assignmentCount = subjectCount * 6;
+            int studentAssignmentProgressCount = assignmentCount * 15;
+
+            Students.AddRange(_studentFaker.Generate(studentCount));
+            Mentors.AddRange(_mentorFaker.Generate(mentorCount));
+            Groups.AddRange(_groupFaker.Generate(groupCount));
+            Assignments.AddRange(_assignmentsFaker.Generate(assignmentCount));
+            Subjects.AddRange(_subjectFaker.Generate(subjectCount));
+            StudentAssignmentProgresses.AddRange(_studentAssignmentProgressFaker.Generate(studentAssignmentProgressCount));
+            Divisions.AddRange(_divisionFaker.Generate(divisionCount));
         }
 
         public User GetUser(int id)
