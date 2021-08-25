@@ -6,11 +6,10 @@ using MoreLinq;
 using SeaInk.Core.Entities;
 using SeaInk.Endpoints.Shared.Dto;
 
-
 namespace SeaInk.Endpoints.Server.Controllers
 {
-    [Route("[controller]")]
-    public class MentorController : Controller
+    [Route("mentors")]
+    public class MentorController: Controller
     {
         private readonly DatabaseContext _databaseContext;
 
@@ -19,34 +18,38 @@ namespace SeaInk.Endpoints.Server.Controllers
             _databaseContext = databaseContext;
         }
 
-
-        [HttpGet("{mentorId}/subjects")]
-        public List<SubjectDto> GetSubjectsList(int mentorId)
+        //TODO: Proper current mentor
+        [HttpGet("current")]
+        public IActionResult GetCurrentMentor()
         {
-            Mentor mentor = _databaseContext.Mentors.Find(mentorId);
-
-            if (mentor is null)
-                return new List<SubjectDto>();
-
-            List<Division> mentorDivisions = mentor.Divisions;
-            return mentorDivisions.Select(x => x.Subject.ToDto()).ToList();
+            Mentor mentor = _databaseContext.Mentors.MaxBy(m => m.Divisions.Count);
+            return Ok(mentor.ToDto());
         }
 
-        [HttpGet("{mentorId}/subject/{subjectId}/groups")]
-        public List<StudyGroupDto> GetGroupsList(int mentorId, int subjectId)
+        [HttpGet("{mentorId:int}")]
+        public IActionResult GetMentor(int mentorId)
         {
             Mentor mentor = _databaseContext.Mentors.Find(mentorId);
-
             if (mentor is null)
-                return new List<StudyGroupDto>();
+                return NotFound();
 
-            List<Division> mentorDivisions = mentor.Divisions;
-            return mentorDivisions
-                .Where(division => division.Subject.Id == subjectId)
-                .SelectMany(division => division.Groups)
-                .DistinctBy(group => group.Id)
-                .Select(x => x.ToDto())
+            return Ok(mentor.ToDto());
+        }
+
+        [HttpGet("{mentorId:int}/subjects")]
+        public IActionResult GetSubjects(int mentorId)
+        {
+            Mentor mentor = _databaseContext.Mentors.Find(mentorId);
+            if (mentor is null)
+                return NotFound();
+
+            List<SubjectDto> subjects = mentor.Divisions
+                .Select(d => d.Subject)
+                .DistinctBy(s => s.Id)
+                .Select(s => s.ToDto())
                 .ToList();
+
+            return Ok(subjects);
         }
     }
 }

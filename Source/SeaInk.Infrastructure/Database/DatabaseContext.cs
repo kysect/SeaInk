@@ -1,3 +1,4 @@
+using Infrastructure.APIs;
 using Microsoft.EntityFrameworkCore;
 using SeaInk.Core.Entities;
 
@@ -40,14 +41,33 @@ namespace Infrastructure.Database
         {
             return builder
                 .UseInMemoryDatabase(name)
+                .EnableSensitiveDataLogging()
                 .UseLazyLoadingProxies();
         }
         
+        public static DatabaseContext Seed(DatabaseContext databaseContext)
+        {
+            databaseContext.Database.EnsureDeleted();
+            databaseContext.Database.EnsureCreated();
+            
+            var api = new FakeUniversitySystemApi();
+            databaseContext.Users.AddRange(api.Users);
+            databaseContext.Students.AddRange(api.Students);
+            databaseContext.Mentors.AddRange(api.Mentors);
+            databaseContext.StudyGroups.AddRange(api.Groups);
+            databaseContext.StudyAssignments.AddRange(api.Assignments);
+            databaseContext.Subjects.AddRange(api.Subjects);
+            databaseContext.StudentAssignmentProgresses.AddRange(api.StudentAssignmentProgresses);
+            databaseContext.Divisions.AddRange(api.Divisions);
+            databaseContext.SaveChanges();
+
+            return databaseContext;
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasOne(s => s.Group);
             
-            modelBuilder.Entity<StudyGroup>().HasOne(g => g.Admin);
             modelBuilder.Entity<StudyGroup>().HasMany(g => g.Students);
 
             modelBuilder.Entity<StudentAssignmentProgress>().OwnsOne(s => s.Progress);

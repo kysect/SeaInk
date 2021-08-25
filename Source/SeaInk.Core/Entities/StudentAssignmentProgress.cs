@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SeaInk.Core.Models;
 
 namespace SeaInk.Core.Entities
