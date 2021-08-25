@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using SeaInk.Endpoints.Client.Controllers;
+using SeaInk.Endpoints.Client.Client;
 using SeaInk.Endpoints.Shared.Dto;
 
 namespace SeaInk.Endpoints.Client.Pages.Groups
@@ -10,7 +10,7 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
     public partial class GroupsPage
     {
         [Inject]
-        public MentorControllerClient Client { get; set; }
+        public MentorClient Client { get; set; }
 
         private MentorDto _currentMentor;
         
