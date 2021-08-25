@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Database;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoreLinq;
 using SeaInk.Core.Entities;
@@ -21,28 +20,28 @@ namespace SeaInk.Endpoints.Server.Controllers
 
         //TODO: Proper current mentor
         [HttpGet("current")]
-        public MentorDto GetCurrentMentor()
+        public IActionResult GetCurrentMentor()
         {
             Mentor mentor = _databaseContext.Mentors.MaxBy(m => m.Divisions.Count);
-            return mentor.ToDto();
+            return Ok(mentor.ToDto());
         }
 
-        [HttpGet("{mentorId}")]
-        public MentorDto GetMentor(int mentorId)
+        [HttpGet("{mentorId:int}")]
+        public IActionResult GetMentor(int mentorId)
         {
             Mentor mentor = _databaseContext.Mentors.Find(mentorId);
             if (mentor is null)
-                throw new BadHttpRequestException("Mentor with given id not found");
+                return NotFound();
 
-            return mentor.ToDto();
+            return Ok(mentor.ToDto());
         }
 
-        [HttpGet("{mentorId}/subjects")]
-        public IReadOnlyList<SubjectDto> GetSubjects(int mentorId)
+        [HttpGet("{mentorId:int}/subjects")]
+        public IActionResult GetSubjects(int mentorId)
         {
             Mentor mentor = _databaseContext.Mentors.Find(mentorId);
             if (mentor is null)
-                return new List<SubjectDto>();
+                return NotFound();
 
             List<SubjectDto> subjects = mentor.Divisions
                 .Select(d => d.Subject)
@@ -50,7 +49,7 @@ namespace SeaInk.Endpoints.Server.Controllers
                 .Select(s => s.ToDto())
                 .ToList();
 
-            return subjects;
+            return Ok(subjects);
         }
     }
 }
