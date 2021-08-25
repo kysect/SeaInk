@@ -1,0 +1,27 @@
+@using SeaInk.Endpoints.Shared.Dto
+
+<Table>
+    <TableHeader>
+        <TableRow>
+            <TableHeaderCell>Id</TableHeaderCell>
+            <TableHeaderCell>Name</TableHeaderCell>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        @if (Group.Students is not null)
+        {
+            @foreach (StudentDto student in Group.Students)
+            {
+                <TableRow>
+                    <TableHeaderCell>@(student.Id)</TableHeaderCell>
+                    <TableRowCell>@(student.FullName)</TableRowCell>
+                </TableRow>
+            }
+        }
+    </TableBody>
+</Table>
+
+@code {
+    [Parameter]
+    public StudyGroupDto Group { get; set; }
+}

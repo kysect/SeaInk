@@ -1,0 +1,54 @@
+@page "/groups"
+@using SeaInk.Endpoints.Shared.Dto
+
+<Fields>
+    <Field>
+        <FieldLabel>Subject</FieldLabel>
+        <Select TValue="int"
+                SelectedValueChanged="@(OnSelectedSubjectChanged)">
+            @if (_subjects is not null)
+            {
+                @foreach (SubjectDto subject in _subjects)
+                {
+                    <SelectItem Value="@subject.Id">@(subject.Title)</SelectItem>
+                }
+            }
+        </Select>
+    </Field>
+
+    <Field>
+        <FieldLabel>Division</FieldLabel>
+        <Select TValue="int"
+                SelectedValueChanged="@(OnSelectedDivisionChanged)">
+            @if (_divisions is not null)
+            {
+                @foreach (DivisionDto division in _divisions)
+                {
+                    <SelectItem Value="division.Id">@(division.Id)</SelectItem>
+                }
+            }
+        </Select>
+    </Field>
+</Fields>
+
+@if (_groups is not null)
+{
+    <Tabs
+        SelectedTab="@_selectedGroupId"
+        SelectedTabChanged="@(OnSelectedGroupChanged)">
+        <Items>
+            @foreach (StudyGroupDto group in _groups)
+            {
+                <Tab Name="@(group.Id.ToString())">@(group.Name)</Tab>
+            }
+        </Items>
+        <Content>
+            @foreach (StudyGroupDto group in _groups)
+            {
+                <TabPanel Name="@(group.Id.ToString())">
+                    <GroupViewComponent Group="@group"></GroupViewComponent>
+                </TabPanel>
+            }
+        </Content>
+    </Tabs>
+}
