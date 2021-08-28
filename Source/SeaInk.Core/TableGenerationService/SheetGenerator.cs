@@ -45,7 +45,7 @@ namespace SeaInk.Core.TableGenerationService
             var sheetDescriptor = new FileDescriptor(SheetConfiguration.Title, FileType.Spreadsheet, folder);
             var sheetFile = driveService.CreateFile(sheetDescriptor);
             var spreadsheet = sheetsService.GetSpreadsheet(sheetFile);
-            Sheet = spreadsheet.First();
+            Sheet = spreadsheet[0];
         }
         
         public void CreateSheet()
