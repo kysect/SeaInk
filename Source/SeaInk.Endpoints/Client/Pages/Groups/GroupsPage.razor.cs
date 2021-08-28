@@ -45,8 +45,7 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         {
             _selectedDivisionId = divisionId;
             _groups = _currentMentor.Divisions
-                .Where(d => d.Subject.Id == _selectedSubjectId)
-                .Single(d => d.Id == _selectedDivisionId)
+                .Single(d => d.Subject.Id == _selectedSubjectId && d.Id == _selectedDivisionId)
                 .Groups
                 .ToList();
 
