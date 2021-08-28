@@ -27,7 +27,7 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         {
             await base.OnInitializedAsync();
             _currentMentor = await Client.GetCurrentMentorAsync();
-            _subjects = _currentMentor.Subjects.Values.ToList();
+            _subjects = _currentMentor.StudyGroupSubjects.Select(sgs => sgs.Subject).ToList();
 
             if (_subjects.Count != 0)
                 OnSelectedSubjectChanged(_subjects[0].Id);
@@ -36,7 +36,8 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         private void OnSelectedSubjectChanged(int subjectId)
         {
             _selectedSubjectId = subjectId;
-            _divisions = _currentMentor.Divisions[_selectedSubjectId];
+            //TODO: fix
+            //_divisions = _currentMentor.Divisions[_selectedSubjectId];
             
             if (_divisions.Count != 0)
                 OnSelectedDivisionChanged(_divisions[0].Id);
@@ -45,9 +46,10 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         private void OnSelectedDivisionChanged(int divisionId)
         {
             _selectedDivisionId = divisionId;
-            _groups = _currentMentor.Divisions[_selectedSubjectId]
-                .Single(d => d.Id == _selectedDivisionId)
-                .Groups;
+            //TODO: fix
+            //_groups = _currentMentor.Divisions[_selectedSubjectId]
+            //    .Single(d => d.Id == _selectedDivisionId)
+            //    .Groups;
 
             if (_groups.Count == 0)
                 return;

@@ -169,11 +169,18 @@ namespace Infrastructure.APIs
                 .CustomInstantiator(faker => new Division
                 {
                     SpreadsheetId = faker.Internet.Url(),
-                    Subject = faker.Random.ArrayElement(Subjects.ToArray()),
-                    Mentor = faker.Random.ArrayElement(Mentors.ToArray()),
-                    Groups = faker.Random.ArrayElements(Groups.ToArray(), faker.Random.Int(1, 4)).ToList()
+                    StudyGroupSubjects = faker.Random
+                        .ArrayElements(Groups.ToArray(), faker.Random.Int(1, 4))
+                        .Select(group => new StudyGroupSubject
+                        {
+                            Id = faker.IndexFaker++,
+                            StudyGroup = group,
+                            Subject = faker.Random.ArrayElement(Subjects.ToArray()),
+                            Mentors = new List<Mentor>() { faker.Random.ArrayElement(Mentors.ToArray()) }
+                        })
+                        .ToList()
                 })
-                .FinishWith((_, d) => { d.Mentor.Divisions.Add(d); });
+                .FinishWith((_, d) => { d.StudyGroupSubjects.ForEach(sgs => sgs.Mentors.ForEach(m => m.StudyGroupSubjects.Add(sgs))); });
 
             GenerateInitialData(mentorCount);
         }
@@ -255,12 +262,14 @@ namespace Infrastructure.APIs
                 .SingleOrDefault(p => p.Student.UniversityId == studentId && p.Assignment.UniversityId == assignmentId);
         }
 
+        //TODO: rework interface
         public Division GetDivision(int mentorId, int subjectId)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getDivisionCallCount);
-            Log?.Invoke("Got division");
-            return Divisions.SingleOrDefault(d => d.Mentor.UniversityId == mentorId && d.Subject.UniversityId == subjectId);
+            throw new NotImplementedException();
+            //Interlocked.Increment(ref _totalCallCount);
+            //Interlocked.Increment(ref _getDivisionCallCount);
+            //Log?.Invoke("Got division");
+            //return Divisions.SingleOrDefault(d => d.Mentor.UniversityId == mentorId && d.Subject.UniversityId == subjectId);
         }
 
         public void SaveUser(User user)

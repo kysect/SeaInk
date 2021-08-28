@@ -2,8 +2,8 @@
 
 namespace SeaInk.Core.Entities
 {
-    public class Mentor: User
+    public class Mentor : User
     {
-        public virtual List<Division> Divisions { get; set; } = new();
+        public virtual List<StudyGroupSubject> StudyGroupSubjects { get; set; } = new();
     }
 }

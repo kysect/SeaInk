@@ -8,10 +8,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         int Id,
         string Title,
         string SpreadsheetId,
-        int MentorId,
-        string MentorName,
-        SubjectDto Subject,
-        IReadOnlyList<StudyGroupDto> Groups);
+        IReadOnlyList<StudyGroupSubjectDto> StudyGroupSubjects);
 
     public static class DivisionExtension
     {
@@ -20,10 +17,7 @@ namespace SeaInk.Endpoints.Shared.Dto
             return new DivisionDto(division.Id,
                                    division.Title,
                                    division.SpreadsheetId,
-                                   division.Mentor.Id,
-                                   division.Mentor.FullName,
-                                   division.Subject.ToDto(),
-                                   division.Groups.Select(g => g.ToDto()).ToList());
+                                   division.StudyGroupSubjects.Select(s => s.ToDto()).ToList());
         }
     }
 }

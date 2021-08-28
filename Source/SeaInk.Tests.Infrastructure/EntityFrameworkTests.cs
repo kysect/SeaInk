@@ -40,49 +40,5 @@ namespace SeaInk.Tests.Infrastructure
             Assert.AreEqual(progress.Progress, createdProgress.Progress);
             Assert.AreEqual(progress.Student.Id, createdProgress.Student.Id);
         }
-
-        [Test]
-        public void DivisionRepositoryTest_DivisionAddedToDatabase()
-        {
-            DbSet<Division> repository = _context.Divisions;
-            
-            Division division = _api.Divisions.First();
-            repository.Add(division);
-            _context.SaveChanges();
-
-            Division createdDivision = repository.Find(division.Id);
-            
-            Assert.NotNull(createdDivision);
-            Assert.AreEqual(division.Id, createdDivision.Id);
-            Assert.AreEqual(division.Mentor.Id, createdDivision.Mentor.Id);
-            Assert.AreEqual(division.Mentor.UniversityId, createdDivision.Mentor.UniversityId);
-            Assert.AreEqual(division.Subject.Id, createdDivision.Subject.Id);
-            Assert.AreEqual(division.Subject.UniversityId, createdDivision.Subject.UniversityId);
-            Assert.True(division.Groups.ToIds().ToHashSet()
-                            .SetEquals(createdDivision.Groups.ToIds()));
-
-            List<(StudyGroup found, StudyGroup created)> matchedGroups = division.Groups
-                .Select(f => (f, createdDivision.Groups.Single(c => c.Id == f.Id))).ToList();
-
-            foreach (var groupPair in matchedGroups)
-            {
-                Assert.AreEqual(groupPair.found.Name, groupPair.created.Name);
-                Assert.AreEqual(groupPair.found.AdminId, groupPair.created.AdminId);
-                Assert.AreEqual(groupPair.found.UniversityId, groupPair.created.UniversityId);
-                Assert.True(groupPair.found.Students.ToIds().ToHashSet()
-                                .SetEquals(groupPair.created.Students.ToIds()));
-
-                List<(Student found, Student created)> matchedStudents = groupPair.found.Students
-                    .Select(f => (f, groupPair.created.Students.Single(c => c.Id == f.Id))).ToList();
-
-                foreach (var studentPair in matchedStudents)
-                {
-                    Assert.AreEqual(studentPair.found.FirstName, studentPair.created.FirstName);
-                    Assert.AreEqual(studentPair.found.MiddleName, studentPair.created.MiddleName);
-                    Assert.AreEqual(studentPair.found.LastName, studentPair.created.LastName);
-                    Assert.AreEqual(studentPair.found.UniversityId, studentPair.created.UniversityId);
-                }
-            }
-        }
     }
 }
