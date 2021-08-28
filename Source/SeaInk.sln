@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31025.218
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31606.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Core", "SeaInk.Core\SeaInk.Core.csproj", "{E12408EF-2A05-489F-9FB5-85E3E8114E93}"
 EndProject
@@ -11,17 +11,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Server", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Client", "SeaInk.Endpoints\Client\SeaInk.Endpoints.Client.csproj", "{0201A570-8659-4EB8-AEE7-FAD911218E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Endpoints.Shared", "SeaInk.Endpoints.Shared\SeaInk.Endpoints.Shared.csproj", "{753E95DD-A448-4C2F-BC05-4E2B190E2AAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Shared", "SeaInk.Endpoints.Shared\SeaInk.Endpoints.Shared.csproj", "{753E95DD-A448-4C2F-BC05-4E2B190E2AAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Utility", "SeaInk.Utility\SeaInk.Utility.csproj", "{324700AB-468E-49C4-8BEB-BD3EFFB2A511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Utility", "SeaInk.Utility\SeaInk.Utility.csproj", "{324700AB-468E-49C4-8BEB-BD3EFFB2A511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Infrastructure", "SeaInk.Infrastructure\SeaInk.Infrastructure.csproj", "{6D553912-ABEF-4678-8183-B002C0374E13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Infrastructure", "SeaInk.Infrastructure\SeaInk.Infrastructure.csproj", "{6D553912-ABEF-4678-8183-B002C0374E13}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeaInk.Tests", "SeaInk.Tests", "{CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Tests.Infrastructure", "SeaInk.Tests.Infrastructure\SeaInk.Tests.Infrastructure.csproj", "{D033F4C0-C704-487F-B453-20E2F422F1B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Tests.Infrastructure", "SeaInk.Tests.Infrastructure\SeaInk.Tests.Infrastructure.csproj", "{D033F4C0-C704-487F-B453-20E2F422F1B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Tests.Endpoints", "SeaInk.Tests.Endpoints\SeaInk.Tests.Endpoints.csproj", "{D56D94AA-F9F4-429C-A8DC-13FECB56122C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Tests.Endpoints", "SeaInk.Tests.Endpoints\SeaInk.Tests.Endpoints.csproj", "{D56D94AA-F9F4-429C-A8DC-13FECB56122C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Endpoints.Sdk", "SeaInk.Endpoints\SeaInk.Endpoints.Sdk\SeaInk.Endpoints.Sdk.csproj", "{3375A8BD-106C-421A-BA46-FC1C51340B48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D56D94AA-F9F4-429C-A8DC-13FECB56122C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{753E95DD-A448-4C2F-BC05-4E2B190E2AAB} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
 		{D033F4C0-C704-487F-B453-20E2F422F1B4} = {CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}
 		{D56D94AA-F9F4-429C-A8DC-13FECB56122C} = {CB360F52-4FC0-4D5A-BCD9-BAB2BFA33069}
+		{3375A8BD-106C-421A-BA46-FC1C51340B48} = {A3EC1CE1-63C2-428A-8CA9-9C6F5FF22D1D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C15B403-3B6F-477C-B338-BDD7F3B3CB66}
