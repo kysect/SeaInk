@@ -11,7 +11,7 @@ namespace SeaInk.Core.APIs
         StudyAssignment GetStudyAssignment(int id);
         Subject GetSubject(int id);
         StudentAssignmentProgress GetStudentAssignmentProgress(int studentId, int assignmentId);
-        Division GetDivision(int mentorId, int subjectId);
+        StudyGroupSubject GetStudyGroupSubject(int mentorId, int subjectId);
 
         void SaveUser(User user);
         void SaveStudent(Student student);

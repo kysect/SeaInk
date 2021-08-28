@@ -262,8 +262,8 @@ namespace Infrastructure.APIs
                 .SingleOrDefault(p => p.Student.UniversityId == studentId && p.Assignment.UniversityId == assignmentId);
         }
 
-        //TODO: rework interface
-        public Division GetDivision(int mentorId, int subjectId)
+        //TODO: rework implementation
+        public StudyGroupSubject GetStudyGroupSubject(int mentorId, int subjectId)
         {
             throw new NotImplementedException();
             //Interlocked.Increment(ref _totalCallCount);
