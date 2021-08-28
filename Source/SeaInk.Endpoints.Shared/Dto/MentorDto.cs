@@ -12,9 +12,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         string LastName,
         string MiddleName,
         string FullName,
-        //SubjectId -> Subject
         IReadOnlyList<SubjectDto> Subjects,
-        //SubjectId -> Divisions
         IReadOnlyList<DivisionDto> Divisions);
 
     public static class MentorExtension
