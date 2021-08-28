@@ -13,6 +13,7 @@ namespace Infrastructure.Database
         public DbSet<Division> Divisions { get; private set; }
         public DbSet<Subject> Subjects { get; private set; }
         public DbSet<StudyGroup> StudyGroups { get; private set; }
+        public DbSet<StudyGroupSubject> StudyGroupSubjects { get; private set; }
 
         public DbSet<StudyAssignment> StudyAssignments { get; private set; }
         public DbSet<StudentAssignmentProgress> StudentAssignmentProgresses { get; private set; }
