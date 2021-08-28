@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SeaInk.Endpoints.Shared\SeaInk.Endpoints.Shared.csproj" />
+    <ProjectReference Include="..\SeaInk.Endpoints.Sdk\SeaInk.Endpoints.Sdk.csproj" />
   </ItemGroup>
 
 </Project>

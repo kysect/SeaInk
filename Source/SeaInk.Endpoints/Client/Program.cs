@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using SeaInk.Endpoints.Client.Client;
+using SeaInk.Endpoints.Sdk;
 
 namespace SeaInk.Endpoints.Client
 {
