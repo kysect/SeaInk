@@ -12,10 +12,8 @@ namespace SeaInk.Endpoints.Shared.Dto
         string LastName,
         string MiddleName,
         string FullName,
-        //SubjectId -> Subject
-        IReadOnlyDictionary<int, SubjectDto> Subjects,
-        //SubjectId -> Divisions
-        IReadOnlyDictionary<int, IReadOnlyList<DivisionDto>> Divisions);
+        IReadOnlyList<SubjectDto> Subjects,
+        IReadOnlyList<DivisionDto> Divisions);
 
     public static class MentorExtension
     {
@@ -28,14 +26,12 @@ namespace SeaInk.Endpoints.Shared.Dto
                                  mentor.MiddleName,
                                  mentor.FullName,
                                  mentor.Divisions
-                                     .Select(d => d.Subject)
+                                     .Select(d => d.Subject.ToDto())
                                      .DistinctBy(s => s.Id)
-                                     .ToDictionary(s => s.Id, s => s.ToDto()),
+                                     .ToList(),
                                  mentor.Divisions
-                                     .GroupBy(d => d.Subject)
-                                     .ToDictionary(g => g.Key.Id,
-                                                   g => g.Select(d => d.ToDto())
-                                                            .ToList() as IReadOnlyList<DivisionDto>));
+                                     .Select(d => d.ToDto())
+                                     .ToList());
         }
     }
 }
