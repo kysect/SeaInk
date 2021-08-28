@@ -51,5 +51,20 @@ namespace SeaInk.Endpoints.Server.Controllers
 
             return Ok(subjects);
         }
+
+        [HttpGet("{mentorId:int}/divisions")]
+        public ActionResult<List<DivisionDto>> GetDivisions(int mentorId)
+        {
+            Mentor mentor = _databaseContext.Mentors.Find(mentorId);
+            if (mentor is null)
+                return NotFound();
+
+            List<DivisionDto> divisions = _databaseContext.Divisions
+                .Where(d => d.StudyGroupSubjects.Any(sgs => sgs.Mentors.Any(m => m.Id == mentorId)))
+                .Select(d => d.ToDto())
+                .ToList();
+
+            return Ok(divisions);
+        }
     }
 }

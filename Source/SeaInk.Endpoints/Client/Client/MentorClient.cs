@@ -19,5 +19,8 @@ namespace SeaInk.Endpoints.Client.Client
 
         public Task<IReadOnlyList<SubjectDto>> GetSubjectsAsync(int mentorId)
             => GetValueAsync<IReadOnlyList<SubjectDto>>($"/mentors/{mentorId}/subjects");
+
+        public Task<IReadOnlyList<DivisionDto>> GetDivisionsAsync(int mentorId)
+            => GetValueAsync<IReadOnlyList<DivisionDto>>($"/mentors/{mentorId}/divisions");
     }
 }

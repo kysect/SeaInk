@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using MoreLinq;
 using SeaInk.Endpoints.Client.Client;
 using SeaInk.Endpoints.Shared.Dto;
 
@@ -27,6 +28,7 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         {
             await base.OnInitializedAsync();
             _currentMentor = await Client.GetCurrentMentorAsync();
+            _divisions = await Client.GetDivisionsAsync(_currentMentor.Id);
             _subjects = _currentMentor.StudyGroupSubjects.Select(sgs => sgs.Subject).ToList();
 
             if (_subjects.Count != 0)
@@ -36,8 +38,6 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         private void OnSelectedSubjectChanged(int subjectId)
         {
             _selectedSubjectId = subjectId;
-            //TODO: fix
-            //_divisions = _currentMentor.Divisions[_selectedSubjectId];
             
             if (_divisions.Count != 0)
                 OnSelectedDivisionChanged(_divisions[0].Id);
@@ -46,10 +46,13 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         private void OnSelectedDivisionChanged(int divisionId)
         {
             _selectedDivisionId = divisionId;
-            //TODO: fix
-            //_groups = _currentMentor.Divisions[_selectedSubjectId]
-            //    .Single(d => d.Id == _selectedDivisionId)
-            //    .Groups;
+            _groups = _divisions
+                .Where(d => d.Id == divisionId)
+                .SelectMany(d => d.StudyGroupSubjects)
+                .Where(sgs => sgs.Subject.Id == _selectedSubjectId)
+                .Select(sgs => sgs.StudyGroup)
+                .DistinctBy(g => g.Id)
+                .ToList();
 
             if (_groups.Count == 0)
                 return;
