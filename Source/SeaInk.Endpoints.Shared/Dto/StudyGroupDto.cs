@@ -7,7 +7,7 @@ namespace SeaInk.Endpoints.Shared.Dto
     public record StudyGroupDto(
         int Id,
         string Name,
-        int AdminId,
+        int? AdminId,
         IReadOnlyList<StudentDto> Students);
 
     public static class StudyGroupExtension
