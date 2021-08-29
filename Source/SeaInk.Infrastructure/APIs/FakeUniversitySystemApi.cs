@@ -169,18 +169,24 @@ namespace Infrastructure.APIs
                     SpreadsheetId = faker.Internet.Url(),
                     StudyGroupSubjects = faker.Random
                         .ArrayElements(Groups.ToArray(), faker.Random.Int(1, 4))
-                        .Select(group => new StudyGroupSubject
-                        {
-                            Id = faker.IndexFaker++,
-                            StudyGroup = group,
-                            Subject = faker.Random.ArrayElement(Subjects.ToArray()),
-                            Mentors = new List<Mentor>() { faker.Random.ArrayElement(Mentors.ToArray()) }
-                        })
+                        .Select(group => CreateStudyGroupSubject(faker, group))
                         .ToList()
                 })
                 .FinishWith((_, d) => { d.StudyGroupSubjects.ForEach(sgs => sgs.Mentors.ForEach(m => m.StudyGroupSubjects.Add(sgs))); });
 
             GenerateInitialData(mentorCount);
+        }
+
+        private StudyGroupSubject CreateStudyGroupSubject(Faker faker, StudyGroup group)
+        {
+            int newId = ++faker.IndexFaker;
+            return new StudyGroupSubject()
+            {
+                Id = newId,
+                StudyGroup = group,
+                Subject = faker.Random.ArrayElement(Subjects.ToArray()),
+                Mentors = new List<Mentor>() { faker.Random.ArrayElement(Mentors.ToArray()) }
+            };
         }
 
         private void GenerateInitialData(int mentorCount)
