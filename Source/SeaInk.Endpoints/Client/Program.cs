@@ -28,11 +28,17 @@ namespace SeaInk.Endpoints.Client
             
             builder.Services.AddSingleton(_ => new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            builder.Services.AddScoped<MentorClient>();
+            RegisterApiClients(builder);
 
             builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();
+        }
+
+        private static void RegisterApiClients(WebAssemblyHostBuilder builder)
+        {
+            builder.Services.AddScoped<MentorClient>();
+            builder.Services.AddScoped<SubjectClient>();
         }
     }
 }
