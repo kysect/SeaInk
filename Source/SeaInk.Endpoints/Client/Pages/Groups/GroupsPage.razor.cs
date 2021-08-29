@@ -17,7 +17,6 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         private int _selectedSubjectId;
 
         private IReadOnlyList<DivisionDto> _divisions;
-        private int _selectedDivisionId;
 
         private IReadOnlyList<StudyGroupDto> _groups;
         private string _selectedGroupId;
@@ -43,7 +42,6 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
 
         private void OnSelectedDivisionChanged(int divisionId)
         {
-            _selectedDivisionId = divisionId;
             _groups = _divisions
                 .Where(d => d.Id == divisionId)
                 .SelectMany(d => d.StudyGroupSubjects)

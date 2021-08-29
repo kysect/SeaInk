@@ -35,7 +35,6 @@ namespace Infrastructure.APIs
         private int _getStudyAssignmentCallCount;
         private int _getSubjectCallCount;
         private int _getStudentAssignmentProgressCallCount;
-        private int _getDivisionCallCount;
 
         private int _saveUserCallCount;
         private int _saveStudentCallCount;
@@ -64,7 +63,6 @@ namespace Infrastructure.APIs
         public int GetStudyAssignmentCallCount => _getStudyAssignmentCallCount;
         public int GetSubjectCallCount => _getSubjectCallCount;
         public int GetStudentAssignmentProgressCallCount => _getStudentAssignmentProgressCallCount;
-        public int GetDivisionCallCount => _getDivisionCallCount;
 
         public int SaveUserCallCount => _saveUserCallCount;
         public int SaveStudentCallCount => _saveStudentCallCount;
@@ -266,10 +264,6 @@ namespace Infrastructure.APIs
         public StudyGroupSubject GetStudyGroupSubject(int mentorId, int subjectId)
         {
             throw new NotImplementedException();
-            //Interlocked.Increment(ref _totalCallCount);
-            //Interlocked.Increment(ref _getDivisionCallCount);
-            //Log?.Invoke("Got division");
-            //return Divisions.SingleOrDefault(d => d.Mentor.UniversityId == mentorId && d.Subject.UniversityId == subjectId);
         }
 
         public void SaveUser(User user)

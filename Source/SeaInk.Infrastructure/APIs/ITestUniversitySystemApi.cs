@@ -28,7 +28,6 @@ namespace Infrastructure.APIs
         int GetStudyAssignmentCallCount { get; }
         int GetSubjectCallCount { get; }
         int GetStudentAssignmentProgressCallCount { get; }
-        int GetDivisionCallCount { get; }
         
         int SaveUserCallCount { get; }
         int SaveStudentCallCount { get; }
