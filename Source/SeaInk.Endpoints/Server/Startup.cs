@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SeaInk.Endpoints.Server.Authorization;
 
 namespace SeaInk.Endpoints.Server
 {
@@ -24,12 +25,15 @@ namespace SeaInk.Endpoints.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSwaggerGen();
+
+            services.ConfigureIdentityFramework();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext databaseContext)
         {
             DatabaseContext.Seed(databaseContext);
+            app.ConfigureIdentityFramework();
             
             if (env.IsDevelopment())
             {
