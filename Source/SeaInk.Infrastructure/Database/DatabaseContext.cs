@@ -17,24 +17,24 @@ namespace Infrastructure.Database
         public DbSet<StudyAssignment> StudyAssignments { get; private set; }
         public DbSet<StudentAssignmentProgress> StudentAssignmentProgresses { get; private set; }
 
-        public DatabaseContext(DbContextOptions options): base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options): base(options)
         {
             Database.EnsureCreated();
         }
 
         public static DatabaseContext GetTestContext(string name)
         {
-            DbContextOptions options = GetTestOptions(name);
+            DbContextOptions<DatabaseContext> options = GetTestOptions(name);
 
             return new DatabaseContext(options);
         }
 
-        public static DbContextOptions GetTestOptions(string name)
+        public static DbContextOptions<DatabaseContext> GetTestOptions(string name)
         {
-            DbContextOptions options = ConfigureTestBuilder(new DbContextOptionsBuilder(), name)
-                .Options;
+            var builder = new DbContextOptionsBuilder<DatabaseContext>();
+            ConfigureTestBuilder(builder, name);
 
-            return options;
+            return builder.Options;
         }
 
         public static DbContextOptionsBuilder ConfigureTestBuilder(DbContextOptionsBuilder builder, string name)
