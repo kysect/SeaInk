@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using MoreLinq;
-using SeaInk.Endpoints.Client.Client;
-using SeaInk.Endpoints.Shared.Dto;
+using SeaInk.Endpoints.Sdk;
 
 namespace SeaInk.Endpoints.Client.Pages.Groups
 {
@@ -27,8 +25,8 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            _currentMentor = await Client.GetCurrentMentorAsync();
-            _divisions = await Client.GetDivisionsAsync(_currentMentor.Id);
+            _currentMentor = await Client.CurrentAsync();
+            _divisions = (await Client.DivisionsAsync(_currentMentor.Id)).ToList();
             _subjects = _currentMentor.StudyGroupSubjects.Select(sgs => sgs.Subject).ToList();
 
             if (_subjects.Count != 0)
@@ -51,7 +49,8 @@ namespace SeaInk.Endpoints.Client.Pages.Groups
                 .SelectMany(d => d.StudyGroupSubjects)
                 .Where(sgs => sgs.Subject.Id == _selectedSubjectId)
                 .Select(sgs => sgs.StudyGroup)
-                .DistinctBy(g => g.Id)
+                .GroupBy(g => g.Id)
+                .Select(gg => gg.First())
                 .ToList();
 
             if (_groups.Count == 0)
