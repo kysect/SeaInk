@@ -20,14 +20,14 @@ namespace SeaInk.Endpoints.Server.Controllers
 
         //TODO: Proper current mentor
         [HttpGet("current")]
-        public IActionResult GetCurrentMentor()
+        public ActionResult<MentorDto> GetCurrentMentor()
         {
             Mentor mentor = _databaseContext.Mentors.MaxBy(m => m.StudyGroupSubjects.Count);
             return Ok(mentor.ToDto());
         }
 
         [HttpGet("{mentorId:int}")]
-        public IActionResult GetMentor(int mentorId)
+        public ActionResult<MentorDto> GetMentor(int mentorId)
         {
             Mentor mentor = _databaseContext.Mentors.Find(mentorId);
             if (mentor is null)
@@ -37,7 +37,7 @@ namespace SeaInk.Endpoints.Server.Controllers
         }
 
         [HttpGet("{mentorId:int}/subjects")]
-        public IActionResult GetSubjects(int mentorId)
+        public ActionResult<List<SubjectDto>> GetSubjects(int mentorId)
         {
             Mentor mentor = _databaseContext.Mentors.Find(mentorId);
             if (mentor is null)
