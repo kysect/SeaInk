@@ -1,6 +1,7 @@
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,19 +22,19 @@ namespace SeaInk.Endpoints.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureIdentityFramework();
+
             services.AddDbContext<DatabaseContext>(builder => DatabaseContext.ConfigureTestBuilder(builder, "SeaInk"));
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSwaggerGen();
 
-            services.ConfigureIdentityFramework();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext databaseContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext databaseContext, IdentityDbContext identityDbContext, UserManager<IdentityUser> userManager)
         {
             DatabaseContext.Seed(databaseContext);
-            app.ConfigureIdentityFramework();
             
             if (env.IsDevelopment())
             {
@@ -57,6 +58,9 @@ namespace SeaInk.Endpoints.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.ConfigureIdentityFramework();
+            identityDbContext.SeedUsers(userManager, databaseContext);
 
             app.UseEndpoints(endpoints =>
             {

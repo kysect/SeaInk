@@ -13,6 +13,7 @@ namespace SeaInk.Endpoints.Server.Authorization
             services
                 .AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("identity_db"))
                 .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>();
 
             services
