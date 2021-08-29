@@ -17,9 +17,5 @@
     <ProjectReference Include="..\Client\SeaInk.Endpoints.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 
 </Project>
