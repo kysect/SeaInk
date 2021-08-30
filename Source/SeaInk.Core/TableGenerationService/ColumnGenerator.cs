@@ -12,67 +12,67 @@ namespace SeaInk.Core.TableGenerationService
 {
     public class ColumnGenerator
     {
-        public ColumnConfiguration ColumnConfiguration { get; }
-        
-        public Sheet Sheet { get; }
+        private readonly ColumnConfiguration _solumnConfiguration;
+
+        private readonly Sheet _sheet;
 
         public ColumnGenerator(ColumnConfiguration columnConfiguration, Sheet sheet)
         {
-            ColumnConfiguration = columnConfiguration;
-            Sheet = sheet;
+            _solumnConfiguration = columnConfiguration;
+            _sheet = sheet;
         }
         
         public void CreateColumn()
         {
-            Sheet.SetRangeStyle(ColumnConfiguration.Range, new DefaultCellStyle
+            _sheet.SetRangeStyle(_solumnConfiguration.Range, new DefaultCellStyle
             {
                 BorderStyle = new BorderStyle(new LineConfiguration(Color.Black, LineStyle.Bold))
             });
             
-            Sheet[ColumnConfiguration.Range] = new List<IReadOnlyList<object>>
+            _sheet[_solumnConfiguration.Range] = new List<IReadOnlyList<object>>
             {
-                new List<object> { ColumnConfiguration.Title }
+                new List<object> { _solumnConfiguration.Title }
             };
             
-            var dataIndex = new SheetIndexRange(new SheetIndex(ColumnConfiguration.Range.From.Column, new RowIndex(2)));
-            Sheet[dataIndex] = new List<IReadOnlyList<object>>
+            var dataIndex = new SheetIndexRange(new SheetIndex(_solumnConfiguration.Range.From.Column, new RowIndex(2)));
+            _sheet[dataIndex] = new List<IReadOnlyList<object>>
             {
-                new List<object> { ColumnConfiguration.DeadLine }
+                new List<object> { _solumnConfiguration.DeadLine }
             };
         }
 
         public void UpdateColumn(IReadOnlyList<string> students)
         {
-            switch (ColumnConfiguration.Type)
+            switch (_solumnConfiguration.Type)
             {
                 case ColumnType.Milestones:
-                    Sheet.SetRangeStyle(ColumnConfiguration.Range, new DefaultCellStyle
+                    _sheet.SetRangeStyle(_solumnConfiguration.Range, new DefaultCellStyle
                     {
                         BorderStyle = new BorderStyle(new LineConfiguration(Color.Black, LineStyle.Bold))
                     });
                     break;
                 
                 case ColumnType.Results:
-                    Sheet.SetRangeStyle(ColumnConfiguration.Range, new DefaultCellStyle
+                    _sheet.SetRangeStyle(_solumnConfiguration.Range, new DefaultCellStyle
                     {
                         BorderStyle = new BorderStyle(new LineConfiguration(Color.Black, LineStyle.Bold))
                     });
                     break;
                 
                 case ColumnType.Ordinaries:
-                    Sheet.SetRangeStyle(ColumnConfiguration.Range, new DefaultCellStyle
+                    _sheet.SetRangeStyle(_solumnConfiguration.Range, new DefaultCellStyle
                     {
                         BorderStyle = new BorderStyle(new LineConfiguration(Color.Black, LineStyle.Light))
                     });
                     break;
                 
                 case ColumnType.Students:
-                    Sheet.SetRangeStyle(ColumnConfiguration.Range, new DefaultCellStyle
+                    _sheet.SetRangeStyle(_solumnConfiguration.Range, new DefaultCellStyle
                     {
                         BorderStyle = new BorderStyle(new LineConfiguration(Color.Black, LineStyle.Light))
                     });
 
-                    Sheet[ColumnConfiguration.Range] = students.Select(s => new List<object> {s}).ToList();
+                    _sheet[_solumnConfiguration.Range] = students.Select(s => new List<object> {s}).ToList();
                     //Лямбда ибо в Гошенной библиотеке по другому не работает -_-
                     break;
             }

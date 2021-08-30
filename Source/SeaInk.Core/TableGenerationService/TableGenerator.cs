@@ -7,24 +7,24 @@ namespace SeaInk.Core.TableGenerationService
 {
     public class TableGenerator
     {
-        public SheetConfiguration SheetConfiguration { get; }
-        public IReadOnlyList<string> Students { get; }
+        private readonly SheetConfiguration _sheetConfiguration;
+        private readonly IReadOnlyList<string> _students;
 
-        public TableGenerator(SheetConfiguration sheetConfiguration, List<string> students)
+        public TableGenerator(SheetConfiguration sheetConfiguration, IReadOnlyList<string> students)
         {
-            SheetConfiguration = sheetConfiguration;
-            Students = students;
+            _sheetConfiguration = sheetConfiguration;
+            _students = students;
         }
         
         public async Task CreateTable()
         {
-            var sheet = new SheetGenerator(SheetConfiguration);
+            var sheet = new SheetGenerator(_sheetConfiguration);
             
             await sheet.AuthorizeSheet();
 
             sheet.CreateSheet();
 
-            sheet.AddStudents(Students);
+            sheet.AddStudents(_students);
         }
     }
 }
