@@ -41,7 +41,7 @@ namespace SeaInk.Core.TableGenerationService
             };
         }
 
-        public void UpdateColumn(List<string> students)
+        public void UpdateColumn(IReadOnlyList<string> students)
         {
             switch (ColumnConfiguration.Type)
             {

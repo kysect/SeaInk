@@ -5,7 +5,7 @@ namespace SeaInk.Core.Models
     public class SheetConfiguration
     {
         public string Title { get; }
-        public List<ColumnConfiguration> Columns { get; }
+        public IReadOnlyList<ColumnConfiguration> Columns { get; }
 
         public SheetConfiguration(string title, List<ColumnConfiguration> columns)
         {
