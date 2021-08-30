@@ -17,13 +17,13 @@ namespace SeaInk.Core.TableGenerationService
 {
     public class SheetGenerator
     {
-        public SheetConfiguration SheetConfiguration { get; }
-        
-        public Sheet Sheet { get; set; }
+        private readonly SheetConfiguration _sheetConfiguration;
+
+        private Sheet _sheet;
 
         public SheetGenerator(SheetConfiguration sheetConfiguration)
         {
-            SheetConfiguration = sheetConfiguration;
+            _sheetConfiguration = sheetConfiguration;
         }
 
         public async Task AuthorizeSheet()
@@ -42,37 +42,37 @@ namespace SeaInk.Core.TableGenerationService
             var configuration = new ListActionConfiguration(condition);
             var folder = (Folder) driveService.FindFiles(configuration).Result.Single();
 
-            var sheetDescriptor = new FileDescriptor(SheetConfiguration.Title, FileType.Spreadsheet, folder);
+            var sheetDescriptor = new FileDescriptor(_sheetConfiguration.Title, FileType.Spreadsheet, folder);
             var sheetFile = driveService.CreateFile(sheetDescriptor);
             var spreadsheet = sheetsService.GetSpreadsheet(sheetFile);
-            Sheet = spreadsheet[0];
+            _sheet = spreadsheet[0];
         }
         
         public void CreateSheet()
         {
-            for (var i = 0; i < SheetConfiguration.Columns.Count; i++)
+            for (var i = 0; i < _sheetConfiguration.Columns.Count; i++)
             {
-                SheetConfiguration.Columns[i].Range = new SheetIndexRange
+                _sheetConfiguration.Columns[i].Range = new SheetIndexRange
                 (
                     new SheetIndex(new ColumnIndex(1 + i), new RowIndex(3))
                 );
                 
-                var column = new ColumnGenerator(SheetConfiguration.Columns[i], Sheet);
+                var column = new ColumnGenerator(_sheetConfiguration.Columns[i], _sheet);
                 column.CreateColumn();
             }
         }
 
         public void AddStudents(IReadOnlyList<string> students)
         {
-            for (var i = 0; i < SheetConfiguration.Columns.Count; i++)
+            for (var i = 0; i < _sheetConfiguration.Columns.Count; i++)
             {
-                SheetConfiguration.Columns[i].Range = new SheetIndexRange
+                _sheetConfiguration.Columns[i].Range = new SheetIndexRange
                 (
                     new SheetIndex(new ColumnIndex(1 + i), new RowIndex(4)),
                     new SheetIndex(new ColumnIndex(1 + i), new RowIndex(4 + students.Count - 1))
                 );
                 
-                ColumnGenerator column = new ColumnGenerator(SheetConfiguration.Columns[i], Sheet);
+                ColumnGenerator column = new ColumnGenerator(_sheetConfiguration.Columns[i], _sheet);
                 column.UpdateColumn(students);
             }
         }
