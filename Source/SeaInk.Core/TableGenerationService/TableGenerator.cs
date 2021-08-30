@@ -8,7 +8,7 @@ namespace SeaInk.Core.TableGenerationService
     public class TableGenerator
     {
         public SheetConfiguration SheetConfiguration { get; }
-        public List<string> Students { get; }
+        public IReadOnlyList<string> Students { get; }
 
         public TableGenerator(SheetConfiguration sheetConfiguration, List<string> students)
         {

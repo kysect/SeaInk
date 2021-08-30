@@ -62,7 +62,7 @@ namespace SeaInk.Core.TableGenerationService
             }
         }
 
-        public void AddStudents(List<string> students)
+        public void AddStudents(IReadOnlyList<string> students)
         {
             for (var i = 0; i < SheetConfiguration.Columns.Count; i++)
             {
