@@ -16,8 +16,7 @@ namespace SeaInk.Core.TableGeneration.ColumnConfigurations
         private readonly Func<SheetIndex, SheetIndex, string> _dataFactory;
         private readonly int _size;
 
-
-
+        
         public ICellStyle HeaderCellStyle { get; set; } = new DefaultCellStyle
         {
             BorderStyle = new BorderStyle(new LineConfiguration(Color.Black, LineStyle.Bold))
@@ -46,6 +45,7 @@ namespace SeaInk.Core.TableGeneration.ColumnConfigurations
             _dataFactory = dataFactory;
             _size = size;
         }
+        
         
         protected override SheetIndex DrawHeader(Sheet sheet, SheetIndex start)
         {

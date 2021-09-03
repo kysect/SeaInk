@@ -5,6 +5,12 @@ namespace SeaInk.Core.TableGeneration.ColumnConfigurations
 {
     public abstract class ColumnConfigurationBase
     {
+        /// <summary>
+        /// Method draws a column with column's sheet and start index
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <param name="start"></param>
+        /// <returns>index for next column</returns>
         public SheetIndex Draw(Sheet sheet, SheetIndex start)
         {
             SheetIndex index = DrawHeader(sheet, start);
