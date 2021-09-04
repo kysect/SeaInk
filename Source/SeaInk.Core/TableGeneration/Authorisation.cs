@@ -25,44 +25,23 @@ namespace SeaInk.Core.TableGeneration
                 new[] {Scope.Drive, Scope.Spreadsheets});
         }
 
-        protected override DriveService GetDriveService(AuthorisationService authorisation)
+        protected override async Task<File> GetFile(AuthorisationService authorisationService)
         {
-            return new DriveService(authorisation);
-        }
-
-        protected override SheetsService GetSheetService(AuthorisationService authorisation)
-        {
-            return new SheetsService(authorisation);
-        }
-
-        protected override QueryCondition GetQueryCondition()
-        {
-            return QueryTerm.Name.Equal("Test Folder");
-        }
-
-        protected override ListActionConfiguration GetListActionConfiguration(QueryCondition queryCondition)
-        {
-            return new ListActionConfiguration(queryCondition);
-        }
-
-        protected override async Task<Folder> GetFolder(DriveService driveService, ListActionConfiguration listActionConfiguration)
-        {
+            var driveService = new DriveService(authorisationService);
+            var queryCondition = QueryTerm.Name.Equal("Test Folder");
+            var listActionConfiguration = new ListActionConfiguration(queryCondition);
+            
             var findFiles = await driveService.FindFilesAsync(listActionConfiguration);
-            return (Folder) findFiles.Result.Single();
-        }
-
-        protected override FileDescriptor GetFileDescriptor(Folder folder)
-        {
-            return new FileDescriptor("Test sheet", FileType.Spreadsheet, folder);
-        }
-
-        protected override async Task<File> GetFile(DriveService driveService, FileDescriptor fileDescriptor)
-        {
+            var folder = (Folder) findFiles.Result.Single();
+            var fileDescriptor = new FileDescriptor("Test sheet", FileType.Spreadsheet, folder);
+            
             return await driveService.CreateFileAsync(fileDescriptor);
         }
-
-        protected override async Task<Spreadsheet> GetSpreadsheet(SheetsService sheetsService, File file)
+        
+        protected override async Task<Spreadsheet> GetSpreadsheet(AuthorisationService authorisation, File file)
         {
+            var sheetsService = new SheetsService(authorisation);
+            
             return await sheetsService.GetSpreadsheetAsync(file);
         }
     }

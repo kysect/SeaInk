@@ -5,6 +5,6 @@ namespace SeaInk.Core.TableGeneration.TableConfigurations
 {
     public interface ITableConfiguration
     {
-        void Draw(Sheet sheet, SheetIndex start);
+        SheetIndex Draw(Sheet sheet, SheetIndex start);
     }
 }
