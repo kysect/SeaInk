@@ -6,7 +6,7 @@ namespace SeaInk.Core.TableGeneration.ColumnConfigurations
     public abstract class ColumnConfigurationBase
     {
         /// <summary>
-        /// Method draws a column with column's sheet and start index
+        /// Method draws a column from column's start index
         /// </summary>
         /// <param name="sheet"></param>
         /// <param name="start"></param>

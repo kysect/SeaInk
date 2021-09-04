@@ -50,7 +50,7 @@ namespace SeaInk.Core.TableGeneration.ColumnConfigurations
         protected override SheetIndex DrawHeader(Sheet sheet, SheetIndex start)
         {
             if (_deadline is not null)
-                sheet[start] = _deadline.Value.ToString("DD:MM");
+                sheet[start] = _deadline.Value.ToString("M");
 
             start = start with
             {
