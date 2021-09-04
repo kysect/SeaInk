@@ -69,7 +69,10 @@ namespace SeaInk.Core.TableGeneration.ColumnConfigurations
 
         protected override SheetIndex DrawBody(Sheet sheet, SheetIndex start)
         {
-            var range = new SheetIndexRange(start, start with {Row = start.Row + _size - 1});
+            var range = new SheetIndexRange(start, start with
+            {
+                Row = start.Row + _size - 1
+            });
             
             sheet.SetRangeStyle(range, BodyCellStyle);
 
