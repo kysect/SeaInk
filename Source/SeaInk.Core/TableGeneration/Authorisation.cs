@@ -25,15 +25,15 @@ namespace SeaInk.Core.TableGeneration
                 new[] {Scope.Drive, Scope.Spreadsheets});
         }
 
-        public async Task<File> GetFile(AuthorisationService authorisationService)
+        public async Task<File> GetFile(AuthorisationService authorisationService, string folderName, string fileName)
         {
             var driveService = new DriveService(authorisationService);
-            var queryCondition = QueryTerm.Name.Equal("Test Folder");
+            var queryCondition = QueryTerm.Name.Equal(folderName);
             var listActionConfiguration = new ListActionConfiguration(queryCondition);
             
             var findFiles = await driveService.FindFilesAsync(listActionConfiguration);
             var folder = (Folder) findFiles.Result.Single();
-            var fileDescriptor = new FileDescriptor("Test sheet", FileType.Spreadsheet, folder);
+            var fileDescriptor = new FileDescriptor(fileName, FileType.Spreadsheet, folder);
             
             return await driveService.CreateFileAsync(fileDescriptor);
         }
