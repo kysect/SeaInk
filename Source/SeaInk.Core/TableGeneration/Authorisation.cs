@@ -14,9 +14,9 @@ using File = Kysect.CentumFramework.Drive.Entities.File;
 
 namespace SeaInk.Core.TableGeneration
 {
-    public class Authorisation : AuthorisationBase
+    public class Authorisation
     {
-        protected override async Task<AuthorisationService> GetAuthorisationService()
+        public async Task<AuthorisationService> GetAuthorisationService()
         {
             return await AuthorisationService.CreateAsync("Test Application",
                 "user",
@@ -25,7 +25,7 @@ namespace SeaInk.Core.TableGeneration
                 new[] {Scope.Drive, Scope.Spreadsheets});
         }
 
-        protected override async Task<File> GetFile(AuthorisationService authorisationService)
+        public async Task<File> GetFile(AuthorisationService authorisationService)
         {
             var driveService = new DriveService(authorisationService);
             var queryCondition = QueryTerm.Name.Equal("Test Folder");
@@ -38,11 +38,12 @@ namespace SeaInk.Core.TableGeneration
             return await driveService.CreateFileAsync(fileDescriptor);
         }
         
-        protected override async Task<Spreadsheet> GetSpreadsheet(AuthorisationService authorisation, File file)
+        public async Task<Sheet> GetSheet(AuthorisationService authorisationService, File file, int sheetNumber)
         {
-            var sheetsService = new SheetsService(authorisation);
+            var sheetsService = new SheetsService(authorisationService);
             
-            return await sheetsService.GetSpreadsheetAsync(file);
+            var spreadsheet = await sheetsService.GetSpreadsheetAsync(file);
+            return spreadsheet[sheetNumber];
         }
     }
 }

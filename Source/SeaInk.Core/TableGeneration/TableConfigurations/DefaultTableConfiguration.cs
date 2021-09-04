@@ -13,13 +13,10 @@ namespace SeaInk.Core.TableGeneration.TableConfigurations
         {
             _columnConfigurations = columnConfigurations;
         }
-
-        /// <summary>
-        /// Method draws a table from column's start index
-        /// </summary>
-        /// <param name="sheet"></param>
-        /// <param name="start"></param>
-        /// <returns>index for next column</returns>
+        
+        /// <param name="sheet">sheet for draw a table</param>
+        /// <param name="start">start index for draw a table</param>
+        /// <returns>index for next column after a table</returns>
         public SheetIndex Draw(Sheet sheet, SheetIndex start)
         {
             foreach(var column in _columnConfigurations)

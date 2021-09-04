@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
+using Google.Apis.Sheets.v4;
 using Kysect.CentumFramework.Sheets.Entities;
 using Kysect.CentumFramework.Sheets.Models.CellStyle;
 using Kysect.CentumFramework.Sheets.Models.CellStyle.Enums;
@@ -25,11 +26,18 @@ namespace SeaInk.Tests.Core
         public async Task Authorisation()
         {
             _authorisation = new Authorisation();
-            _sheet = await _authorisation.AuthorizeSheet();
+            
+            var authorisation = new Authorisation();
+            var authorisationService = await authorisation.GetAuthorisationService();
+            var file = await authorisation.GetFile(authorisationService);
+            _sheet = await authorisation.GetSheet(authorisationService, file, 0);
+            
             _students = new List<string>
                 {"Ген Генадий Генадиев", "Вал Валерий Валериев", "Гош Гошев Гошевич"};
+            
             _labs = new List<string>
                 {"Лаб 1", "Лаб 2", "Лаб 3"};
+            
             _deadLines = new List<DateTime>
                 {new DateTime(2021, 09, 04), new DateTime(2021, 09, 08), new DateTime(2021, 09, 12)};
         }
