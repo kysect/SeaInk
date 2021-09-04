@@ -29,7 +29,7 @@ namespace SeaInk.Tests.Core
             
             var authorisation = new Authorisation();
             var authorisationService = await authorisation.GetAuthorisationService();
-            var file = await authorisation.GetFile(authorisationService);
+            var file = await authorisation.GetFile(authorisationService, "Test Folder", "Test File");
             _sheet = await authorisation.GetSheet(authorisationService, file, 0);
             
             _students = new List<string>
