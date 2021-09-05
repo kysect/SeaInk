@@ -1,14 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Google.Apis.Sheets.v4;
+using Kysect.CentumFramework.Drive;
+using Kysect.CentumFramework.Drive.Actions.Models;
+using Kysect.CentumFramework.Drive.Entities;
+using Kysect.CentumFramework.Drive.Extensions;
+using Kysect.CentumFramework.Drive.Models;
+using Kysect.CentumFramework.Drive.Models.Query;
+using Kysect.CentumFramework.Sheets;
 using Kysect.CentumFramework.Sheets.Entities;
 using Kysect.CentumFramework.Sheets.Models.CellStyle;
 using Kysect.CentumFramework.Sheets.Models.CellStyle.Enums;
 using Kysect.CentumFramework.Sheets.Models.Indices;
+using Kysect.CentumFramework.Utility.Authorization;
 using NUnit.Framework;
-using SeaInk.Core.TableGeneration;
 using SeaInk.Core.TableGeneration.ColumnConfigurations;
 using SeaInk.Core.TableGeneration.TableConfigurations;
 
@@ -17,7 +25,6 @@ namespace SeaInk.Tests.Core
     [TestFixture]
     public class TableTests
     {
-        private Authorisation _authorisation;
         private Sheet _sheet;
         private List<string> _students, _labs;
         private List<DateTime> _deadLines;
@@ -25,13 +32,30 @@ namespace SeaInk.Tests.Core
         [OneTimeSetUp]
         public async Task Authorisation()
         {
-            _authorisation = new Authorisation();
+            var authorisationService = await AuthorisationService.CreateAsync("Test Application",
+                "user",
+                new FileStream("Secrets.json", FileMode.Open, FileAccess.Read),
+                "token.json",
+                new[] {Scope.Drive, Scope.Spreadsheets});
             
-            var authorisation = new Authorisation();
-            var authorisationService = await authorisation.GetAuthorisationService();
-            var file = await authorisation.GetFile(authorisationService, "Test Folder", "Test File");
-            _sheet = await authorisation.GetSheet(authorisationService, file, 0);
+            var driveService = new DriveService(authorisationService);
+            var queryCondition = QueryTerm.Name.Equal("Test Folder");
+            var listActionConfiguration = new ListActionConfiguration(queryCondition);
             
+            var findFiles = await driveService.FindFilesAsync(listActionConfiguration);
+            var folder = (Folder) findFiles.Result.Single();
+            var fileDescriptor = new FileDescriptor("Test File", FileType.Spreadsheet, folder);
+            
+            var file = await driveService.CreateFileAsync(fileDescriptor);
+            var sheetsService = new SheetsService(authorisationService);
+            
+            var spreadsheet = await sheetsService.GetSpreadsheetAsync(file);
+            _sheet = spreadsheet[0];
+        }
+
+        [OneTimeSetUp]
+        public void Initialization()
+        {
             _students = new List<string>
                 {"Ген Генадий Генадиев", "Вал Валерий Валериев", "Гош Гошев Гошевич"};
             
