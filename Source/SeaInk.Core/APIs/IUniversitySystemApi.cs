@@ -1,4 +1,5 @@
-﻿using SeaInk.Core.Entities;
+﻿using System.Collections.Generic;
+using SeaInk.Core.Entities;
 
 namespace SeaInk.Core.APIs
 {
@@ -11,7 +12,8 @@ namespace SeaInk.Core.APIs
         StudyAssignment GetStudyAssignment(int id);
         Subject GetSubject(int id);
         StudentAssignmentProgress GetStudentAssignmentProgress(int studentId, int assignmentId);
-        StudyGroupSubject GetStudyGroupSubject(int mentorId, int subjectId);
+        Division GetDivision(int mentorId, int subjectId);
+        List<StudyGroupSubject> GetStudyGroupSubjects(int mentorId, int subjectId);
 
         void SaveUser(User user);
         void SaveStudent(Student student);

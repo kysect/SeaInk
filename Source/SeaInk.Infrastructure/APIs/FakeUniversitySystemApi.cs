@@ -25,6 +25,7 @@ namespace Infrastructure.APIs
         private readonly Faker<Subject> _subjectFaker;
         private readonly Faker<StudentAssignmentProgress> _studentAssignmentProgressFaker;
         private readonly Faker<Division> _divisionFaker;
+        private readonly Faker<StudyGroupSubject> _studyGroupFaker; 
 
         private int _totalCallCount;
 
@@ -35,6 +36,7 @@ namespace Infrastructure.APIs
         private int _getStudyAssignmentCallCount;
         private int _getSubjectCallCount;
         private int _getStudentAssignmentProgressCallCount;
+        private int _getDivisionCallCount;
 
         private int _saveUserCallCount;
         private int _saveStudentCallCount;
@@ -53,6 +55,7 @@ namespace Infrastructure.APIs
         public List<Subject> Subjects { get; } = new();
         public List<StudentAssignmentProgress> StudentAssignmentProgresses { get; } = new();
         public List<Division> Divisions { get; } = new();
+        public List<StudyGroupSubject> StudyGroupSubjects { get; } = new();
 
         public int TotalCallCount => _totalCallCount;
 
@@ -63,6 +66,7 @@ namespace Infrastructure.APIs
         public int GetStudyAssignmentCallCount => _getStudyAssignmentCallCount;
         public int GetSubjectCallCount => _getSubjectCallCount;
         public int GetStudentAssignmentProgressCallCount => _getStudentAssignmentProgressCallCount;
+        public int GetDivisionCallCount => _getDivisionCallCount;
 
         public int SaveUserCallCount => _saveUserCallCount;
         public int SaveStudentCallCount => _saveStudentCallCount;
@@ -163,30 +167,25 @@ namespace Infrastructure.APIs
                              f.Random.Double(p.Assignment.MinPoints, p.Assignment.MaxPoints)
                          ));
 
+            _studyGroupFaker = new Faker<StudyGroupSubject>()
+                .CustomInstantiator(faker => new StudyGroupSubject()
+                {
+                    Id = ++faker.IndexFaker,
+                    StudyGroup = faker.Random.ArrayElement(Groups.ToArray()),
+                    Subject = faker.Random.ArrayElement(Subjects.ToArray()),
+                    Mentors = new List<Mentor> { faker.Random.ArrayElement(Mentors.ToArray()) }
+                });
+
+
             _divisionFaker = new Faker<Division>("ru")
                 .CustomInstantiator(faker => new Division
                 {
                     SpreadsheetId = faker.Internet.Url(),
-                    StudyGroupSubjects = faker.Random
-                        .ArrayElements(Groups.ToArray(), faker.Random.Int(1, 4))
-                        .Select(group => CreateStudyGroupSubject(faker, group))
-                        .ToList()
+                    StudyGroupSubjects = _studyGroupFaker.Generate(faker.Random.Int(1,4))
                 })
                 .FinishWith((_, d) => { d.StudyGroupSubjects.ForEach(sgs => sgs.Mentors.ForEach(m => m.StudyGroupSubjects.Add(sgs))); });
 
             GenerateInitialData(mentorCount);
-        }
-
-        private StudyGroupSubject CreateStudyGroupSubject(Faker faker, StudyGroup group)
-        {
-            int newId = ++faker.IndexFaker;
-            return new StudyGroupSubject()
-            {
-                Id = newId,
-                StudyGroup = group,
-                Subject = faker.Random.ArrayElement(Subjects.ToArray()),
-                Mentors = new List<Mentor>() { faker.Random.ArrayElement(Mentors.ToArray()) }
-            };
         }
 
         private void GenerateInitialData(int mentorCount)
@@ -207,6 +206,7 @@ namespace Infrastructure.APIs
             Subjects.AddRange(_subjectFaker.Generate(subjectCount));
             StudentAssignmentProgresses.AddRange(_studentAssignmentProgressFaker.Generate(studentAssignmentProgressCount));
             Divisions.AddRange(_divisionFaker.Generate(divisionCount));
+            StudyGroupSubjects.AddRange(Divisions.SelectMany(d => d.StudyGroupSubjects));
         }
 
         public User GetUser(int id)
@@ -266,10 +266,23 @@ namespace Infrastructure.APIs
                 .SingleOrDefault(p => p.Student.UniversityId == studentId && p.Assignment.UniversityId == assignmentId);
         }
 
-        //TODO: rework implementation
-        public StudyGroupSubject GetStudyGroupSubject(int mentorId, int subjectId)
+        public Division GetDivision(int mentorId, int subjectId)
         {
-            throw new NotImplementedException();
+            Interlocked.Increment(ref _totalCallCount);
+            Interlocked.Increment(ref _getDivisionCallCount);
+            Log?.Invoke("Got division");
+            return Divisions
+                .SingleOrDefault(d => d.StudyGroupSubjects
+                    .Where(sgs => sgs.Subject.Id == subjectId)
+                    .Any(sgs => sgs.Mentors.Any(m => m.Id == mentorId)));
+        }
+
+        public List<StudyGroupSubject> GetStudyGroupSubjects(int mentorId, int subjectId)
+        {
+            return StudyGroupSubjects
+                .Where(sgs => sgs.Subject.Id == subjectId)
+                .Where(sgs => sgs.Mentors.Any(m => m.Id == mentorId))
+                .ToList();
         }
 
         public void SaveUser(User user)
