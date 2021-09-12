@@ -8,9 +8,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         int Id,
         StudyGroupDto StudyGroup,
         SubjectDto Subject,
-        List<int> MentorIds)
-    {
-    }
+        List<int> MentorIds);
 
     public static class StudyGroupSubjectExtension
     {
