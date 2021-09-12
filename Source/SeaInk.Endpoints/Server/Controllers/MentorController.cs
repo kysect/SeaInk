@@ -22,7 +22,9 @@ namespace SeaInk.Endpoints.Server.Controllers
         [HttpGet("current")]
         public ActionResult<MentorDto> GetCurrentMentor()
         {
-            Mentor mentor = _databaseContext.Mentors.MaxBy(m => m.StudyGroupSubjects.Count);
+            Mentor mentor = _databaseContext.Mentors
+                .MaxBy(m => m.Divisions.Count)
+                .First();
             return Ok(mentor.ToDto());
         }
 
