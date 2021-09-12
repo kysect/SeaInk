@@ -25,7 +25,7 @@ namespace Infrastructure.APIs
         private readonly Faker<Subject> _subjectFaker;
         private readonly Faker<StudentAssignmentProgress> _studentAssignmentProgressFaker;
         private readonly Faker<Division> _divisionFaker;
-        private readonly Faker<StudyGroupSubject> _studyGroupFaker; 
+        private readonly Faker<StudyGroupSubject> _studyGroupSubjectFaker; 
 
         private int _totalCallCount;
 
@@ -167,7 +167,7 @@ namespace Infrastructure.APIs
                              f.Random.Double(p.Assignment.MinPoints, p.Assignment.MaxPoints)
                          ));
 
-            _studyGroupFaker = new Faker<StudyGroupSubject>()
+            _studyGroupSubjectFaker = new Faker<StudyGroupSubject>()
                 .CustomInstantiator(faker => new StudyGroupSubject()
                 {
                     Id = ++faker.IndexFaker,
@@ -181,7 +181,7 @@ namespace Infrastructure.APIs
                 .CustomInstantiator(faker => new Division
                 {
                     SpreadsheetId = faker.Internet.Url(),
-                    StudyGroupSubjects = _studyGroupFaker.Generate(faker.Random.Int(1,4))
+                    StudyGroupSubjects = _studyGroupSubjectFaker.Generate(faker.Random.Int(1,4))
                 })
                 .FinishWith((_, d) => { d.StudyGroupSubjects.ForEach(sgs => sgs.Mentors.ForEach(m => m.StudyGroupSubjects.Add(sgs))); });
 
