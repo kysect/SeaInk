@@ -14,11 +14,14 @@ namespace SeaInk.Core.Entities
 
         public string Name { get; set; }
 
-        //Сделал это поле int дабы избежать циклической зависимости 
-        public int AdminId { get; set; }
+        //Сделал это поле int дабы избежать циклической зависимости
+        public int? AdminId { get; set; }
 
+        /// <summary>
+        /// Do not remove this attribute. Prevent circular reference
+        /// </summary>
         [NotMapped]
-        public Student Admin => Students.Single(s => s.Id == AdminId);
+        public Student Admin => AdminId is null ? null : Students.Single(s => s.Id == AdminId);
 
         public virtual List<Student> Students { get; set; } = new();
     }
