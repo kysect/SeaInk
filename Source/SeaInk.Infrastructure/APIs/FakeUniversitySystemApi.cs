@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Bogus;
 using SeaInk.Core.Entities;
 using SeaInk.Core.Models;
@@ -10,13 +9,6 @@ namespace Infrastructure.APIs
 {
     public class FakeUniversitySystemApi: ITestUniversitySystemApi
     {
-        private int _currentUserId = -1;
-        private int _currentStudentId = -1;
-        private int _currentMentorId = -1;
-        private int _currentGroupId = -1;
-        private int _currentAssignmentId = -1;
-        private int _currentSubjectId = -1;
-
         private readonly Faker<User> _userFaker;
         private readonly Faker<Student> _studentFaker;
         private readonly Faker<Mentor> _mentorFaker;
@@ -25,57 +17,16 @@ namespace Infrastructure.APIs
         private readonly Faker<Subject> _subjectFaker;
         private readonly Faker<StudentAssignmentProgress> _studentAssignmentProgressFaker;
         private readonly Faker<Division> _divisionFaker;
-        private readonly Faker<StudyGroupSubject> _studyGroupSubjectFaker; 
-
-        private int _totalCallCount;
-
-        private int _getUserCallCount;
-        private int _getStudentCallCount;
-        private int _getMentorCallCount;
-        private int _getStudyGroupCallCount;
-        private int _getStudyAssignmentCallCount;
-        private int _getSubjectCallCount;
-        private int _getStudentAssignmentProgressCallCount;
-        private int _getDivisionCallCount;
-
-        private int _saveUserCallCount;
-        private int _saveStudentCallCount;
-        private int _saveMentorCallCount;
-        private int _saveStudyGroupCallCount;
-        private int _saveStudyAssignmentCallCount;
-        private int _saveSubjectCallCount;
-        private int _saveStudentAssignmentProgressCallCount;
-        private int _saveDivisionCallCount;
 
         public List<User> Users { get; } = new();
         public List<Student> Students { get; } = new();
         public List<Mentor> Mentors { get; } = new();
         public List<StudyGroup> Groups { get; } = new();
-        public List<StudyAssignment> Assignments { get; } = new();
+        public List<StudyAssignment> StudyAssignments { get; } = new();
         public List<Subject> Subjects { get; } = new();
         public List<StudentAssignmentProgress> StudentAssignmentProgresses { get; } = new();
         public List<Division> Divisions { get; } = new();
         public List<StudyGroupSubject> StudyGroupSubjects { get; } = new();
-
-        public int TotalCallCount => _totalCallCount;
-
-        public int GetUserCallCount => _getUserCallCount;
-        public int GetStudentCallCount => _getStudentCallCount;
-        public int GetMentorCallCount => _getMentorCallCount;
-        public int GetStudyGroupCallCount => _getStudyGroupCallCount;
-        public int GetStudyAssignmentCallCount => _getStudyAssignmentCallCount;
-        public int GetSubjectCallCount => _getSubjectCallCount;
-        public int GetStudentAssignmentProgressCallCount => _getStudentAssignmentProgressCallCount;
-        public int GetDivisionCallCount => _getDivisionCallCount;
-
-        public int SaveUserCallCount => _saveUserCallCount;
-        public int SaveStudentCallCount => _saveStudentCallCount;
-        public int SaveMentorCallCount => _saveMentorCallCount;
-        public int SaveStudyGroupCallCount => _saveStudyGroupCallCount;
-        public int SaveStudyAssignmentCallCount => _saveStudyAssignmentCallCount;
-        public int SaveSubjectCallCount => _saveSubjectCallCount;
-        public int SaveStudentAssignmentProgressCallCount => _saveStudentAssignmentProgressCallCount;
-        public int SaveDivisionCallCount => _saveDivisionCallCount;
 
         public event ITestUniversitySystemApi.HandleLog Log;
 
@@ -84,7 +35,7 @@ namespace Infrastructure.APIs
             _userFaker = new Faker<User>("ru")
                 .CustomInstantiator(faker => new User
                 {
-                    UniversityId = Interlocked.Increment(ref _currentUserId),
+                    UniversityId = faker.IndexFaker,
                     FirstName = faker.Person.FirstName,
                     MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
@@ -93,7 +44,7 @@ namespace Infrastructure.APIs
             _studentFaker = new Faker<Student>("ru")
                 .CustomInstantiator(faker => new Student
                 {
-                    UniversityId = Interlocked.Increment(ref _currentStudentId),
+                    UniversityId = faker.IndexFaker,
                     FirstName = faker.Person.FirstName,
                     MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
@@ -102,7 +53,7 @@ namespace Infrastructure.APIs
             _mentorFaker = new Faker<Mentor>("ru")
                 .CustomInstantiator(faker => new Mentor
                 {
-                    UniversityId = Interlocked.Increment(ref _currentMentorId),
+                    UniversityId = faker.IndexFaker,
                     FirstName = faker.Person.FirstName,
                     MiddleName = faker.Person.UserName,
                     LastName = faker.Person.LastName
@@ -111,7 +62,7 @@ namespace Infrastructure.APIs
             _groupFaker = new Faker<StudyGroup>()
                 .CustomInstantiator(faker => new StudyGroup
                 {
-                    UniversityId = Interlocked.Increment(ref _currentGroupId),
+                    UniversityId = faker.IndexFaker,
                     Name = faker.Lorem.Letter().ToUpper() + faker.Random.Number(1000, 9999)
                 })
                 .Rules((f, g) =>
@@ -128,7 +79,7 @@ namespace Infrastructure.APIs
             _assignmentsFaker = new Faker<StudyAssignment>("ru")
                 .CustomInstantiator(faker => new StudyAssignment
                 {
-                    UniversityId = Interlocked.Increment(ref _currentAssignmentId),
+                    UniversityId = faker.IndexFaker,
                     Title = faker.Name.JobType(),
                     IsMilestone = faker.Random.Bool(),
                     MaxPoints = faker.Random.Float(5, 10),
@@ -138,11 +89,11 @@ namespace Infrastructure.APIs
             _subjectFaker = new Faker<Subject>()
                 .CustomInstantiator(faker => new Subject
                 {
-                    UniversityId = Interlocked.Increment(ref _currentSubjectId),
+                    UniversityId = faker.IndexFaker,
                     Name = faker.Name.JobArea(),
                     StartDate = faker.Date.Past(),
                     EndDate = faker.Date.Future(),
-                    Assignments = faker.Random.ArrayElements(Assignments.ToArray(), faker.Random.Int(5, 10)).ToList()
+                    Assignments = faker.Random.ArrayElements(StudyAssignments.ToArray(), faker.Random.Int(5, 10)).ToList()
                 })
                 .FinishWith((f, s) =>
                 {
@@ -157,7 +108,7 @@ namespace Infrastructure.APIs
             _studentAssignmentProgressFaker = new Faker<StudentAssignmentProgress>()
                 .CustomInstantiator(faker => new StudentAssignmentProgress
                 {
-                    Assignment = faker.Random.ArrayElement(Assignments.ToArray()),
+                    Assignment = faker.Random.ArrayElement(StudyAssignments.ToArray()),
                     Student = faker.Random.ArrayElement(Students.ToArray())
                 })
                 .RuleFor(p => p.Progress,
@@ -167,10 +118,10 @@ namespace Infrastructure.APIs
                              f.Random.Double(p.Assignment.MinPoints, p.Assignment.MaxPoints)
                          ));
 
-            _studyGroupSubjectFaker = new Faker<StudyGroupSubject>()
-                .CustomInstantiator(faker => new StudyGroupSubject()
+            Faker<StudyGroupSubject> studyGroupSubjectFaker = new Faker<StudyGroupSubject>()
+                .CustomInstantiator(faker => new StudyGroupSubject
                 {
-                    Id = ++faker.IndexFaker,
+                    Id = faker.IndexFaker,
                     StudyGroup = faker.Random.ArrayElement(Groups.ToArray()),
                     Subject = faker.Random.ArrayElement(Subjects.ToArray()),
                     Mentors = new List<Mentor> { faker.Random.ArrayElement(Mentors.ToArray()) }
@@ -180,8 +131,9 @@ namespace Infrastructure.APIs
             _divisionFaker = new Faker<Division>("ru")
                 .CustomInstantiator(faker => new Division
                 {
+                    Id = faker.IndexFaker,
                     SpreadsheetId = faker.Internet.Url(),
-                    StudyGroupSubjects = _studyGroupSubjectFaker.Generate(faker.Random.Int(1,4))
+                    StudyGroupSubjects = studyGroupSubjectFaker.Generate(faker.Random.Int(1,4))
                 })
                 .FinishWith((_, d) => { d.StudyGroupSubjects.ForEach(sgs => sgs.Mentors.ForEach(m => m.StudyGroupSubjects.Add(sgs))); });
 
@@ -202,7 +154,7 @@ namespace Infrastructure.APIs
             Students.AddRange(_studentFaker.Generate(studentCount));
             Mentors.AddRange(_mentorFaker.Generate(mentorCount));
             Groups.AddRange(_groupFaker.Generate(groupCount));
-            Assignments.AddRange(_assignmentsFaker.Generate(assignmentCount));
+            StudyAssignments.AddRange(_assignmentsFaker.Generate(assignmentCount));
             Subjects.AddRange(_subjectFaker.Generate(subjectCount));
             StudentAssignmentProgresses.AddRange(_studentAssignmentProgressFaker.Generate(studentAssignmentProgressCount));
             Divisions.AddRange(_divisionFaker.Generate(divisionCount));
@@ -211,56 +163,42 @@ namespace Infrastructure.APIs
 
         public User GetUser(int id)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getUserCallCount);
             Log?.Invoke("Got user");
             return Users.SingleOrDefault(u => u.UniversityId == id);
         }
 
         public Student GetStudent(int id)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getStudentCallCount);
             Log?.Invoke("Got student");
             return Students.SingleOrDefault(x => x.UniversityId == id);
         }
 
         public Mentor GetMentor(int id)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getMentorCallCount);
             Log?.Invoke("Got mentor");
             return Mentors.SingleOrDefault(x => x.UniversityId == id);
         }
 
         public StudyGroup GetStudyGroup(int id)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getStudyGroupCallCount);
             Log?.Invoke("Got study group");
             return Groups.SingleOrDefault(x => x.UniversityId == id);
         }
 
         public StudyAssignment GetStudyAssignment(int id)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getStudyAssignmentCallCount);
             Log?.Invoke("Got study assignment");
-            return Assignments.SingleOrDefault(x => x.UniversityId == id);
+            return StudyAssignments.SingleOrDefault(x => x.UniversityId == id);
         }
 
         public Subject GetSubject(int id)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getSubjectCallCount);
             Log?.Invoke("Got subject");
             return Subjects.SingleOrDefault(x => x.UniversityId == id);
         }
 
         public StudentAssignmentProgress GetStudentAssignmentProgress(int studentId, int assignmentId)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getStudentAssignmentProgressCallCount);
             Log?.Invoke("Got student assignment progress");
             return StudentAssignmentProgresses
                 .SingleOrDefault(p => p.Student.UniversityId == studentId && p.Assignment.UniversityId == assignmentId);
@@ -268,8 +206,6 @@ namespace Infrastructure.APIs
 
         public Division GetDivision(int mentorId, int subjectId)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _getDivisionCallCount);
             Log?.Invoke("Got division");
             return Divisions
                 .SingleOrDefault(d => d.StudyGroupSubjects
@@ -287,57 +223,41 @@ namespace Infrastructure.APIs
 
         public void SaveUser(User user)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveUserCallCount);
             Log?.Invoke($"Saved {nameof(user)}");
         }
 
         public void SaveStudent(Student student)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveStudentCallCount);
             Log?.Invoke($"Saved {nameof(student)}");
         }
 
         public void SaveMentor(Mentor mentor)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveMentorCallCount);
             Log?.Invoke($"Saved {nameof(mentor)}");
         }
 
         public void SaveStudyGroup(StudyGroup group)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveStudyGroupCallCount);
             Log?.Invoke($"Saved {nameof(group)}");
         }
 
         public void SaveSubject(Subject subject)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveSubjectCallCount);
             Log?.Invoke($"Saved {nameof(subject)}");
         }
 
         public void SaveDivision(Division division)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveDivisionCallCount);
             Log?.Invoke($"Saved {nameof(division)}");
         }
 
         public void SaveStudyAssignment(StudyAssignment assignment)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveStudyAssignmentCallCount);
             Log?.Invoke($"Saved {nameof(assignment)}");
         }
 
         public void SaveAssignmentProgress(StudentAssignmentProgress progress)
         {
-            Interlocked.Increment(ref _totalCallCount);
-            Interlocked.Increment(ref _saveStudentAssignmentProgressCallCount);
             Log?.Invoke($"Saved {nameof(progress)}");
         }
     }
