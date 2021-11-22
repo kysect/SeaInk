@@ -6,12 +6,10 @@ namespace SeaInk.Endpoints.Shared.Dto
 {
     public record StudyGroupSubjectDto(
         int Id,
-        string SpreadsheetId,
+        int SheetId,
         StudyGroupDto StudyGroup,
         SubjectDto Subject,
-        List<int> MentorIds)
-    {
-    }
+        List<int> MentorIds);
 
     public static class StudyGroupSubjectExtension
     {
@@ -19,7 +17,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         {
             return new StudyGroupSubjectDto(
                 studyGroupSubject.Id,
-                studyGroupSubject.SpreadsheetId,
+                studyGroupSubject.SheetId,
                 studyGroupSubject.StudyGroup.ToDto(),
                 studyGroupSubject.Subject.ToDto(),
                 studyGroupSubject.Mentors.Select(m => m.Id).ToList());

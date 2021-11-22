@@ -5,7 +5,7 @@ namespace SeaInk.Core.Entities
     public class StudyGroupSubject : IEntity
     {
         public int Id {  get; set; }
-        public string SpreadsheetId { get; set; }
+        public int SheetId { get; set; }
 
         //TODO: configure distinct pair of this ids
         public virtual StudyGroup StudyGroup { get; set; }
