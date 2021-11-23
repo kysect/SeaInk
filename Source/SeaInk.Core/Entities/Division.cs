@@ -10,8 +10,6 @@ namespace SeaInk.Core.Entities
 
         public string Title { get; set; }
         public string SpreadsheetId { get; set; }
-        public virtual Mentor Mentor { get; set; }
-        public virtual Subject Subject { get; set; }
-        public virtual List<StudyGroup> Groups { get; set; } = new();
+        public virtual List<StudyGroupSubject> StudyGroupSubjects { get; set; } = new();
     }
 }
