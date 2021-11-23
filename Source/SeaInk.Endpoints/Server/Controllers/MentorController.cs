@@ -23,7 +23,7 @@ namespace SeaInk.Endpoints.Server.Controllers
         public ActionResult<MentorDto> GetCurrentMentor()
         {
             Mentor mentor = _databaseContext.Mentors
-                .MaxBy(m => m.Divisions.Count)
+                .MaxBy(m => m.StudyGroupSubjects.Count)
                 .First();
             return Ok(mentor.ToDto());
         }
@@ -45,13 +45,28 @@ namespace SeaInk.Endpoints.Server.Controllers
             if (mentor is null)
                 return NotFound();
 
-            List<SubjectDto> subjects = mentor.Divisions
+            List<SubjectDto> subjects = mentor.StudyGroupSubjects
                 .Select(d => d.Subject)
                 .DistinctBy(s => s.Id)
                 .Select(s => s.ToDto())
                 .ToList();
 
             return Ok(subjects);
+        }
+
+        [HttpGet("{mentorId:int}/divisions")]
+        public ActionResult<List<DivisionDto>> GetDivisions(int mentorId)
+        {
+            Mentor mentor = _databaseContext.Mentors.Find(mentorId);
+            if (mentor is null)
+                return NotFound();
+
+            List<DivisionDto> divisions = _databaseContext.Divisions
+                .Where(d => d.StudyGroupSubjects.Any(sgs => sgs.Mentors.Any(m => m.Id == mentorId)))
+                .Select(d => d.ToDto())
+                .ToList();
+
+            return Ok(divisions);
         }
     }
 }
