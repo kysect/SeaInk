@@ -56,7 +56,7 @@ namespace Infrastructure.Database
             databaseContext.Students.AddRange(api.Students);
             databaseContext.Mentors.AddRange(api.Mentors);
             databaseContext.StudyGroups.AddRange(api.Groups);
-            databaseContext.StudyAssignments.AddRange(api.Assignments);
+            databaseContext.StudyAssignments.AddRange(api.StudyAssignments);
             databaseContext.Subjects.AddRange(api.Subjects);
             databaseContext.StudentAssignmentProgresses.AddRange(api.StudentAssignmentProgresses);
             databaseContext.Divisions.AddRange(api.Divisions);
