@@ -10,7 +10,7 @@ namespace Infrastructure.APIs
         List<Student> Students { get; }
         List<Mentor> Mentors { get; }
         List<StudyGroup> Groups { get; }
-        List<StudyAssignment> Assignments { get; }
+        List<StudyAssignment> StudyAssignments { get; }
         List<Subject> Subjects { get; }
         List<StudentAssignmentProgress> StudentAssignmentProgresses { get; }
         List<Division> Divisions { get; }
@@ -18,24 +18,5 @@ namespace Infrastructure.APIs
         delegate void HandleLog(string message);
 
         event HandleLog Log;
-
-        int TotalCallCount { get; }
-        
-        int GetUserCallCount { get; }
-        int GetStudentCallCount { get; }
-        int GetMentorCallCount { get; }
-        int GetStudyGroupCallCount { get; }
-        int GetStudyAssignmentCallCount { get; }
-        int GetSubjectCallCount { get; }
-        int GetStudentAssignmentProgressCallCount { get; }
-        
-        int SaveUserCallCount { get; }
-        int SaveStudentCallCount { get; }
-        int SaveMentorCallCount { get; }
-        int SaveStudyGroupCallCount { get; }
-        int SaveStudyAssignmentCallCount { get; }
-        int SaveSubjectCallCount { get; }
-        int SaveStudentAssignmentProgressCallCount { get; }
-        int SaveDivisionCallCount { get; }
     }
 }

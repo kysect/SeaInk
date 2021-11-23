@@ -846,7 +846,7 @@ namespace SeaInk.Endpoints.Sdk
         public string Name { get; set; }
     
         [System.Text.Json.Serialization.JsonPropertyName("adminId")]
-        public int AdminId { get; set; }
+        public int? AdminId { get; set; }
     
         [System.Text.Json.Serialization.JsonPropertyName("students")]
         public System.Collections.Generic.ICollection<StudentDto> Students { get; set; }
