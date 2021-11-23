@@ -2,6 +2,55 @@
 
 <h3>Generate new table for group</h3>
 
+<Fields>
+    <Field>
+        <FieldLabel>Subject</FieldLabel>
+        <Select TValue="int"
+                SelectedValueChanged="@(OnSelectedSubjectChanged)">
+            @if (_subjects is not null)
+            {
+                @foreach (SubjectDto subject in _subjects)
+                {
+                    <SelectItem Value="@subject.Id">@(subject.Title)</SelectItem>
+                }
+            }
+        </Select>
+    </Field>
+</Fields>
+
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="12">
+            <MudText Align="Align.Center" Typo="Typo.h4">Groups</MudText>
+        </MudItem>
+        <MudList>
+            @if (_studyGroupSubjects is not null)
+            {
+                @foreach (StudyGroupSubjectDto studyGroupSubject in _studyGroupSubjects)
+                {
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.body1">@studyGroupSubject.StudyGroup.Name</MudText>
+                            @if (studyGroupSubject.SpreadsheetId is not null)
+                            {
+                                <MudText Typo="Typo.body1">Table id: @studyGroupSubject.SpreadsheetId</MudText>
+                            }
+
+                        </MudCardContent>
+                        <MudCardActions>
+                            @if (studyGroupSubject.SpreadsheetId is null)
+                            {
+                                <MudButton OnClick="@(async () => await GenerateTable(studyGroupSubject.StudyGroup.Id))">Generate table</MudButton>
+                            }
+                        </MudCardActions>
+                    </MudCard>
+                }
+            }
+        </MudList>
+    </MudGrid>
+</MudContainer>
+
+
 <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
     <Items>
         <Tab Name="group">New table for single group</Tab>
