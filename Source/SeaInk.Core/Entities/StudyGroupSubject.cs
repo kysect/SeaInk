@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public class StudyGroupSubject
+    public sealed class StudyGroupSubject : IEquatable<StudyGroupSubject>
     {
         private readonly List<Mentor> _mentors = new List<Mentor>();
 
@@ -20,6 +21,15 @@ namespace SeaInk.Core.Entities
         public StudyGroup StudyGroup { get; private init; }
         public Subject Subject { get; private init; }
         public IReadOnlyCollection<Mentor> Mentors => _mentors;
+
+        public bool Equals(StudyGroupSubject? other)
+            => other is not null && other.Id.Equals(Id);
+
+        public override bool Equals(object? obj)
+            => Equals(obj as StudyGroupSubject);
+
+        public override int GetHashCode()
+            => Id;
 
         internal void AddMentors(params Mentor[] mentors)
         {
