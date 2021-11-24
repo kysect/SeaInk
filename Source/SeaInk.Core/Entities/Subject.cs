@@ -1,21 +1,47 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public class Subject: IUniversityEntity
+    public class Subject : IEquatable<Subject>
     {
+        private readonly List<StudyAssignment> _assignments = new List<StudyAssignment>();
+
+        public Subject(int universityId, string name, DateTime startDate, DateTime endDate)
+        {
+            UniversityId = universityId;
+            Name = name.ThrowIfNull(nameof(name));
+            StartDate = startDate;
+            EndDate = endDate;
+        }
+
         [Key]
-        public int Id { get; set; }
+        public int Id { get; private init; }
 
-        public int UniversityId { get; init; }
+        public int UniversityId { get; private init; }
 
-        public string Name { get; set; }
+        public string Name { get; private init; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime StartDate { get; private init; }
+        public DateTime EndDate { get; private init; }
 
-        public virtual List<StudyAssignment> Assignments { get; set; } = new();
+        public IReadOnlyCollection<StudyAssignment> Assignments => _assignments;
+
+        public bool Equals(Subject? other)
+            => other is not null && other.Id.Equals(Id);
+
+        public override bool Equals(object? obj)
+            => Equals(obj as Subject);
+
+        public override int GetHashCode()
+            => Id;
+
+        internal void AddAssignments(params StudyAssignment[] assignments)
+        {
+            assignments.ThrowIfNull(nameof(assignments));
+            _assignments.AddRange(assignments);
+        }
     }
 }

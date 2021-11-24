@@ -1,28 +1,47 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public class StudyGroup: IUniversityEntity
+    public class StudyGroup : IEquatable<StudyGroup>
     {
+        private readonly List<Student> _students = new List<Student>();
+
+        public StudyGroup(int universityId, string name)
+        {
+            UniversityId = universityId;
+            Name = name.ThrowIfNull(nameof(name));
+        }
+
         [Key]
-        public int Id { get; set; }
+        public int Id { get; private init; }
 
-        public int UniversityId { get; init; }
+        public int UniversityId { get; private init; }
 
-        public string Name { get; set; }
+        public string Name { get; private init; }
 
-        //Сделал это поле int дабы избежать циклической зависимости
-        public int? AdminId { get; set; }
+        public IReadOnlyCollection<Student> Students => _students;
 
-        /// <summary>
-        /// Do not remove this attribute. Prevent circular reference
-        /// </summary>
-        [NotMapped]
-        public Student Admin => AdminId is null ? null : Students.Single(s => s.Id == AdminId);
+        public bool Equals(StudyGroup? other)
+            => other is not null && other.Id.Equals(Id);
 
-        public virtual List<Student> Students { get; set; } = new();
+        public override bool Equals(object? obj)
+            => Equals(obj as StudyGroup);
+
+        public override int GetHashCode()
+            => Id;
+
+        internal void AddStudents(params Student[] students)
+        {
+            students.ThrowIfNull(nameof(students));
+
+            foreach (Student student in _students)
+            {
+                student.Group = this;
+                _students.Add(student);
+            }
+        }
     }
 }
