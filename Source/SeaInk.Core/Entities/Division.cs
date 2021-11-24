@@ -5,7 +5,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public class Division : IEquatable<Division>
+    public sealed class Division : IEquatable<Division>
     {
         private readonly List<StudyGroupSubject> _studyGroupSubjects = new List<StudyGroupSubject>();
 
@@ -16,10 +16,10 @@ namespace SeaInk.Core.Entities
         }
 
         [Key]
-        public int Id { get; protected init; }
+        public int Id { get; private init; }
 
-        public string Title { get; protected init; }
-        public string SpreadsheetId { get; protected init; }
+        public string Title { get; private init; }
+        public string SpreadsheetId { get; private init; }
 
         public IReadOnlyCollection<StudyGroupSubject> StudyGroupSubjects => _studyGroupSubjects;
 

@@ -4,7 +4,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public class StudyAssignment : IEquatable<StudyAssignment>
+    public sealed class StudyAssignment : IEquatable<StudyAssignment>
     {
         public StudyAssignment(
             int universityId,
