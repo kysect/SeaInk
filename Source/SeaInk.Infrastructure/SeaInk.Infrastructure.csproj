@@ -2,8 +2,20 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>Infrastructure</RootNamespace>
+        <Nullable>enable</Nullable>
+        <WarningLevel>5</WarningLevel>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <Content Include="..\..\.editorconfig">
+            <Link>.editorconfig</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EditorConfigFiles Remove="..\.editorconfig" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Bogus" Version="33.0.2" />
@@ -12,6 +24,10 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.9" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
