@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace SeaInk.Core.Entities
+﻿namespace SeaInk.Core.Entities
 {
     public class Mentor : User
     {
-        public virtual List<StudyGroupSubject> StudyGroupSubjects { get; set; } = new();
+        public Mentor(int universityId, string firstName, string lastName, string middleName)
+            : base(universityId, firstName, lastName, middleName) { }
     }
 }
