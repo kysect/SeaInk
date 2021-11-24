@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using SeaInk.Core.Entities;
 
 namespace SeaInk.Endpoints.Shared.Dto
@@ -10,8 +8,7 @@ namespace SeaInk.Endpoints.Shared.Dto
         string FirstName,
         string LastName,
         string MiddleName,
-        string FullName,
-        List<StudyGroupSubjectDto>  StudyGroupSubjects);
+        string FullName);
 
     public static class MentorExtension
     {
@@ -22,8 +19,7 @@ namespace SeaInk.Endpoints.Shared.Dto
                                  mentor.FirstName,
                                  mentor.LastName,
                                  mentor.MiddleName,
-                                 mentor.FullName,
-                                 mentor.StudyGroupSubjects.Select(s => s.ToDto()).ToList());
+                                 mentor.FullName);
         }
     }
 }
