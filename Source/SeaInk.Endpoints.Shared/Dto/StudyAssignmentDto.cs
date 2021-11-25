@@ -9,8 +9,8 @@ namespace SeaInk.Endpoints.Shared.Dto
         bool IsMilestone,
         DateTime StartDate,
         DateTime EndDate,
-        float MinPoints,
-        float MaxPoints);
+        double MinPoints,
+        double MaxPoints);
 
     public static class StudyAssignmentExtension
     {
