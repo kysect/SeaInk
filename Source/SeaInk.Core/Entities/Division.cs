@@ -32,7 +32,7 @@ namespace SeaInk.Core.Entities
         public override int GetHashCode()
             => Id;
 
-        internal void AddStudyGroupSubjects(params StudyGroupSubject[] studyGroupSubjects)
+        public void AddStudyGroupSubjects(params StudyGroupSubject[] studyGroupSubjects)
         {
             studyGroupSubjects.ThrowIfNull(nameof(studyGroupSubjects));
             _studyGroupSubjects.AddRange(studyGroupSubjects);

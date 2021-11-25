@@ -1,6 +1,6 @@
 using System;
 
-namespace SeaInk.Core.UniversityEntityModels
+namespace SeaInk.Application.UniversityEntityModels
 {
     public record UniversityStudyAssignmentModel(
         int Id,

@@ -1,6 +1,6 @@
 using SeaInk.Core.Entities;
 
-namespace SeaInk.Core.Services
+namespace SeaInk.Application.Services
 {
     public interface IStudyGroupRegistrationService
     {

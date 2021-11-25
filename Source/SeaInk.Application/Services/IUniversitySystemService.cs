@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SeaInk.Core.UniversityEntityModels;
+using SeaInk.Application.UniversityEntityModels;
 
-namespace SeaInk.Core.Services
+namespace SeaInk.Application.Services
 {
     public interface IUniversitySystemService
     {
