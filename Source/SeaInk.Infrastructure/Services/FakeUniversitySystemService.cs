@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Bogus;
-using SeaInk.Core.Services;
-using SeaInk.Core.UniversityEntityModels;
+using SeaInk.Application.Services;
+using SeaInk.Application.UniversityEntityModels;
 
 namespace SeaInk.Infrastructure.Services
 {

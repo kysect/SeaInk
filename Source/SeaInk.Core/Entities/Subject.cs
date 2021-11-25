@@ -38,7 +38,7 @@ namespace SeaInk.Core.Entities
         public override int GetHashCode()
             => Id;
 
-        internal void AddAssignments(params StudyAssignment[] assignments)
+        public void AddAssignments(params StudyAssignment[] assignments)
         {
             assignments.ThrowIfNull(nameof(assignments));
             _assignments.AddRange(assignments);

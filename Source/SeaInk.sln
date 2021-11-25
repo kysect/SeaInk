@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Infrastructure", "Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Endpoints.Sdk", "SeaInk.Endpoints\SeaInk.Endpoints.Sdk\SeaInk.Endpoints.Sdk.csproj", "{3375A8BD-106C-421A-BA46-FC1C51340B48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Application", "SeaInk.Application\SeaInk.Application.csproj", "{C4BA0626-99D7-48C2-B42E-30235CC08781}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3375A8BD-106C-421A-BA46-FC1C51340B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

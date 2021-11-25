@@ -31,7 +31,7 @@ namespace SeaInk.Core.Entities
         public override int GetHashCode()
             => Id;
 
-        internal void AddMentors(params Mentor[] mentors)
+        public void AddMentors(params Mentor[] mentors)
         {
             mentors.ThrowIfNull(nameof(mentors));
             _mentors.AddRange(mentors);

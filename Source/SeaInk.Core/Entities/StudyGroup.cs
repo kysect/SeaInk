@@ -33,7 +33,7 @@ namespace SeaInk.Core.Entities
         public override int GetHashCode()
             => Id;
 
-        internal void AddStudents(params Student[] students)
+        public void AddStudents(params Student[] students)
         {
             students.ThrowIfNull(nameof(students));
 
