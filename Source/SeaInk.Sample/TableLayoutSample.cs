@@ -23,7 +23,7 @@ namespace SeaInk.Sample
             };
 
             var headerLayout = new HeaderLayout(components);
-            var tableLayout = new TableLayout(headerLayout, new TableIndex(0, 0));
+            var tableLayout = new SubjectGroupTableLayout(headerLayout, new TableIndex(0, 0));
 
             TableRowModel[] rows =
             {
