@@ -18,6 +18,6 @@ namespace SeaInk.Application.TableLayout.Components
         public override Frame Frame => _frame;
 
         public override void Draw(ITableIndex begin, ITableEditor editor)
-            => editor.EnqueueWrite(begin, new[,] { { _value } });
+            => editor.EnqueueWrite(begin, new[] { new[] { _value } });
     }
 }

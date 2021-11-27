@@ -12,7 +12,7 @@ namespace SeaInk.Application.TableLayout.Components
             : base(Array.Empty<LabelComponent>()) { }
 
         public override void SetVisit(ITableRowVisitor value, ITableIndex begin, ITableEditor editor)
-            => editor.EnqueueWrite(begin, new[,] { { value.GetStudent().Name } });
+            => editor.EnqueueWrite(begin, new[] { new[] { value.GetStudent().Name } });
 
         public override void GetVisit(ITableRowVisitor value, ITableIndex begin, ITableDataProvider provider)
         {
