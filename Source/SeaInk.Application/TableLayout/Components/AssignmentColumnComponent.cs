@@ -24,7 +24,7 @@ namespace SeaInk.Application.TableLayout.Components
             if (progress is null)
                 return;
 
-            editor.EnqueueWrite(begin, new[,] { { progress.Points.ToString(CultureInfo.InvariantCulture) } });
+            editor.EnqueueWrite(begin, new[] { new[] { progress.Points.ToString(CultureInfo.InvariantCulture) } });
         }
 
         public override void GetVisit(ITableRowVisitor value, ITableIndex begin, ITableDataProvider provider)
