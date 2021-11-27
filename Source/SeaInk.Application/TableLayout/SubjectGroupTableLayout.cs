@@ -6,12 +6,12 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout
 {
-    public class TableLayout
+    public class SubjectGroupTableLayout
     {
         private readonly HeaderLayout _header;
         private readonly TableIndex _begin;
 
-        public TableLayout(HeaderLayout header, TableIndex begin)
+        public SubjectGroupTableLayout(HeaderLayout header, TableIndex begin)
         {
             _header = header.ThrowIfNull(nameof(header));
             _begin = begin.ThrowIfNull(nameof(begin));
