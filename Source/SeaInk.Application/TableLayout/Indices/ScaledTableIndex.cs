@@ -24,5 +24,8 @@ namespace SeaInk.Application.TableLayout.Indices
 
         public ITableIndex Copy()
             => new ScaledTableIndex(_scale, _index.Copy());
+
+        public override string ToString()
+            => $"C: {Column}, R: {Row}";
     }
 }

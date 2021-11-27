@@ -1,4 +1,5 @@
 using System;
+using SeaInk.Application.Exceptions;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Utility.Extensions;
 
@@ -34,7 +35,7 @@ namespace SeaInk.Application.TableLayout.Indices
             int diff = _index.Column - _begin.Column;
 
             if (diff < 0 || diff >= _frame.Width)
-                throw new IndexOutOfRangeException();
+                throw new CrossedFrameException(_begin, _index, _frame);
         }
 
         public void MoveVertically(int i = 1)
@@ -44,10 +45,13 @@ namespace SeaInk.Application.TableLayout.Indices
             int diff = _index.Row - _begin.Row;
 
             if (diff < 0 || diff >= _frame.Height)
-                throw new IndexOutOfRangeException();
+                throw new CrossedFrameException(_begin, _index, _frame);
         }
 
         public ITableIndex Copy()
             => new LockedTableIndex(_index.Copy(), _begin, _frame);
+
+        public override string ToString()
+            => $"C: {Column}, R: {Row}";
     }
 }

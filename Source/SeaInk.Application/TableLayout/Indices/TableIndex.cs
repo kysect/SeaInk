@@ -19,5 +19,8 @@ namespace SeaInk.Application.TableLayout.Indices
 
         public ITableIndex Copy()
             => new TableIndex(Column, Row);
+
+        public override string ToString()
+            => $"C: {Column}, R: {Row}";
     }
 }
