@@ -22,5 +22,8 @@ namespace SeaInk.Application.TableLayout.Components
 
         public override int GetHashCode()
             => 0;
+
+        public override bool Equals(object? obj)
+            => Equals(obj as LayoutComponent);
     }
 }
