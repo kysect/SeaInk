@@ -26,5 +26,8 @@ namespace SeaInk.Application.TableLayout.Models
 
         public override int GetHashCode()
             => Title.GetHashCode();
+
+        public override string ToString()
+            => Title;
     }
 }

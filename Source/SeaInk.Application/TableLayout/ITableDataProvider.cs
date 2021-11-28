@@ -5,6 +5,7 @@ namespace SeaInk.Application.TableLayout
 {
     public interface ITableDataProvider
     {
+        Frame Frame { get; }
         string this[ITableIndex index] { get; }
     }
 }
