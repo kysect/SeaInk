@@ -2,30 +2,31 @@ using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout.Indices
 {
-    public class ScaledTableIndex : ITableIndex
+    public class ScaledTableIndex : IScaledTableIndex
     {
-        private readonly Scale _scale;
         private readonly ITableIndex _index;
 
         public ScaledTableIndex(Scale scale, ITableIndex index)
         {
-            _scale = scale;
+            Scale = scale;
             _index = index;
         }
+
+        public Scale Scale { get; }
 
         public int Column => _index.Column;
         public int Row => _index.Row;
 
         public void MoveHorizontally(int i = 1)
-            => _index.MoveHorizontally(i * _scale.Horizontal);
+            => _index.MoveHorizontally(i * Scale.Horizontal);
 
         public void MoveVertically(int i = 1)
-            => _index.MoveVertically(i * _scale.Vertical);
+            => _index.MoveVertically(i * Scale.Vertical);
 
         public ITableIndex Copy()
-            => new ScaledTableIndex(_scale, _index.Copy());
+            => new ScaledTableIndex(Scale, _index.Copy());
 
         public override string ToString()
-            => $"C: {Column}, R: {Row}";
+            => _index.ToString() ?? string.Empty;
     }
 }
