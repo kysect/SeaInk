@@ -14,7 +14,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
         public virtual bool TryExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
             => command.TryExecute(this, begin, editor);
 
-        public override bool Equals(object? obj)
+        public sealed override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
     }
 }
