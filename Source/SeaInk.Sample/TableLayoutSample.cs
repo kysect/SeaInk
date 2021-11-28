@@ -3,7 +3,6 @@ using SeaInk.Application.TableLayout.Components;
 using SeaInk.Application.TableLayout.ComponentsBase;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
-using SeaInk.Application.TableLayout.Visitors;
 using SeaInk.Core.Models;
 
 namespace SeaInk.Sample
@@ -14,16 +13,19 @@ namespace SeaInk.Sample
         {
             var assignment1 = new AssignmentModel("Some Assignment");
             var assignment2 = new AssignmentModel("My Assignment");
-            
-            HeaderLayoutComponent<ITableRowVisitor>[] components =
+
+            LayoutComponent[] components =
             {
                 new StudentsColumnComponent(),
-                new AssignmentColumnComponent(assignment1),
-                new AssignmentColumnComponent(assignment2),
+                new AssignmentsComponent(new[]
+                {
+                    new PlainAssignmentColumnComponent(assignment1),
+                    new PlainAssignmentColumnComponent(assignment2),
+                })
             };
 
-            var headerLayout = new HeaderLayout(components);
-            var tableLayout = new SubjectGroupTableLayout(headerLayout, new TableIndex(0, 0));
+            var headerLayout = new HeaderLayoutComponent(components);
+            var tableLayout = new TableLayoutComponent(headerLayout);
 
             TableRowModel[] rows =
             {
