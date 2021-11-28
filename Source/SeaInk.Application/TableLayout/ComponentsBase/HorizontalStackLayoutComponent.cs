@@ -6,10 +6,10 @@ using SeaInk.Application.Tools;
 
 namespace SeaInk.Application.TableLayout.ComponentsBase
 {
-    public abstract class HorizontalStackLayoutComponent<TComponent> : CompositeLayoutComponent<TComponent>
+    public class HorizontalStackLayoutComponent<TComponent> : CompositeLayoutComponent<TComponent>
         where TComponent : LayoutComponent
     {
-        protected HorizontalStackLayoutComponent(IReadOnlyCollection<TComponent> components)
+        public HorizontalStackLayoutComponent(IReadOnlyCollection<TComponent> components)
             : base(components) { }
 
         public override Frame Frame => new Frame(
@@ -20,8 +20,6 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
             => index.MoveHorizontally(component.Frame.Width);
 
         protected override Scale GetScale(TComponent component)
-            => new Scale(
-                component.Frame.Width,
-                Frame.Height / component.Frame.Height);
+            => new Scale(1, Frame.Height / component.Frame.Height);
     }
 }

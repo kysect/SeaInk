@@ -1,40 +1,22 @@
-using System.Globalization;
+using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.ComponentsBase;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
-using SeaInk.Application.TableLayout.Visitors;
 using SeaInk.Core.Models;
 
 namespace SeaInk.Application.TableLayout.Components
 {
-    public class AssignmentColumnComponent : HeaderLayoutComponent<ITableRowVisitor>
+    public abstract class AssignmentColumnComponent : LayoutComponent,
+                                                      IDrawableLayoutComponent,
+                                                      IRemovableComponent,
+                                                      IValueRepresentingLayoutComponent<AssignmentModel>,
+                                                      IValueGettingLayoutComponent<AssignmentProgress>,
+                                                      IValueSettingLayoutComponent<AssignmentProgress>
     {
-        public AssignmentColumnComponent(AssignmentModel assignment)
-            : base(new[] { new LabelComponent(assignment.Title) })
-        {
-            Assignment = assignment;
-        }
-
-        public AssignmentModel Assignment { get; private init; }
-
-        public override void SetVisit(ITableRowVisitor value, ITableIndex begin, ITableEditor editor)
-        {
-            AssignmentProgress? progress = value.GetProgress(Assignment);
-
-            if (progress is null)
-                return;
-
-            editor.EnqueueWrite(begin, new[] { new[] { progress.Points.ToString(CultureInfo.InvariantCulture) } });
-        }
-
-        public override void GetVisit(ITableRowVisitor value, ITableIndex begin, ITableDataProvider provider)
-        {
-            string data = provider[begin];
-
-            if (string.IsNullOrEmpty(data) || !double.TryParse(data, out double points))
-                return;
-
-            value.AddProgress(Assignment, new AssignmentProgress(points));
-        }
+        public abstract AssignmentModel Value { get; }
+        public abstract void Remove(ITableIndex begin, ITableEditor editor);
+        public abstract void Draw(ITableIndex begin, ITableEditor editor);
+        public abstract AssignmentProgress GetValue(ITableIndex begin, ITableDataProvider provider);
+        public abstract void SetValue(AssignmentProgress value, ITableIndex begin, ITableEditor editor);
     }
 }

@@ -1,23 +1,26 @@
-using System;
+using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.ComponentsBase;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
-using SeaInk.Application.TableLayout.Visitors;
 
 namespace SeaInk.Application.TableLayout.Components
 {
-    public class StudentsColumnComponent : HeaderLayoutComponent<ITableRowVisitor>
+    public class StudentsColumnComponent : LayoutComponent,
+                                           IValueGettingLayoutComponent<StudentModel>,
+                                           IValueSettingLayoutComponent<StudentModel>
     {
-        public StudentsColumnComponent()
-            : base(Array.Empty<LabelComponent>()) { }
+        public override Frame Frame => new Frame(1, 1);
 
-        public override void SetVisit(ITableRowVisitor value, ITableIndex begin, ITableEditor editor)
-            => editor.EnqueueWrite(begin, new[] { new[] { value.GetStudent().Name } });
+        public override bool Equals(LayoutComponent? other)
+            => other is StudentsColumnComponent;
 
-        public override void GetVisit(ITableRowVisitor value, ITableIndex begin, ITableDataProvider provider)
-        {
-            string name = provider[begin];
-            value.SetStudent(new StudentModel(name));
-        }
+        public StudentModel GetValue(ITableIndex begin, ITableDataProvider provider)
+            => new StudentModel(provider[begin]);
+
+        public void SetValue(StudentModel value, ITableIndex begin, ITableEditor editor)
+            => editor.EnqueueWrite(begin, new[] { new[] { value.Name } });
+
+        public override int GetHashCode()
+            => 0;
     }
 }

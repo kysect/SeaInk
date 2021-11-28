@@ -20,8 +20,6 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
             => index.MoveVertically(component.Frame.Height);
 
         protected override Scale GetScale(TComponent component)
-            => new Scale(
-                Frame.Width / component.Frame.Width,
-                component.Frame.Height);
+            => new Scale(Frame.Width / component.Frame.Width, 1);
     }
 }
