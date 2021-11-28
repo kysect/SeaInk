@@ -22,10 +22,10 @@ namespace SeaInk.Application.TableLayout.Components
         public override bool Equals(LayoutComponent? other)
             => other is LabelComponent labelComponent && labelComponent._value.Equals(_value);
 
-        public override int GetHashCode()
-            => _value.GetHashCode();
-
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
+
+        public override int GetHashCode()
+            => _value.GetHashCode();
     }
 }

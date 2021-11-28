@@ -20,9 +20,6 @@ namespace SeaInk.Application.TableLayout.Components
 
         public override Frame Frame => _stack.Frame;
 
-        public override bool Equals(LayoutComponent? other)
-            => other is AssignmentsComponent assignmentsComponent && assignmentsComponent._stack.Equals(_stack);
-
         public bool TryAddComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
         {
             return _stack.TryAddComponent(component, begin, editor);
@@ -34,10 +31,13 @@ namespace SeaInk.Application.TableLayout.Components
                    _stack.TryExecuteCommand(new ComponentRemoveCommand(component), begin, editor);
         }
 
-        public override int GetHashCode()
-            => _stack.GetHashCode();
+        public override bool Equals(LayoutComponent? other)
+            => other is AssignmentsComponent assignmentsComponent && assignmentsComponent._stack.Equals(_stack);
 
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
+
+        public override int GetHashCode()
+            => _stack.GetHashCode();
     }
 }

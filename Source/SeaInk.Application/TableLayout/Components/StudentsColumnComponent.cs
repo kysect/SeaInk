@@ -11,19 +11,19 @@ namespace SeaInk.Application.TableLayout.Components
     {
         public override Frame Frame => new Frame(1, 1);
 
-        public override bool Equals(LayoutComponent? other)
-            => other is StudentsColumnComponent;
-
         public StudentModel GetValue(ITableIndex begin, ITableDataProvider provider)
             => new StudentModel(provider[begin]);
 
         public void SetValue(StudentModel value, ITableIndex begin, ITableEditor editor)
             => editor.EnqueueWrite(begin, new[] { new[] { value.Name } });
 
-        public override int GetHashCode()
-            => 0;
+        public override bool Equals(LayoutComponent? other)
+            => other is StudentsColumnComponent;
 
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
+
+        public override int GetHashCode()
+            => 0;
     }
 }

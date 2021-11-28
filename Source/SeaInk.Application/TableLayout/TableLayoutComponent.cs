@@ -18,9 +18,6 @@ namespace SeaInk.Application.TableLayout
 
         public override Frame Frame => _header.Frame;
 
-        public override bool Equals(LayoutComponent? other)
-            => other is TableLayoutComponent tableLayoutComponent && tableLayoutComponent._header.Equals(_header);
-
         public TableModel GetTable(ITableDataProvider provider)
         {
             int startRow = Frame.Height + 1;
@@ -48,10 +45,13 @@ namespace SeaInk.Application.TableLayout
             }
         }
 
-        public override int GetHashCode()
-            => _header.GetHashCode();
+        public override bool Equals(LayoutComponent? other)
+            => other is TableLayoutComponent tableLayoutComponent && tableLayoutComponent._header.Equals(_header);
 
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
+
+        public override int GetHashCode()
+            => _header.GetHashCode();
     }
 }
