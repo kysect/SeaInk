@@ -70,7 +70,10 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
             return true;
         }
 
-        public override int GetHashCode()
+        public sealed override bool Equals(object? obj)
+            => Equals(obj as LayoutComponent);
+
+        public sealed override int GetHashCode()
             => _components.GetHashCode();
 
         protected abstract void MoveIndexToNextComponent(ITableIndex index, TComponent component);

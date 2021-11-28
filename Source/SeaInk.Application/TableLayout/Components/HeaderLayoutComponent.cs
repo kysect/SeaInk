@@ -26,6 +26,9 @@ namespace SeaInk.Application.TableLayout.Components
         public override bool Equals(LayoutComponent? other)
             => _stack.Equals(other);
 
+        public override bool Equals(object? obj)
+            => Equals(obj as LayoutComponent);
+
         public override bool TryExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
             => base.TryExecuteCommand(command, begin, editor) || _stack.TryExecuteCommand(command, begin, editor);
 

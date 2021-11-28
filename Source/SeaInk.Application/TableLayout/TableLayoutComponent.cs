@@ -50,5 +50,8 @@ namespace SeaInk.Application.TableLayout
 
         public override int GetHashCode()
             => _header.GetHashCode();
+
+        public override bool Equals(object? obj)
+            => Equals(obj as LayoutComponent);
     }
 }
