@@ -34,10 +34,10 @@ namespace SeaInk.Application.TableLayout.Components
             => other is PlainAssignmentColumnComponent plainAssignmentColumnComponent &&
                plainAssignmentColumnComponent.Value.Equals(Value);
 
-        public override int GetHashCode()
-            => Value.GetHashCode();
-
         public override bool Equals(object? obj)
-            => Equals(obj as LayoutComponent);
+            => Equals(obj as LayoutComponent)
+
+        public override int GetHashCode()
+            => Value.GetHashCode();;
     }
 }
