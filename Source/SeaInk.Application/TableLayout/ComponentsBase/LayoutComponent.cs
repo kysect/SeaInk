@@ -1,11 +1,20 @@
+using System;
+using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout.ComponentsBase
 {
-    public abstract class LayoutComponent
+    public abstract class LayoutComponent : IEquatable<LayoutComponent>
     {
         public abstract Frame Frame { get; }
-        public abstract void Draw(ITableIndex begin, ITableEditor editor);
+        public abstract bool Equals(LayoutComponent? other);
+        public abstract override int GetHashCode();
+
+        public virtual bool TryExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
+            => command.TryExecute(this, begin, editor);
+
+        public override bool Equals(object? obj)
+            => Equals(obj as LayoutComponent);
     }
 }
