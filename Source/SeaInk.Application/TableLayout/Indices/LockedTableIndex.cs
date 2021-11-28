@@ -1,4 +1,3 @@
-using System;
 using SeaInk.Application.Exceptions;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Utility.Extensions;
@@ -52,6 +51,6 @@ namespace SeaInk.Application.TableLayout.Indices
             => new LockedTableIndex(_index.Copy(), _begin, _frame);
 
         public override string ToString()
-            => $"C: {Column}, R: {Row}";
+            => _index.ToString() ?? string.Empty;
     }
 }
