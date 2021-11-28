@@ -1,8 +1,10 @@
+using System;
 using System.Runtime.Serialization;
 using SeaInk.Core.Exceptions;
 
 namespace SeaInk.Application.Exceptions
 {
+    [Serializable]
     public class MissingStudentComponentException : SeaInkException
     {
         public MissingStudentComponentException()

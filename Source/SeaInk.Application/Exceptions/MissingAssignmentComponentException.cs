@@ -1,9 +1,11 @@
+using System;
 using System.Runtime.Serialization;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Core.Exceptions;
 
 namespace SeaInk.Application.Exceptions
 {
+    [Serializable]
     public class MissingAssignmentComponentException : SeaInkException
     {
         public MissingAssignmentComponentException(AssignmentModel model)
