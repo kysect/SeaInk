@@ -5,11 +5,11 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Commands
 {
-    public class DrawSpecificCommand : GenericLayoutCommand<IDrawableLayoutComponent>
+    public class DrawComponentCommand : GenericLayoutCommand<IDrawableLayoutComponent>
     {
         private readonly IDrawableLayoutComponent _component;
 
-        public DrawSpecificCommand(IDrawableLayoutComponent component)
+        public DrawComponentCommand(IDrawableLayoutComponent component)
         {
             _component = component.ThrowIfNull(nameof(component));
         }
