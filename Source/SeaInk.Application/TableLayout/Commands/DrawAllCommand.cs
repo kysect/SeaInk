@@ -1,16 +1,18 @@
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
+using SeaInk.Application.TableLayout.ComponentsBase;
 using SeaInk.Application.TableLayout.Indices;
-using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Commands
 {
-    public class DrawAllCommand : GenericLayoutCommand<IDrawableLayoutComponent>
+    public class DrawAllCommand : ILayoutCommand
     {
-        protected override bool TryExecute(IDrawableLayoutComponent target, ITableIndex begin, ITableEditor? editor)
+        public bool TryExecute(LayoutComponent target, ITableIndex begin, ITableEditor? editor)
         {
-            var index = new MergeScanningIndex(begin.Copy(), editor.ThrowIfNull(nameof(editor)));
-            target.Draw(index, editor!);
+            if (target is not IDrawableLayoutComponent drawableComponent)
+                return false;
+
+            target.TryExecuteCommand(new DrawComponentCommand(drawableComponent), begin, editor);
             return false;
         }
     }
