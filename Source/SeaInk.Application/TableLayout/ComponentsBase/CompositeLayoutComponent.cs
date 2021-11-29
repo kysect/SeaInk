@@ -36,9 +36,6 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
 
         public override bool TryExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
         {
-            if (base.TryExecuteCommand(command, begin, editor))
-                return true;
-
             ITableIndex compositionIndex = begin.Copy();
 
             foreach (TComponent component in Components)
@@ -52,7 +49,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
                 MoveIndexToNextComponent(compositionIndex, component);
             }
 
-            return false;
+            return base.TryExecuteCommand(command, begin, editor);
         }
 
         public override bool Equals(LayoutComponent? other)
