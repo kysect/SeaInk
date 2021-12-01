@@ -16,7 +16,7 @@ namespace SeaInk.Application.TableLayout.Commands
             _provider = provider.ThrowIfNull(nameof(provider));
         }
 
-        public IReadOnlyCollection<T> Values => _values;
+        public IReadOnlyCollection<T> Values => _values.AsReadOnly();
 
         protected override bool TryExecute(IValueGettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
         {
