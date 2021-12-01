@@ -11,11 +11,11 @@ namespace SeaInk.Application.TableLayout.Indices
         public int Column { get; private set; }
         public int Row { get; private set; }
 
-        public void MoveHorizontally(int i = 1)
-            => Column += i;
+        public void MoveHorizontally(int value = 1)
+            => Column += value;
 
-        public void MoveVertically(int i = 1)
-            => Row += i;
+        public void MoveVertically(int value = 1)
+            => Row += value;
 
         public ITableIndex Copy()
             => new TableIndex(Column, Row);

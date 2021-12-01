@@ -27,9 +27,9 @@ namespace SeaInk.Application.TableLayout.Indices
         public int Column => _index.Column;
         public int Row => _index.Row;
 
-        public void MoveHorizontally(int i = 1)
+        public void MoveHorizontally(int value = 1)
         {
-            _index.MoveHorizontally(i);
+            _index.MoveHorizontally(value);
 
             int diff = _index.Column - _begin.Column;
 
@@ -37,9 +37,9 @@ namespace SeaInk.Application.TableLayout.Indices
                 throw new CrossedFrameException(_begin, _index, _frame);
         }
 
-        public void MoveVertically(int i = 1)
+        public void MoveVertically(int value = 1)
         {
-            _index.MoveVertically(i);
+            _index.MoveVertically(value);
 
             int diff = _index.Row - _begin.Row;
 
