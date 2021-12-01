@@ -1,7 +1,6 @@
 using SeaInk.Application.TableLayout;
 using SeaInk.Application.TableLayout.Components;
 using SeaInk.Application.TableLayout.ComponentsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Core.Models;
 
@@ -41,11 +40,11 @@ namespace SeaInk.Sample
 
             var tableModel = new TableModel(rows);
 
-            // ITableEditor editor = new ITableEditorImpl();
-            // tableLayout.WriteTable(tableModel, editor);
-            //
-            // ITableDataProvider provider = new ITableDataProviderImpl();
-            // tableModel = tableLayout.ReadTable(2, provider);
+            var editor = (ITableEditor)new object();
+            var provider = (ITableDataProvider)new object();
+            tableLayout.SetTable(tableModel, editor);
+
+            tableModel = tableLayout.GetTable(provider);
         }
     }
 }
