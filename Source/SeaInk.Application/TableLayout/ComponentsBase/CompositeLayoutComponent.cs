@@ -20,7 +20,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
             _components = components.ThrowIfNull(nameof(components)).ToList();
         }
 
-        public IReadOnlyCollection<TComponent> Components => _components;
+        public IReadOnlyCollection<TComponent> Components => _components.AsReadOnly();
 
         public bool TryAddComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
         {
