@@ -48,5 +48,8 @@ namespace SeaInk.Application.TableLayout.Indices
 
         public ITableIndex Copy()
             => new MergeScanningIndex(_index.Copy(), _editor);
+
+        public override string ToString()
+            => _index.ToString() ?? string.Empty;
     }
 }
