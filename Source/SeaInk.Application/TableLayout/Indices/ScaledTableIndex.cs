@@ -17,11 +17,11 @@ namespace SeaInk.Application.TableLayout.Indices
         public int Column => _index.Column;
         public int Row => _index.Row;
 
-        public void MoveHorizontally(int i = 1)
-            => _index.MoveHorizontally(i * Scale.Horizontal);
+        public void MoveHorizontally(int value = 1)
+            => _index.MoveHorizontally(value * Scale.Horizontal);
 
-        public void MoveVertically(int i = 1)
-            => _index.MoveVertically(i * Scale.Vertical);
+        public void MoveVertically(int value = 1)
+            => _index.MoveVertically(value * Scale.Vertical);
 
         public ITableIndex Copy()
             => new ScaledTableIndex(Scale, _index.Copy());

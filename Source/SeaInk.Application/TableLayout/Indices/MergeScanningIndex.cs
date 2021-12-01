@@ -20,29 +20,29 @@ namespace SeaInk.Application.TableLayout.Indices
         public int Column => _index.Column;
         public int Row => _index.Row;
 
-        public void MoveHorizontally(int i = 1)
+        public void MoveHorizontally(int value = 1)
         {
             if (_scale is null)
             {
-                _index.MoveHorizontally(i);
+                _index.MoveHorizontally(value);
                 return;
             }
 
             ITableIndex index = _index.Copy();
-            _index.MoveHorizontally(i);
+            _index.MoveHorizontally(value);
             _editor.EnqueueMerge(index, new Frame(_scale.Horizontal, _scale.Vertical));
         }
 
-        public void MoveVertically(int i = 1)
+        public void MoveVertically(int value = 1)
         {
             if (_scale is null)
             {
-                _index.MoveVertically(i);
+                _index.MoveVertically(value);
                 return;
             }
 
             ITableIndex index = _index.Copy();
-            _index.MoveVertically(i);
+            _index.MoveVertically(value);
             _editor.EnqueueMerge(index, new Frame(_scale.Horizontal, _scale.Vertical));
         }
 
