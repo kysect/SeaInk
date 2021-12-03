@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using FluentResults;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
+using SeaInk.Application.TableLayout.Errors;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Utility.Extensions;
@@ -9,8 +11,8 @@ using SeaInk.Utility.Extensions;
 namespace SeaInk.Application.TableLayout.ComponentsBase
 {
     public abstract class CompositeLayoutComponent<TComponent> : LayoutComponent,
-                                                                 IExpandableLayoutComponent<TComponent>,
-                                                                 IReducibleLayoutComponent<TComponent>
+        IExpandableLayoutComponent<TComponent>,
+        IReducibleLayoutComponent<TComponent>
         where TComponent : LayoutComponent
     {
         private readonly List<TComponent> _components;
@@ -22,19 +24,19 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
 
         public IReadOnlyCollection<TComponent> Components => _components.AsReadOnly();
 
-        public bool TryAddComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result AddComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
         {
             if (_components.Contains(component))
-                return false;
+                return Result.Fail(new NotContainedComponentError(component));
 
             _components.Add(component);
-            return true;
+            return Result.Ok();
         }
 
-        public bool TryRemoveComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
-            => _components.Remove(component);
+        public Result RemoveComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
+            => _components.Remove(component) ? Result.Fail(new NotContainedComponentError(component)) : Result.Ok();
 
-        public override bool TryExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
+        public override Result ExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
         {
             ITableIndex compositionIndex = begin.Copy();
 
@@ -43,13 +45,14 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
                 Scale scale = GetScale(component);
                 var index = new ScaledTableIndex(scale, compositionIndex.Copy());
 
-                if (component.TryExecuteCommand(command, index, editor))
-                    return true;
+                Result result = component.ExecuteCommand(command, index, editor);
+                if (result.IsSuccess)
+                    return result;
 
                 MoveIndexToNextComponent(compositionIndex, component);
             }
 
-            return base.TryExecuteCommand(command, begin, editor);
+            return base.ExecuteCommand(command, begin, editor);
         }
 
         public override bool Equals(LayoutComponent? other)
