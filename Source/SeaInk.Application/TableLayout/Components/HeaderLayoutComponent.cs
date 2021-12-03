@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentResults;
 using SeaInk.Application.Exceptions;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.Commands;
@@ -29,18 +30,21 @@ namespace SeaInk.Application.TableLayout.Components
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
 
-        public override bool TryExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
-            => base.TryExecuteCommand(command, begin, editor) || _stack.TryExecuteCommand(command, begin, editor);
+        public override Result ExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
+        {
+            Result baseResult = base.ExecuteCommand(command, begin, editor);
+            return baseResult.IsSuccess ? baseResult : _stack.ExecuteCommand(command, begin, editor);
+        }
 
         public TableRowModel GetValue(ITableIndex begin, ITableDataProvider provider)
         {
             var getStudentCommand = new GetValueCommand<StudentModel>(provider);
 
-            if (!_stack.TryExecuteCommand(getStudentCommand, begin.Copy(), null))
+            if (!_stack.ExecuteCommand(getStudentCommand, begin.Copy(), null).IsSuccess)
                 throw new MissingStudentComponentException();
 
             var aggregateAssignmentProgressesCommand = new AggregateValuesCommand<AssignmentProgressModel>(provider);
-            _stack.TryExecuteCommand(aggregateAssignmentProgressesCommand, begin.Copy(), null);
+            _stack.ExecuteCommand(aggregateAssignmentProgressesCommand, begin.Copy(), null);
 
             return new TableRowModel(
                 getStudentCommand.Value.ThrowIfNull(nameof(StudentModel)),
@@ -51,14 +55,14 @@ namespace SeaInk.Application.TableLayout.Components
         {
             var studentSetCommand = new SetValueCommand<StudentModel>(value.Student);
 
-            if (!_stack.TryExecuteCommand(studentSetCommand, begin.Copy(), editor))
+            if (!_stack.ExecuteCommand(studentSetCommand, begin.Copy(), editor).IsSuccess)
                 throw new MissingStudentComponentException();
 
             foreach (AssignmentProgressModel model in value.AssignmentProgresses)
             {
                 var assignmentSetCommand = new SetAssignmentProgressCommand(model);
 
-                if (!_stack.TryExecuteCommand(assignmentSetCommand, begin.Copy(), editor))
+                if (!_stack.ExecuteCommand(assignmentSetCommand, begin.Copy(), editor).IsSuccess)
                     throw new MissingAssignmentComponentException(model.Assignment);
             }
         }

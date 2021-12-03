@@ -1,13 +1,14 @@
+using FluentResults;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.Components;
-using SeaInk.Application.TableLayout.ComponentsBase;
+using SeaInk.Application.TableLayout.Errors;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Commands
 {
-    public class SetAssignmentProgressCommand : ILayoutCommand
+    public class SetAssignmentProgressCommand : GenericLayoutCommand<AssignmentColumnComponent>
     {
         private readonly AssignmentProgressModel _value;
 
@@ -16,16 +17,13 @@ namespace SeaInk.Application.TableLayout.Commands
             _value = value.ThrowIfNull(nameof(value));
         }
 
-        public bool TryExecute(LayoutComponent target, ITableIndex begin, ITableEditor? editor)
+        protected override Result Execute(AssignmentColumnComponent target, ITableIndex begin, ITableEditor? editor)
         {
-            if (target is not AssignmentColumnComponent assignmentColumnComponent)
-                return false;
+            if (!target.Value.Equals(_value.Assignment))
+                return Result.Fail(new InvalidRepresentingValue<AssignmentModel>(_value.Assignment, target.Value));
 
-            if (!assignmentColumnComponent.Value.Equals(_value.Assignment))
-                return false;
-
-            assignmentColumnComponent.SetValue(_value.Progress, begin, editor.ThrowIfNull(nameof(editor)));
-            return true;
+            target.SetValue(_value.Progress, begin, editor.ThrowIfNull(nameof(editor)));
+            return Result.Ok();
         }
     }
 }

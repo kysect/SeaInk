@@ -1,3 +1,4 @@
+using FluentResults;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.Indices;
@@ -14,10 +15,10 @@ namespace SeaInk.Application.TableLayout.Commands
             _value = value.ThrowIfNull(nameof(value));
         }
 
-        protected override bool TryExecute(IValueSettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
+        protected override Result Execute(IValueSettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
         {
             target.SetValue(_value, begin, editor.ThrowIfNull(nameof(editor)));
-            return true;
+            return Result.Ok();
         }
     }
 }

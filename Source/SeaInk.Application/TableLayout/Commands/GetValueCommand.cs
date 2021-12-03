@@ -1,3 +1,4 @@
+using FluentResults;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.Indices;
@@ -16,10 +17,10 @@ namespace SeaInk.Application.TableLayout.Commands
 
         public T? Value { get; private set; }
 
-        protected override bool TryExecute(IValueGettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
+        protected override Result Execute(IValueGettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
         {
             Value = target.GetValue(begin, _provider);
-            return true;
+            return Result.Ok();
         }
     }
 }

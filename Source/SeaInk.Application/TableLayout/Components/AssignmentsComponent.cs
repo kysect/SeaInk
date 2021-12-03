@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentResults;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.Commands;
 using SeaInk.Application.TableLayout.ComponentsBase;
@@ -8,8 +9,8 @@ using SeaInk.Application.TableLayout.Models;
 namespace SeaInk.Application.TableLayout.Components
 {
     public class AssignmentsComponent : LayoutComponent,
-                                        IExpandableLayoutComponent<AssignmentColumnComponent>,
-                                        IReducibleLayoutComponent<AssignmentColumnComponent>
+        IExpandableLayoutComponent<AssignmentColumnComponent>,
+        IReducibleLayoutComponent<AssignmentColumnComponent>
     {
         private readonly HorizontalStackLayoutComponent<AssignmentColumnComponent> _stack;
 
@@ -20,15 +21,15 @@ namespace SeaInk.Application.TableLayout.Components
 
         public override Frame Frame => _stack.Frame;
 
-        public bool TryAddComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result AddComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
         {
-            return _stack.TryAddComponent(component, begin, editor);
+            return _stack.AddComponent(component, begin, editor);
         }
 
-        public bool TryRemoveComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result RemoveComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
         {
-            return _stack.TryRemoveComponent(component, begin, editor) &&
-                   _stack.TryExecuteCommand(new ComponentRemoveCommand(component), begin, editor);
+            Result result = _stack.ExecuteCommand(new ComponentRemoveCommand(component), begin, editor);
+            return result.IsSuccess ? _stack.RemoveComponent(component, begin, editor) : result;
         }
 
         public override bool Equals(LayoutComponent? other)
