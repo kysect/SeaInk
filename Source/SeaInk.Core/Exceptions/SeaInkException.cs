@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace SeaInk.Core.Exceptions
 {
@@ -11,5 +12,8 @@ namespace SeaInk.Core.Exceptions
 
         public SeaInkException(string? message, Exception? innerException)
             : base(message, innerException) { }
+
+        protected SeaInkException(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
     }
 }
