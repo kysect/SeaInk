@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 
@@ -6,13 +8,15 @@ namespace SeaInk.Application.TableLayout
 {
     public interface ITableEditor
     {
-        void EnqueueWrite(ITableIndex index, IReadOnlyCollection<IReadOnlyCollection<string>> data);
-        void EnqueueMerge(ITableIndex index, Frame frame);
+        void EnqueueWrite(ISheetIndex index, IReadOnlyCollection<IReadOnlyCollection<string>> data);
+        void EnqueueMerge(ISheetIndex index, Frame frame);
 
-        void EnqueueInsertColumn(int column);
-        void EnqueueInsertRow(int row);
+        void EnqueueInsertColumn(ColumnIndex column);
+        void EnqueueInsertRow(RowIndex row);
 
-        void EnqueueDeleteColumn(int column);
-        void EnqueueDeleteRow(int row);
+        void EnqueueDeleteColumn(ColumnIndex column);
+        void EnqueueDeleteRow(RowIndex row);
+
+        Task ExecuteAsync();
     }
 }

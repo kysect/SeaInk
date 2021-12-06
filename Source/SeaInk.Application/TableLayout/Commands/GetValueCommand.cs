@@ -1,7 +1,7 @@
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Commands
@@ -17,7 +17,7 @@ namespace SeaInk.Application.TableLayout.Commands
 
         public T? Value { get; private set; }
 
-        protected override Result Execute(IValueGettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
+        protected override Result Execute(IValueGettingLayoutComponent<T> target, ISheetIndex begin, ITableEditor? editor)
         {
             Value = target.GetValue(begin, _provider);
             return Result.Ok();

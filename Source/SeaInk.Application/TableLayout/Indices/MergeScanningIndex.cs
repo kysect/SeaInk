@@ -1,55 +1,74 @@
+using System;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout.Indices
 {
-    public class MergeScanningIndex : ITableIndex
+    public readonly struct MergeScanningIndex : ISheetIndex
     {
-        private readonly ITableIndex _index;
+        private readonly ISheetIndex _index;
         private readonly ITableEditor _editor;
         private readonly Scale? _scale;
 
-        public MergeScanningIndex(ITableIndex index, ITableEditor editor)
+        public MergeScanningIndex(ISheetIndex index, ITableEditor editor)
         {
             _index = index;
             _editor = editor;
 
-            if (index is IScaledTableIndex scaledTableIndex)
-                _scale = scaledTableIndex.Scale;
-        }
-
-        public int Column => _index.Column;
-        public int Row => _index.Row;
-
-        public void MoveHorizontally(int value = 1)
-        {
-            if (_scale is null)
+            _scale = index switch
             {
-                _index.MoveHorizontally(value);
-                return;
-            }
-
-            ITableIndex index = _index.Copy();
-            _index.MoveHorizontally(value);
-            _editor.EnqueueMerge(index, new Frame(_scale.Horizontal, _scale.Vertical));
+                IScaledTableIndex scaledTableIndex => scaledTableIndex.Scale,
+                _ => null,
+            };
         }
 
-        public void MoveVertically(int value = 1)
+        public ColumnIndex Column => _index.Column;
+        public RowIndex Row => _index.Row;
+        public bool IsOpen => _index.IsOpen;
+
+        public ISheetIndex Add(ISheetIndex other)
         {
-            if (_scale is null)
-            {
-                _index.MoveVertically(value);
-                return;
-            }
-
-            ITableIndex index = _index.Copy();
-            _index.MoveVertically(value);
-            _editor.EnqueueMerge(index, new Frame(_scale.Horizontal, _scale.Vertical));
+            Merge(other, (i, ii) => i + ii);
+            return _index.Add(other);
         }
 
-        public ITableIndex Copy()
+        public ISheetIndex Subtract(ISheetIndex other)
+        {
+            Merge(other, (i, ii) => i - ii);
+            return _index.Subtract(other);
+        }
+
+        public bool IsEquallyOpen(ISheetIndex other)
+            => _index.IsEquallyOpen(other);
+
+        public ISheetIndex Copy()
             => new MergeScanningIndex(_index.Copy(), _editor);
+
+        public bool Equals(ISheetIndex? other)
+            => _index.Equals(other);
 
         public override string ToString()
             => _index.ToString() ?? string.Empty;
+
+        private void Merge(ISheetIndex other, Func<ISheetIndex, ISheetIndex, ISheetIndex> move)
+        {
+            if (_scale is null)
+            {
+                return;
+            }
+
+            var frame = new Frame(_scale.Horizontal, _scale.Vertical);
+
+            for (int i = 0; i < other.Row; ++i)
+            {
+                ISheetIndex index = move.Invoke(_index.Copy(), new SheetIndex(0, i * _scale.Vertical));
+
+                for (int j = 0; j < other.Column; ++j)
+                {
+                    _editor.EnqueueMerge(index, frame);
+                    index = move.Invoke(index, new SheetIndex(_scale.Horizontal, 0));
+                }
+            }
+        }
     }
 }

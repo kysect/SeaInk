@@ -1,7 +1,7 @@
 using System;
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout.ComponentsBase
@@ -13,7 +13,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
         public abstract override bool Equals(object? obj);
         public abstract override int GetHashCode();
 
-        public virtual Result ExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
+        public virtual Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ITableEditor? editor)
             => command.Execute(this, begin, editor);
     }
 }

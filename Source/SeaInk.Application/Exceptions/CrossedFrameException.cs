@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.Serialization;
-using SeaInk.Application.TableLayout.Indices;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Core.Exceptions;
 
@@ -9,7 +9,7 @@ namespace SeaInk.Application.Exceptions
     [Serializable]
     public class CrossedFrameException : SeaInkException
     {
-        public CrossedFrameException(ITableIndex begin, ITableIndex current, Frame frame)
+        public CrossedFrameException(ISheetIndex begin, ISheetIndex current, Frame frame)
             : base($"Index {current} should be in frame {frame} starting at {begin}") { }
 
         protected CrossedFrameException(SerializationInfo info, StreamingContext context)
