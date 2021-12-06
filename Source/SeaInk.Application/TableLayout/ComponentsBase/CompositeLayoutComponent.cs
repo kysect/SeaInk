@@ -20,7 +20,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
 
         protected CompositeLayoutComponent(IReadOnlyCollection<TComponent> components)
         {
-            _components = components.ThrowIfNull(nameof(components)).ToList();
+            _components = components.ThrowIfNull().ToList();
         }
 
         public IReadOnlyCollection<TComponent> Components => _components.AsReadOnly();

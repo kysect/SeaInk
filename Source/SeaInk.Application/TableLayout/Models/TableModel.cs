@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Models
@@ -8,7 +7,7 @@ namespace SeaInk.Application.TableLayout.Models
     {
         public TableModel(IReadOnlyCollection<TableRowModel> rows)
         {
-            Rows = rows.ThrowIfNull(nameof(rows)).ToList();
+            Rows = rows.ThrowIfNull();
         }
 
         public IReadOnlyCollection<TableRowModel> Rows { get; }

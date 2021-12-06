@@ -11,7 +11,7 @@ namespace SeaInk.Application.TableLayout.Components
     {
         public PlainAssignmentColumnComponent(AssignmentModel value)
         {
-            Value = value.ThrowIfNull(nameof(value));
+            Value = value.ThrowIfNull();
         }
 
         public override Frame Frame => new Frame(1, 1);

@@ -7,7 +7,7 @@ namespace SeaInk.Application.TableLayout.Models
     {
         public AssignmentModel(string title)
         {
-            Title = title.ThrowIfNull(nameof(title));
+            Title = title.ThrowIfNull();
         }
 
         public string Title { get; private init; }

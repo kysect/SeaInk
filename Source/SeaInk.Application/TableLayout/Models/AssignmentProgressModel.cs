@@ -7,8 +7,8 @@ namespace SeaInk.Application.TableLayout.Models
     {
         public AssignmentProgressModel(AssignmentModel assignment, AssignmentProgress progress)
         {
-            Assignment = assignment.ThrowIfNull(nameof(assignment));
-            Progress = progress.ThrowIfNull(nameof(progress));
+            Assignment = assignment.ThrowIfNull();
+            Progress = progress.ThrowIfNull();
         }
 
         public AssignmentModel Assignment { get; }
