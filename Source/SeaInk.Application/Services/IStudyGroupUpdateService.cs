@@ -1,9 +1,9 @@
-using SeaInk.Core.Entities;
+using SeaInk.Application.Dtos;
 
 namespace SeaInk.Application.Services
 {
     public interface IStudyGroupUpdateService
     {
-        void Update(StudyGroup group);
+        void Update(StudyGroupDto group);
     }
 }
