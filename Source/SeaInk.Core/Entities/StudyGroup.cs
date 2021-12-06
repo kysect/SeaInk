@@ -11,12 +11,13 @@ namespace SeaInk.Core.Entities
 
         public StudyGroup(int universityId, string name)
         {
+            Id = Guid.NewGuid();
             UniversityId = universityId;
-            Name = name.ThrowIfNull(nameof(name));
+            Name = name.ThrowIfNull();
         }
 
         [Key]
-        public int Id { get; private init; }
+        public Guid Id { get; private init; }
 
         public int UniversityId { get; private init; }
 
@@ -31,11 +32,11 @@ namespace SeaInk.Core.Entities
             => Equals(obj as StudyGroup);
 
         public override int GetHashCode()
-            => Id;
+            => Id.GetHashCode();
 
         public void AddStudents(params Student[] students)
         {
-            students.ThrowIfNull(nameof(students));
+            students.ThrowIfNull();
 
             foreach (Student student in _students)
             {

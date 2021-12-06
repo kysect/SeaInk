@@ -7,9 +7,9 @@ namespace SeaInk.Core.Models
     {
         public StudentAssignmentProgress(Student student, StudyAssignment assignment, AssignmentProgress progress)
         {
-            Student = student.ThrowIfNull(nameof(student));
-            Assignment = assignment.ThrowIfNull(nameof(assignment));
-            Progress = progress.ThrowIfNull(nameof(progress));
+            Student = student.ThrowIfNull();
+            Assignment = assignment.ThrowIfNull();
+            Progress = progress.ThrowIfNull();
         }
 
         public Student Student { get; set; }

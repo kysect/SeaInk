@@ -11,12 +11,13 @@ namespace SeaInk.Core.Entities
 
         public Division(string title)
         {
-            Title = title.ThrowIfNull(nameof(title));
+            Id = Guid.NewGuid();
+            Title = title.ThrowIfNull();
             SpreadsheetId = string.Empty;
         }
 
         [Key]
-        public int Id { get; private init; }
+        public Guid Id { get; private init; }
 
         public string Title { get; private init; }
         public string SpreadsheetId { get; private init; }
@@ -30,11 +31,11 @@ namespace SeaInk.Core.Entities
             => Equals(obj as Division);
 
         public override int GetHashCode()
-            => Id;
+            => Id.GetHashCode();
 
         public void AddStudyGroupSubjects(params StudyGroupSubject[] studyGroupSubjects)
         {
-            studyGroupSubjects.ThrowIfNull(nameof(studyGroupSubjects));
+            studyGroupSubjects.ThrowIfNull();
             _studyGroupSubjects.AddRange(studyGroupSubjects);
         }
     }

@@ -8,8 +8,8 @@ namespace SeaInk.Core.Models
         public StudentAssignmentProgressDifference(
             Student student, StudyAssignment assignment, AssignmentProgress? oldProgress, AssignmentProgress? newProgress)
         {
-            Student = student.ThrowIfNull(nameof(student));
-            Assignment = assignment.ThrowIfNull(nameof(assignment));
+            Student = student.ThrowIfNull();
+            Assignment = assignment.ThrowIfNull();
             OldProgress = oldProgress;
             NewProgress = newProgress;
         }

@@ -7,7 +7,7 @@ namespace SeaInk.Core.Entities
         public Student(int universityId, string firstName, string lastName, string middleName, StudyGroup group)
             : base(universityId, firstName, lastName, middleName)
         {
-            Group = group.ThrowIfNull(nameof(group));
+            Group = group.ThrowIfNull();
         }
 
         public StudyGroup Group { get; set; }
