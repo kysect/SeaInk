@@ -3,7 +3,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.Dtos
 {
-    public class StudentDto : UserDto, IEquatable<StudentDto>
+    public sealed class StudentDto : UserDto, IEquatable<StudentDto>
     {
         public StudentDto(Guid id, int universityId, string firstName, string middleName, string lastName, StudyGroupDto studyGroup)
             : base(id, universityId, firstName, middleName, lastName)
