@@ -12,7 +12,7 @@ namespace SeaInk.Application.TableLayout.Commands
 
         public DrawSpecificComponentCommand(IDrawableLayoutComponent component)
         {
-            _component = component.ThrowIfNull(nameof(component));
+            _component = component.ThrowIfNull();
         }
 
         protected override Result Execute(IDrawableLayoutComponent target, ISheetIndex begin, ITableEditor? editor)

@@ -12,7 +12,7 @@ namespace SeaInk.Application.TableLayout.Commands
 
         public GetValueCommand(ITableDataProvider provider)
         {
-            _provider = provider.ThrowIfNull(nameof(provider));
+            _provider = provider.ThrowIfNull();
         }
 
         public T? Value { get; private set; }

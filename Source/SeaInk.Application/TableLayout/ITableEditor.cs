@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kysect.Centum.Sheets.Indices;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout

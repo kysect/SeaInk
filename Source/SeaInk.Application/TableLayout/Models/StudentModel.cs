@@ -6,7 +6,7 @@ namespace SeaInk.Application.TableLayout.Models
     {
         public StudentModel(string name)
         {
-            Name = name.ThrowIfNull(nameof(name));
+            Name = name.ThrowIfNull();
         }
 
         public string Name { get; }
