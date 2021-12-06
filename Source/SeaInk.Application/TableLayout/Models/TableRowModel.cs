@@ -8,11 +8,11 @@ namespace SeaInk.Application.TableLayout.Models
     {
         public TableRowModel(StudentModel student, IReadOnlyCollection<AssignmentProgressModel> assignmentProgresses)
         {
-            Student = student.ThrowIfNull(nameof(student));
-            AssignmentProgresses = assignmentProgresses.ThrowIfNull(nameof(student)).ToList();
+            Student = student.ThrowIfNull();
+            AssignmentProgresses = assignmentProgresses.ThrowIfNull().ToList();
         }
 
         public StudentModel Student { get; set; }
-        public ICollection<AssignmentProgressModel> AssignmentProgresses { get; }
+        public IReadOnlyCollection<AssignmentProgressModel> AssignmentProgresses { get; }
     }
 }

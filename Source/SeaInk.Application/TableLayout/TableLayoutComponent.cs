@@ -13,7 +13,7 @@ namespace SeaInk.Application.TableLayout
 
         public TableLayoutComponent(HeaderLayoutComponent header)
         {
-            _header = header.ThrowIfNull(nameof(header));
+            _header = header.ThrowIfNull();
         }
 
         public override Frame Frame => _header.Frame;
