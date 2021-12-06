@@ -11,14 +11,15 @@ namespace SeaInk.Core.Entities
 
         public Subject(int universityId, string name, DateTime startDate, DateTime endDate)
         {
+            Id = Guid.NewGuid();
             UniversityId = universityId;
-            Name = name.ThrowIfNull(nameof(name));
+            Name = name.ThrowIfNull();
             StartDate = startDate;
             EndDate = endDate;
         }
 
         [Key]
-        public int Id { get; private init; }
+        public Guid Id { get; private init; }
 
         public int UniversityId { get; private init; }
 
@@ -36,11 +37,11 @@ namespace SeaInk.Core.Entities
             => Equals(obj as Subject);
 
         public override int GetHashCode()
-            => Id;
+            => Id.GetHashCode();
 
         public void AddAssignments(params StudyAssignment[] assignments)
         {
-            assignments.ThrowIfNull(nameof(assignments));
+            assignments.ThrowIfNull();
             _assignments.AddRange(assignments);
         }
     }

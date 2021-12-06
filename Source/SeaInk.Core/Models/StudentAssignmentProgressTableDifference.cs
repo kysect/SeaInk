@@ -9,8 +9,8 @@ namespace SeaInk.Core.Models
     {
         public StudentAssignmentProgressTableDifference(StudentsAssignmentProgressTable left, StudentsAssignmentProgressTable right)
         {
-            left.ThrowIfNull(nameof(left));
-            right.ThrowIfNull(nameof(right));
+            left.ThrowIfNull();
+            right.ThrowIfNull();
 
             RemovedStudents = left.Students.Except(right.Students).ToList();
             AddedStudents = right.Students.Except(left.Students).ToList();
