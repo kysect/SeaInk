@@ -1,9 +1,9 @@
-using SeaInk.Application.TableLayout.Indices;
+using Kysect.Centum.Sheets.Indices;
 
 namespace SeaInk.Application.TableLayout.CommandInterfaces
 {
     public interface IDrawableLayoutComponent
     {
-        void Draw(ITableIndex begin, ITableEditor editor);
+        void Draw(ISheetIndex begin, ITableEditor editor);
     }
 }

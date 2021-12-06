@@ -1,9 +1,9 @@
-using SeaInk.Application.TableLayout.Indices;
+using Kysect.Centum.Sheets.Indices;
 
 namespace SeaInk.Application.TableLayout.CommandInterfaces
 {
     public interface IRemovableComponent
     {
-        void Remove(ITableIndex begin, ITableEditor editor);
+        void Remove(ISheetIndex begin, ITableEditor editor);
     }
 }

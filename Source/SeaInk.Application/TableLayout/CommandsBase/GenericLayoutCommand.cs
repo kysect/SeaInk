@@ -1,4 +1,5 @@
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.ComponentsBase;
 using SeaInk.Application.TableLayout.Errors;
 using SeaInk.Application.TableLayout.Indices;
@@ -7,7 +8,7 @@ namespace SeaInk.Application.TableLayout.CommandsBase
 {
     public abstract class GenericLayoutCommand<T> : ILayoutCommand
     {
-        public Result Execute(LayoutComponent target, ITableIndex begin, ITableEditor? editor)
+        public Result Execute(LayoutComponent target, ISheetIndex begin, ITableEditor? editor)
         {
             return target switch
             {
@@ -16,6 +17,6 @@ namespace SeaInk.Application.TableLayout.CommandsBase
             };
         }
 
-        protected abstract Result Execute(T target, ITableIndex begin, ITableEditor? editor);
+        protected abstract Result Execute(T target, ISheetIndex begin, ITableEditor? editor);
     }
 }

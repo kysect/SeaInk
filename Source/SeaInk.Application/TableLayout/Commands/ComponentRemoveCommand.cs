@@ -1,8 +1,8 @@
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.Errors;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Commands
@@ -16,7 +16,7 @@ namespace SeaInk.Application.TableLayout.Commands
             _component = component.ThrowIfNull(nameof(component));
         }
 
-        protected override Result Execute(IRemovableComponent target, ITableIndex begin, ITableEditor? editor)
+        protected override Result Execute(IRemovableComponent target, ISheetIndex begin, ITableEditor? editor)
         {
             if (!target.Equals(_component))
                 return Result.Fail(new InvalidComponentError<IRemovableComponent>(_component, target));

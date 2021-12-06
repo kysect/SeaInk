@@ -1,12 +1,13 @@
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout.Indices
 {
-    public class ScaledTableIndex : IScaledTableIndex
+    public readonly struct ScaledTableIndex : IScaledTableIndex
     {
-        private readonly ITableIndex _index;
+        private readonly ISheetIndex _index;
 
-        public ScaledTableIndex(Scale scale, ITableIndex index)
+        public ScaledTableIndex(Scale scale, ISheetIndex index)
         {
             Scale = scale;
             _index = index;
@@ -14,17 +15,27 @@ namespace SeaInk.Application.TableLayout.Indices
 
         public Scale Scale { get; }
 
-        public int Column => _index.Column;
-        public int Row => _index.Row;
+        public ColumnIndex Column => _index.Column;
+        public RowIndex Row => _index.Row;
+        public bool IsOpen => _index.IsOpen;
 
-        public void MoveHorizontally(int value = 1)
-            => _index.MoveHorizontally(value * Scale.Horizontal);
+        ISheetIndex ISheetIndex.Copy()
+            => _index.Copy();
 
-        public void MoveVertically(int value = 1)
-            => _index.MoveVertically(value * Scale.Vertical);
+        public ISheetIndex Add(ISheetIndex other)
+            => _index.Add(new SheetIndex(other.Column.Value * Scale.Horizontal, other.Row.Value * Scale.Vertical));
 
-        public ITableIndex Copy()
+        public ISheetIndex Subtract(ISheetIndex other)
+            => _index.Subtract(new SheetIndex(other.Column.Value * Scale.Horizontal, other.Row.Value * Scale.Vertical));
+
+        public bool IsEquallyOpen(ISheetIndex other)
+            => _index.IsEquallyOpen(other);
+
+        public ISheetIndex Copy()
             => new ScaledTableIndex(Scale, _index.Copy());
+
+        public bool Equals(ISheetIndex? other)
+            => _index.Equals(other);
 
         public override string ToString()
             => _index.ToString() ?? string.Empty;
