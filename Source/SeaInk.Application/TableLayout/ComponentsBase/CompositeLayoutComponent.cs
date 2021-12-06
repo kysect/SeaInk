@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.Errors;
@@ -11,8 +12,8 @@ using SeaInk.Utility.Extensions;
 namespace SeaInk.Application.TableLayout.ComponentsBase
 {
     public abstract class CompositeLayoutComponent<TComponent> : LayoutComponent,
-        IExpandableLayoutComponent<TComponent>,
-        IReducibleLayoutComponent<TComponent>
+                                                                 IExpandableLayoutComponent<TComponent>,
+                                                                 IReducibleLayoutComponent<TComponent>
         where TComponent : LayoutComponent
     {
         private readonly List<TComponent> _components;
@@ -36,9 +37,9 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
         public Result RemoveComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
             => _components.Remove(component) ? Result.Fail(new NotContainedComponentError(component)) : Result.Ok();
 
-        public override Result ExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
+        public override Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ITableEditor? editor)
         {
-            ITableIndex compositionIndex = begin.Copy();
+            ISheetIndex compositionIndex = begin.Copy();
 
             foreach (TComponent component in Components)
             {
@@ -49,7 +50,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
                 if (result.IsSuccess)
                     return result;
 
-                MoveIndexToNextComponent(compositionIndex, component);
+                compositionIndex = MoveIndexToNextComponent(compositionIndex, component);
             }
 
             return base.ExecuteCommand(command, begin, editor);
@@ -76,7 +77,7 @@ namespace SeaInk.Application.TableLayout.ComponentsBase
         public sealed override int GetHashCode()
             => _components.GetHashCode();
 
-        protected abstract void MoveIndexToNextComponent(ITableIndex index, TComponent component);
+        protected abstract ISheetIndex MoveIndexToNextComponent(ISheetIndex index, TComponent component);
         protected abstract Scale GetScale(TComponent component);
     }
 }

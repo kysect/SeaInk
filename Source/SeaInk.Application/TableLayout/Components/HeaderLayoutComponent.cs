@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.Exceptions;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.Commands;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.ComponentsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Utility.Extensions;
 
@@ -30,13 +30,13 @@ namespace SeaInk.Application.TableLayout.Components
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
 
-        public override Result ExecuteCommand(ILayoutCommand command, ITableIndex begin, ITableEditor? editor)
+        public override Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ITableEditor? editor)
         {
             Result baseResult = base.ExecuteCommand(command, begin, editor);
             return baseResult.IsSuccess ? baseResult : _stack.ExecuteCommand(command, begin, editor);
         }
 
-        public TableRowModel GetValue(ITableIndex begin, ITableDataProvider provider)
+        public TableRowModel GetValue(ISheetIndex begin, ITableDataProvider provider)
         {
             var getStudentCommand = new GetValueCommand<StudentModel>(provider);
 
@@ -51,7 +51,7 @@ namespace SeaInk.Application.TableLayout.Components
                 aggregateAssignmentProgressesCommand.Values);
         }
 
-        public void SetValue(TableRowModel value, ITableIndex begin, ITableEditor editor)
+        public void SetValue(TableRowModel value, ISheetIndex begin, ITableEditor editor)
         {
             var studentSetCommand = new SetValueCommand<StudentModel>(value.Student);
 

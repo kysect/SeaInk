@@ -1,9 +1,9 @@
-using SeaInk.Core.Entities;
+using SeaInk.Application.Dtos;
 
 namespace SeaInk.Application.Services
 {
     public interface IStudyGroupRegistrationService
     {
-        StudyGroup RegisterStudyGroup(int universityId);
+        StudyGroupDto RegisterStudyGroup(int universityId);
     }
 }

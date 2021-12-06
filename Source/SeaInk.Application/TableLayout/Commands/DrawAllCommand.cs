@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandsBase;
 using SeaInk.Application.TableLayout.ComponentsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Successes;
 
 namespace SeaInk.Application.TableLayout.Commands
@@ -12,7 +12,7 @@ namespace SeaInk.Application.TableLayout.Commands
     {
         private readonly List<LayoutComponent> _visitedComponents = new List<LayoutComponent>();
 
-        public Result Execute(LayoutComponent target, ITableIndex begin, ITableEditor? editor)
+        public Result Execute(LayoutComponent target, ISheetIndex begin, ITableEditor? editor)
         {
             var command = new DrawComponentCommand();
             Result result = target.ExecuteCommand(new ComponentIgnoringCommand(command, _visitedComponents), begin, editor);

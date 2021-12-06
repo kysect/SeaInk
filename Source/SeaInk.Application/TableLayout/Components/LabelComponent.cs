@@ -1,6 +1,6 @@
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.ComponentsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 
 namespace SeaInk.Application.TableLayout.Components
@@ -16,7 +16,7 @@ namespace SeaInk.Application.TableLayout.Components
 
         public override Frame Frame => new Frame(1, 1);
 
-        public void Draw(ITableIndex begin, ITableEditor editor)
+        public void Draw(ISheetIndex begin, ITableEditor editor)
             => editor.EnqueueWrite(begin, new[] { new[] { _value } });
 
         public override bool Equals(LayoutComponent? other)

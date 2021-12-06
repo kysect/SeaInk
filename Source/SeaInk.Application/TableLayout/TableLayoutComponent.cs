@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.Components;
 using SeaInk.Application.TableLayout.ComponentsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Application.TableLayout.Models;
 using SeaInk.Utility.Extensions;
 
@@ -21,13 +21,13 @@ namespace SeaInk.Application.TableLayout
         public TableModel GetTable(ITableDataProvider provider)
         {
             int startRow = Frame.Height + 1;
-            var index = new TableIndex(1, startRow);
+            ISheetIndex index = new SheetIndex(1, startRow);
             var rows = new List<TableRowModel>();
 
             for (int i = startRow; i <= provider.Frame.Height; i++)
             {
                 rows.Add(_header.GetValue(index.Copy(), provider));
-                index.MoveVertically();
+                index += new SheetIndex(0, 1);
             }
 
             return new TableModel(rows);
@@ -36,12 +36,12 @@ namespace SeaInk.Application.TableLayout
         public void SetTable(TableModel table, ITableEditor editor)
         {
             int startRow = Frame.Height + 1;
-            var index = new TableIndex(1, startRow);
+            ISheetIndex index = new SheetIndex(1, startRow);
 
             foreach (TableRowModel row in table.Rows)
             {
                 _header.SetValue(row, index.Copy(), editor);
-                index.MoveVertically();
+                index += new SheetIndex(0, 1);
             }
         }
 

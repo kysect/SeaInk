@@ -10,11 +10,12 @@ namespace SeaInk.Core.Entities
 
         public StudyGroupSubject(StudyGroup studyGroup, Subject subject)
         {
-            StudyGroup = studyGroup.ThrowIfNull(nameof(studyGroup));
-            Subject = subject.ThrowIfNull(nameof(subject));
+            Id = Guid.NewGuid();
+            StudyGroup = studyGroup.ThrowIfNull();
+            Subject = subject.ThrowIfNull();
         }
 
-        public int Id { get; private init; }
+        public Guid Id { get; private init; }
         public int SheetId { get; set; }
 
         // TODO: configure distinct pair of this ids
@@ -29,11 +30,11 @@ namespace SeaInk.Core.Entities
             => Equals(obj as StudyGroupSubject);
 
         public override int GetHashCode()
-            => Id;
+            => Id.GetHashCode();
 
         public void AddMentors(params Mentor[] mentors)
         {
-            mentors.ThrowIfNull(nameof(mentors));
+            mentors.ThrowIfNull();
             _mentors.AddRange(mentors);
         }
     }
