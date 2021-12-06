@@ -1,9 +1,9 @@
-using SeaInk.Core.Entities;
+using SeaInk.Application.Dtos;
 
 namespace SeaInk.Application.Services
 {
     public interface IMentorUpdateService
     {
-        void Update(Mentor mentor);
+        void Update(MentorDto mentor);
     }
 }
