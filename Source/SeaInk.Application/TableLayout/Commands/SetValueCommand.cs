@@ -12,12 +12,12 @@ namespace SeaInk.Application.TableLayout.Commands
 
         public SetValueCommand(T value)
         {
-            _value = value.ThrowIfNull(nameof(value));
+            _value = value.ThrowIfNull();
         }
 
         protected override Result Execute(IValueSettingLayoutComponent<T> target, ISheetIndex begin, ITableEditor? editor)
         {
-            target.SetValue(_value, begin, editor.ThrowIfNull(nameof(editor)));
+            target.SetValue(_value, begin, editor.ThrowIfNull());
             return Result.Ok();
         }
     }

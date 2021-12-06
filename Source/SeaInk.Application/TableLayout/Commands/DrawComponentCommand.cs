@@ -11,7 +11,7 @@ namespace SeaInk.Application.TableLayout.Commands
     {
         protected override Result Execute(IDrawableLayoutComponent target, ISheetIndex begin, ITableEditor? editor)
         {
-            var index = new MergeScanningIndex(begin.Copy(), editor.ThrowIfNull(nameof(editor)));
+            var index = new MergeScanningIndex(begin.Copy(), editor.ThrowIfNull());
             target.Draw(index, editor!);
             return Result.Ok();
         }

@@ -13,7 +13,7 @@ namespace SeaInk.Application.TableLayout.Commands
 
         public ComponentRemoveCommand(IRemovableComponent component)
         {
-            _component = component.ThrowIfNull(nameof(component));
+            _component = component.ThrowIfNull();
         }
 
         protected override Result Execute(IRemovableComponent target, ISheetIndex begin, ITableEditor? editor)
@@ -21,7 +21,7 @@ namespace SeaInk.Application.TableLayout.Commands
             if (!target.Equals(_component))
                 return Result.Fail(new InvalidComponentError<IRemovableComponent>(_component, target));
 
-            target.Remove(begin, editor.ThrowIfNull(nameof(editor)));
+            target.Remove(begin, editor.ThrowIfNull());
             return Result.Ok();
         }
     }

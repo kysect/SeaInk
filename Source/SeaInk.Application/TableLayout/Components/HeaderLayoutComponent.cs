@@ -47,7 +47,7 @@ namespace SeaInk.Application.TableLayout.Components
             _stack.ExecuteCommand(aggregateAssignmentProgressesCommand, begin.Copy(), null);
 
             return new TableRowModel(
-                getStudentCommand.Value.ThrowIfNull(nameof(StudentModel)),
+                getStudentCommand.Value.ThrowIfNull(),
                 aggregateAssignmentProgressesCommand.Values);
         }
 
