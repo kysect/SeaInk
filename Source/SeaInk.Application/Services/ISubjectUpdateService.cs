@@ -1,9 +1,9 @@
-using SeaInk.Core.Entities;
+using SeaInk.Application.Dtos;
 
 namespace SeaInk.Application.Services
 {
     public interface ISubjectUpdateService
     {
-        void Update(Subject subject);
+        void Update(SubjectDto subject);
     }
 }

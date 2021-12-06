@@ -1,7 +1,7 @@
 using FluentResults;
+using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.TableLayout.CommandInterfaces;
 using SeaInk.Application.TableLayout.CommandsBase;
-using SeaInk.Application.TableLayout.Indices;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.TableLayout.Commands
@@ -15,7 +15,7 @@ namespace SeaInk.Application.TableLayout.Commands
             _value = value.ThrowIfNull(nameof(value));
         }
 
-        protected override Result Execute(IValueSettingLayoutComponent<T> target, ITableIndex begin, ITableEditor? editor)
+        protected override Result Execute(IValueSettingLayoutComponent<T> target, ISheetIndex begin, ITableEditor? editor)
         {
             target.SetValue(_value, begin, editor.ThrowIfNull(nameof(editor)));
             return Result.Ok();

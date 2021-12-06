@@ -11,9 +11,9 @@ namespace SeaInk.Core.Models
             IReadOnlyCollection<StudyAssignment> assignments,
             IReadOnlyCollection<StudentAssignmentProgress> progresses)
         {
-            Students = students.ThrowIfNull(nameof(students));
-            Assignments = assignments.ThrowIfNull(nameof(assignments));
-            Progresses = progresses.ThrowIfNull(nameof(progresses));
+            Students = students.ThrowIfNull();
+            Assignments = assignments.ThrowIfNull();
+            Progresses = progresses.ThrowIfNull();
         }
 
         public IReadOnlyCollection<Student> Students { get; }

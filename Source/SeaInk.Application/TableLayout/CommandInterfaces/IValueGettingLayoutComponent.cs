@@ -1,9 +1,9 @@
-using SeaInk.Application.TableLayout.Indices;
+using Kysect.Centum.Sheets.Indices;
 
 namespace SeaInk.Application.TableLayout.CommandInterfaces
 {
     public interface IValueGettingLayoutComponent<T>
     {
-        T GetValue(ITableIndex begin, ITableDataProvider provider);
+        T GetValue(ISheetIndex begin, ITableDataProvider provider);
     }
 }

@@ -1,9 +1,9 @@
-using SeaInk.Core.Entities;
+using SeaInk.Application.Dtos;
 
 namespace SeaInk.Application.Services
 {
     public interface IMentorRegistrationService
     {
-        Mentor RegisterMentor(int universityId);
+        MentorDto RegisterMentor(int universityId);
     }
 }

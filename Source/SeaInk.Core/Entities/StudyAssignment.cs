@@ -15,8 +15,9 @@ namespace SeaInk.Core.Entities
             float minPoints,
             float maxPoints)
         {
+            Id = Guid.NewGuid();
             UniversityId = universityId;
-            Title = title.ThrowIfNull(nameof(title));
+            Title = title.ThrowIfNull();
             IsMilestone = isMilestone;
             StartDate = startDate;
             EndDate = endDate;
@@ -25,7 +26,7 @@ namespace SeaInk.Core.Entities
         }
 
         [Key]
-        public int Id { get; private init; }
+        public Guid Id { get; private init; }
 
         public int UniversityId { get; private init; }
 
@@ -45,6 +46,6 @@ namespace SeaInk.Core.Entities
             => Equals(obj as StudyAssignment);
 
         public override int GetHashCode()
-            => Id;
+            => Id.GetHashCode();
     }
 }
