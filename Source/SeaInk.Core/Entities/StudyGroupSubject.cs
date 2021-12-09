@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using SeaInk.Core.Exceptions;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
@@ -16,7 +18,7 @@ namespace SeaInk.Core.Entities
         }
 
         public Guid Id { get; private init; }
-        public int? SheetId { get; set; } = null;
+        public int? SheetId { get; set; }
 
         public Division? Division { get; internal set; }
 
@@ -38,6 +40,22 @@ namespace SeaInk.Core.Entities
         {
             mentors.ThrowIfNull();
             _mentors.AddRange(mentors);
+        }
+
+        public void RemoveMentors(params Mentor[] mentors)
+        {
+            mentors.ThrowIfNull();
+
+            var errors = mentors
+                .Select((m, i) => (I: i, Result: _mentors.Remove(m)))
+                .Where(p => !p.Result)
+                .Select(p => new RemovingMentorException(this, mentors[p.I]))
+                .ToList();
+
+            if (errors.Any())
+            {
+                throw new AggregateException(errors);
+            }
         }
     }
 }
