@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.Exceptions;
@@ -21,9 +22,13 @@ namespace SeaInk.Application.Services
             _sheetsService = sheetsService.ThrowIfNull();
         }
 
-        public async Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(
-            Division division, StudyGroupSubject studyGroupSubject, TableLayoutComponent layoutComponent)
+        public async Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(StudyGroupSubject studyGroupSubject, TableLayoutComponent layoutComponent)
         {
+            studyGroupSubject.ThrowIfNull();
+            layoutComponent.ThrowIfNull();
+
+            Division division = studyGroupSubject.Division.ThrowIfNull();
+
             if (!string.IsNullOrEmpty(division.SpreadsheetId))
                 throw new SpreadsheetCreatedException(division);
 
@@ -39,8 +44,13 @@ namespace SeaInk.Application.Services
             return response;
         }
 
-        public async Task<CreateSheetResponse> CreateSheetAsync(Division division, StudyGroupSubject studyGroupSubject, TableLayoutComponent layoutComponent)
+        public async Task<CreateSheetResponse> CreateSheetAsync(StudyGroupSubject studyGroupSubject, TableLayoutComponent layoutComponent)
         {
+            studyGroupSubject.ThrowIfNull();
+            layoutComponent.ThrowIfNull();
+
+            Division division = studyGroupSubject.Division.ThrowIfNull();
+
             if (string.IsNullOrEmpty(division.SpreadsheetId))
                 throw new SpreadsheetNotCreatedException(division);
 
