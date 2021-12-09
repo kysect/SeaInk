@@ -16,7 +16,9 @@ namespace SeaInk.Core.Entities
         }
 
         public Guid Id { get; private init; }
-        public int SheetId { get; set; }
+        public int? SheetId { get; set; } = null;
+
+        public Division? Division { get; internal set; }
 
         // TODO: configure distinct pair of this ids
         public StudyGroup StudyGroup { get; private init; }

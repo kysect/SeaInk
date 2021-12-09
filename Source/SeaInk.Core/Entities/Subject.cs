@@ -5,17 +5,15 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class Subject : IEquatable<Subject>
+    public class Subject : IEquatable<Subject>
     {
         private readonly List<StudyAssignment> _assignments = new List<StudyAssignment>();
 
-        public Subject(int universityId, string name, DateTime startDate, DateTime endDate)
+        public Subject(int universityId, string name)
         {
             Id = Guid.NewGuid();
             UniversityId = universityId;
             Name = name.ThrowIfNull();
-            StartDate = startDate;
-            EndDate = endDate;
         }
 
         [Key]
@@ -24,9 +22,6 @@ namespace SeaInk.Core.Entities
         public int UniversityId { get; private init; }
 
         public string Name { get; private init; }
-
-        public DateTime StartDate { get; private init; }
-        public DateTime EndDate { get; private init; }
 
         public IReadOnlyCollection<StudyAssignment> Assignments => _assignments;
 
