@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SeaInk.Core.Exceptions;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
@@ -20,7 +21,7 @@ namespace SeaInk.Core.Entities
         public Guid Id { get; private init; }
 
         public string Title { get; private init; }
-        public string SpreadsheetId { get; private init; }
+        public string SpreadsheetId { get; set; }
 
         public IReadOnlyCollection<StudyGroupSubject> StudyGroupSubjects => _studyGroupSubjects;
 
@@ -36,7 +37,32 @@ namespace SeaInk.Core.Entities
         public void AddStudyGroupSubjects(params StudyGroupSubject[] studyGroupSubjects)
         {
             studyGroupSubjects.ThrowIfNull();
-            _studyGroupSubjects.AddRange(studyGroupSubjects);
+
+            foreach (StudyGroupSubject studyGroupSubject in studyGroupSubjects)
+            {
+                studyGroupSubject.ThrowIfNull();
+                if (studyGroupSubject.Division?.Equals(this) ?? false)
+                    continue;
+
+                studyGroupSubject.Division?.RemoveStudyGroupSubjects(studyGroupSubject);
+                studyGroupSubject.Division = this;
+                _studyGroupSubjects.Add(studyGroupSubject);
+            }
+        }
+
+        public void RemoveStudyGroupSubjects(params StudyGroupSubject[] studyGroupSubjects)
+        {
+            studyGroupSubjects.ThrowIfNull();
+
+            foreach (StudyGroupSubject studyGroupSubject in studyGroupSubjects)
+            {
+                studyGroupSubject.ThrowIfNull();
+                if (studyGroupSubject.Division is null || !studyGroupSubject.Division.Equals(this))
+                    throw new ForeignStudyGroupSubjectException(this, studyGroupSubject);
+
+                if (!_studyGroupSubjects.Remove(studyGroupSubject))
+                    throw new InvalidOperationException($"Trying to remove {nameof(StudyGroupSubject)} that not present");
+            }
         }
     }
 }
