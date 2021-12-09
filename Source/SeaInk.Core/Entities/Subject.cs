@@ -5,7 +5,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public class Subject : IEquatable<Subject>
+    public sealed class Subject : IEquatable<Subject>
     {
         private readonly List<StudyAssignment> _assignments = new List<StudyAssignment>();
 
