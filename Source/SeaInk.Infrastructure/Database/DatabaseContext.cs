@@ -11,7 +11,6 @@ namespace SeaInk.Infrastructure.Database
             Database.EnsureCreated();
         }
 
-        public DbSet<User> Users { get; private set; } = null!;
         public DbSet<Student> Students { get; private set; } = null!;
         public DbSet<Mentor> Mentors { get; private set; } = null!;
 
