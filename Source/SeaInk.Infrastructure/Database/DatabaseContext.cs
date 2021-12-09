@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SeaInk.Core.Entities;
+using SeaInk.Infrastructure.Models;
 
 namespace SeaInk.Infrastructure.Database
 {
@@ -11,14 +12,16 @@ namespace SeaInk.Infrastructure.Database
             Database.EnsureCreated();
         }
 
-        public DbSet<Student> Students { get; private set; } = null!;
-        public DbSet<Mentor> Mentors { get; private set; } = null!;
+        internal DbSet<Student> Students { get; private set; } = null!;
+        internal DbSet<Mentor> Mentors { get; private set; } = null!;
 
-        public DbSet<Division> Divisions { get; private set; } = null!;
-        public DbSet<Subject> Subjects { get; private set; } = null!;
-        public DbSet<StudyGroup> StudyGroups { get; private set; } = null!;
-        public DbSet<StudyGroupSubject> StudyGroupSubjects { get; private set; } = null!;
-        public DbSet<StudyAssignment> StudyAssignments { get; private set; } = null!;
+        internal DbSet<Division> Divisions { get; private set; } = null!;
+        internal DbSet<Subject> Subjects { get; private set; } = null!;
+        internal DbSet<StudyGroup> StudyGroups { get; private set; } = null!;
+        internal DbSet<StudyGroupSubject> StudyGroupSubjects { get; private set; } = null!;
+        internal DbSet<StudyAssignment> StudyAssignments { get; private set; } = null!;
+
+        internal DbSet<StudyGroupSubjectLayout> StudyGroupSubjectLayouts { get; private set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +40,8 @@ namespace SeaInk.Infrastructure.Database
             modelBuilder.Entity<StudyGroupSubject>().HasOne(s => s.Subject);
 
             modelBuilder.Entity<Division>().HasMany<StudyGroupSubject>("_studyGroupSubjects");
+
+            modelBuilder.Entity<StudyGroupSubjectLayout>().HasKey(s => s.StudyGroupSubject.Id);
         }
     }
 }
