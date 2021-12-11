@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Kysect.Centum.Sheets.Indices;
 using SeaInk.Application.Exceptions;
@@ -33,7 +32,7 @@ namespace SeaInk.Application.Services
                 throw new SpreadsheetCreatedException(division);
 
             CreateSpreadsheetResponse response = await _sheetsService.CreateSpreadsheetAsync(division.Title);
-            ITableEditor editor = _sheetsService.GetEditorFor(response.SheetInfo);
+            ITableEditor editor = await _sheetsService.GetEditorFor(response.SheetInfo);
             division.SpreadsheetId = response.SheetInfo.SpreadsheetId;
             studyGroupSubject.SheetId = response.SheetInfo.SheetId;
 
@@ -58,7 +57,7 @@ namespace SeaInk.Application.Services
                 throw new SheetCreatedException(studyGroupSubject);
 
             CreateSheetResponse response = await _sheetsService.CreateSheetAsync(division.SpreadsheetId, studyGroupSubject.StudyGroup.Name);
-            ITableEditor editor = _sheetsService.GetEditorFor(new SheetInfo(division.SpreadsheetId, response.SheetId));
+            ITableEditor editor = await _sheetsService.GetEditorFor(new SheetInfo(division.SpreadsheetId, response.SheetId));
             studyGroupSubject.SheetId = response.SheetId;
 
             layoutComponent.ExecuteCommand(new DrawAllCommand(), new SheetIndex(1, 1), editor);
@@ -83,7 +82,7 @@ namespace SeaInk.Application.Services
             if (layoutComponent is null)
                 throw new MissingLayoutException(studyGroupSubject);
 
-            ITableEditor editor = _sheetsService.GetEditorFor(new SheetInfo(division.SpreadsheetId, sheetId));
+            ITableEditor editor = await _sheetsService.GetEditorFor(new SheetInfo(division.SpreadsheetId, sheetId));
 
             layoutComponent.SetTable(tableModel, editor);
             await editor.ExecuteAsync().ConfigureAwait(false);
