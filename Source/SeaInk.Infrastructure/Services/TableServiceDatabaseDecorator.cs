@@ -9,12 +9,12 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Infrastructure.Services
 {
-    public class DatabaseSavingTableServiceDecorator : ITableService
+    public class TableServiceDatabaseDecorator : ITableService
     {
         private readonly DatabaseContext _context;
         private readonly ITableService _service;
 
-        public DatabaseSavingTableServiceDecorator(DatabaseContext context, ITableService service)
+        public TableServiceDatabaseDecorator(DatabaseContext context, ITableService service)
         {
             _context = context.ThrowIfNull();
             _service = service.ThrowIfNull();
