@@ -5,20 +5,13 @@ using Bogus;
 using SeaInk.Application.Models;
 using SeaInk.Application.Services;
 using SeaInk.Core.Entities;
-using SeaInk.Infrastructure.Database;
+using SeaInk.Core.Models;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Infrastructure.Services
 {
     public class FakeUniversityService : IUniversityService
     {
-        private readonly DatabaseContext _context;
-
-        public FakeUniversityService(DatabaseContext context)
-        {
-            _context = context.ThrowIfNull();
-        }
-
         public Task<Mentor> GetMentorAsync(int universityId)
         {
             Faker<Mentor> faker = new Faker<Mentor>()
@@ -51,53 +44,44 @@ namespace SeaInk.Infrastructure.Services
         public Task<Subject> GetSubjectAsync(SubjectModel subjectModel)
         {
             subjectModel.ThrowIfNull();
-
-            Subject? subject = _context.Subjects.AsEnumerable().SingleOrDefault(s => s.UniversityId.Equals(subjectModel.UniversityId));
-
-            if (subject is null)
-            {
-                subject = new Subject(subjectModel.UniversityId, subjectModel.Title);
-                _context.Subjects.Add(subject);
-                _context.SaveChanges();
-            }
-
-            return Task.FromResult(subject);
+            return Task.FromResult(new Subject(subjectModel.UniversityId, subjectModel.Title));
         }
 
         public Task<Subject> UpdateSubjectAsync(Subject subject)
         {
             subject.ThrowIfNull();
-
-            _context.Subjects.Update(subject);
-            _context.SaveChanges();
-
             return Task.FromResult(subject);
         }
 
         public Task<StudyGroup> GetGroupAsync(StudyGroupModel groupModel)
         {
             groupModel.ThrowIfNull();
-
-            StudyGroup? group = _context.StudyGroups.AsEnumerable().SingleOrDefault(s => s.UniversityId.Equals(groupModel.UniversityId));
-
-            if (group is null)
-            {
-                group = new StudyGroup(groupModel.UniversityId, groupModel.Name);
-                _context.StudyGroups.Add(group);
-                _context.SaveChanges();
-            }
-
-            return Task.FromResult(group);
+            return Task.FromResult(new StudyGroup(groupModel.UniversityId, groupModel.Name));
         }
 
         public Task<StudyGroup> UpdateGroupAsync(StudyGroup group)
         {
             group.ThrowIfNull();
-
-            _context.StudyGroups.Update(group);
-            _context.SaveChanges();
-
             return Task.FromResult(group);
         }
+
+        public Task<StudentsAssignmentProgressTable> GetStudentAssignmentProgressTableAsync(StudyGroupSubject studyGroupSubject)
+        {
+            studyGroupSubject.ThrowIfNull();
+
+            Faker<StudentAssignmentProgress> faker = new Faker<StudentAssignmentProgress>()
+                .CustomInstantiator(f => new StudentAssignmentProgress(
+                                        f.Random.ArrayElement(studyGroupSubject.StudyGroup.Students.ToArray()),
+                                        f.Random.ArrayElement(studyGroupSubject.Subject.Assignments.ToArray()),
+                                        new AssignmentProgress(f.Random.Double())));
+
+            var table = new StudentsAssignmentProgressTable(
+                studyGroupSubject.StudyGroup.Students, studyGroupSubject.Subject.Assignments, faker.Generate(20));
+
+            return Task.FromResult(table);
+        }
+
+        public Task SetStudentAssignmentProgressesAsync(IReadOnlyCollection<StudentAssignmentProgress> progresses)
+            => Task.CompletedTask;
     }
 }
