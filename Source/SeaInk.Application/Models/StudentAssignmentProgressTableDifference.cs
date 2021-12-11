@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using SeaInk.Application.Exceptions;
 using SeaInk.Core.Entities;
+using SeaInk.Core.Models;
 using SeaInk.Utility.Extensions;
 
-namespace SeaInk.Core.Models
+namespace SeaInk.Application.Models
 {
     public class StudentAssignmentProgressTableDifference
     {
@@ -19,6 +21,34 @@ namespace SeaInk.Core.Models
             AddedAssignments = right.Assignments.Except(left.Assignments).ToList();
 
             AssignmentProgressDifferences = CalculateAssignmentProgressDifferences(left.Progresses, right.Progresses);
+        }
+
+        public StudentAssignmentProgressTableDifference(
+            IReadOnlyCollection<Student> removedStudents,
+            IReadOnlyCollection<Student> addedStudents,
+            IReadOnlyCollection<StudyAssignment> removedAssignments,
+            IReadOnlyCollection<StudyAssignment> addedAssignments,
+            IReadOnlyCollection<StudentAssignmentProgressDifference> assignmentProgressDifferences)
+        {
+            removedStudents.ThrowIfNull();
+            addedStudents.ThrowIfNull();
+            removedAssignments.ThrowIfNull();
+            addedAssignments.ThrowIfNull();
+            assignmentProgressDifferences.ThrowIfNull();
+
+            if (removedStudents.Intersect(addedStudents).Any())
+                throw new AddRemoveDifferenceIntersectException<Student>();
+
+            if (removedAssignments.Intersect(addedAssignments).Any())
+                throw new AddRemoveDifferenceIntersectException<StudyAssignment>();
+
+            RemovedStudents = removedStudents;
+            AddedStudents = addedStudents;
+
+            RemovedAssignments = removedAssignments;
+            AddedAssignments = addedAssignments;
+
+            AssignmentProgressDifferences = assignmentProgressDifferences;
         }
 
         public IReadOnlyCollection<Student> RemovedStudents { get; }
