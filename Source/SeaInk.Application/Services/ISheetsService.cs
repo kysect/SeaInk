@@ -9,7 +9,7 @@ namespace SeaInk.Application.Services
         Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(string title);
         Task<CreateSheetResponse> CreateSheetAsync(string spreadsheetId, string title);
 
-        ITableEditor GetEditorFor(SheetInfo info);
+        Task<ITableEditor> GetEditorFor(SheetInfo info);
         Task<ITableDataProvider> GetDataProviderAsync(SheetInfo info);
     }
 }

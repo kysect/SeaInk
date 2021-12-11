@@ -25,7 +25,13 @@ namespace SeaInk.Infrastructure.Services
             return mentor;
         }
 
-        public async Task<IReadOnlyCollection<StudyGroupSubject>> GetMentorStudyGroupSubjects(Mentor mentor)
+        public async Task<Mentor?> FindOrDefaultAsync(int mentorUniversityId)
+        {
+            Mentor? mentor = await _context.Mentors.SingleOrDefaultAsync(m => m.UniversityId == mentorUniversityId);
+            return mentor;
+        }
+
+        public async Task<IReadOnlyCollection<StudyGroupSubject>> GetMentorStudyGroupSubjectsAsync(Mentor mentor)
         {
             mentor.ThrowIfNull();
 
@@ -35,7 +41,7 @@ namespace SeaInk.Infrastructure.Services
             return await studyGroupsSubjects.ToListAsync();
         }
 
-        public Task AddMentorStudyGroupSubjects(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects)
+        public Task AddMentorStudyGroupSubjectsAsync(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects)
         {
             mentor.ThrowIfNull();
             studyGroupSubjects.ThrowIfNull();
@@ -49,7 +55,7 @@ namespace SeaInk.Infrastructure.Services
             return _context.SaveChangesAsync();
         }
 
-        public Task RemoveMentorStudyGroupSubjects(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects)
+        public Task RemoveMentorStudyGroupSubjectsAsync(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects)
         {
             mentor.ThrowIfNull();
             studyGroupSubjects.ThrowIfNull();

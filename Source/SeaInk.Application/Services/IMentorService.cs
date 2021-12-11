@@ -8,8 +8,9 @@ namespace SeaInk.Application.Services
     public interface IMentorService
     {
         Task<Mentor?> FindOrDefaultAsync(Guid mentorId);
-        Task<IReadOnlyCollection<StudyGroupSubject>> GetMentorStudyGroupSubjects(Mentor mentor);
-        Task AddMentorStudyGroupSubjects(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects);
-        Task RemoveMentorStudyGroupSubjects(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects);
+        Task<Mentor?> FindOrDefaultAsync(int mentorUniversityId);
+        Task<IReadOnlyCollection<StudyGroupSubject>> GetMentorStudyGroupSubjectsAsync(Mentor mentor);
+        Task AddMentorStudyGroupSubjectsAsync(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects);
+        Task RemoveMentorStudyGroupSubjectsAsync(Mentor mentor, IReadOnlyCollection<StudyGroupSubject> studyGroupSubjects);
     }
 }

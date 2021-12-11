@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SeaInk.Application.Models;
 using SeaInk.Core.Entities;
+using SeaInk.Core.Models;
 
 namespace SeaInk.Application.Services
 {
@@ -18,5 +19,8 @@ namespace SeaInk.Application.Services
 
         Task<StudyGroup> GetGroupAsync(StudyGroupModel groupModel);
         Task<StudyGroup> UpdateGroupAsync(StudyGroup group);
+
+        Task<StudentsAssignmentProgressTable> GetStudentAssignmentProgressTableAsync(StudyGroupSubject studyGroupSubject);
+        Task SetStudentAssignmentProgressesAsync(IReadOnlyCollection<StudentAssignmentProgress> progresses);
     }
 }

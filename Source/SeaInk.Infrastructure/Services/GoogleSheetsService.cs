@@ -74,8 +74,8 @@ namespace SeaInk.Infrastructure.Services
                 $"{spreadsheet.SpreadsheetUrl}#gid={sheet.Properties.SheetId}");
         }
 
-        public ITableEditor GetEditorFor(SheetInfo info)
-            => new GoogleSheetsTableEditor(_service, info.SpreadsheetId, info.SheetId);
+        public Task<ITableEditor> GetEditorFor(SheetInfo info)
+            => Task.FromResult((ITableEditor)new GoogleSheetsTableEditor(_service, info.SpreadsheetId, info.SheetId));
 
         public Task<ITableDataProvider> GetDataProviderAsync(SheetInfo info)
             => GoogleTableDataProvider.Create(_service, info.SpreadsheetId, info.SheetId);

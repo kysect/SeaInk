@@ -1,7 +1,8 @@
 using SeaInk.Core.Entities;
+using SeaInk.Core.Models;
 using SeaInk.Utility.Extensions;
 
-namespace SeaInk.Core.Models
+namespace SeaInk.Application.Models
 {
     public class StudentAssignmentProgressDifference
     {
