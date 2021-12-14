@@ -1,6 +1,6 @@
-using SeaInk.Core.Exceptions;
+using SeaInk.Core.Tools;
 
-namespace SeaInk.Infrastructure.Exceptions
+namespace SeaInk.Infrastructure.Integrations.GoogleSheets.Exceptions
 {
     public class SheetNotFoundException : SeaInkException
     {

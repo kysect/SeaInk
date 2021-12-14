@@ -1,16 +1,13 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Kysect.Centum.Fields;
 using Kysect.Centum.Fields.Extractors;
-using SeaInk.Application.Models;
-using SeaInk.Application.Services;
-using SeaInk.Application.TableLayout;
-using SeaInk.Infrastructure.TableLayout;
+using SeaInk.Core.Models;
+using SeaInk.Core.Services;
+using SeaInk.Core.TableLayout;
 using SeaInk.Utility.Extensions;
 
-namespace SeaInk.Infrastructure.Services
+namespace SeaInk.Infrastructure.Integrations.GoogleSheets
 {
     public class GoogleSheetsService : ISheetsService
     {
@@ -21,7 +18,7 @@ namespace SeaInk.Infrastructure.Services
             _service = service;
         }
 
-        public async Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(string title)
+        public async Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(string title, CancellationToken cancellationToken)
         {
             var body = new Spreadsheet
             {
@@ -35,7 +32,7 @@ namespace SeaInk.Infrastructure.Services
             SpreadsheetsResource.CreateRequest request = _service.Spreadsheets.Create(body);
             request.Fields = new[] { urlExtractor, sheetsExtractor }.StringRepresentation();
 
-            Spreadsheet response = await request.ExecuteAsync();
+            Spreadsheet response = await request.ExecuteAsync(cancellationToken);
 
             Sheet? sheet = response.Sheets.Single();
 
@@ -44,7 +41,7 @@ namespace SeaInk.Infrastructure.Services
                 new SheetLink(response.SpreadsheetUrl.ThrowIfNull()));
         }
 
-        public async Task<CreateSheetResponse> CreateSheetAsync(string spreadsheetId, string title)
+        public async Task<CreateSheetResponse> CreateSheetAsync(string spreadsheetId, string title, CancellationToken cancellationToken)
         {
             var updateRequest = new Request
             {
@@ -65,19 +62,22 @@ namespace SeaInk.Infrastructure.Services
             SpreadsheetsResource.BatchUpdateRequest request = _service.Spreadsheets.BatchUpdate(body, spreadsheetId);
             request.Fields = new[] { sheetExtractor, urlExtractor }.StringRepresentation();
 
-            BatchUpdateSpreadsheetResponse? response = await request.ExecuteAsync();
+            BatchUpdateSpreadsheetResponse? response = await request.ExecuteAsync(cancellationToken);
             Spreadsheet spreadsheet = response.UpdatedSpreadsheet;
             Sheet sheet = spreadsheet.Sheets.Single(s => s.Properties.Title.Equals(title));
 
             return new CreateSheetResponse(
                 sheet.Properties.SheetId.ThrowIfNull(),
-                $"{spreadsheet.SpreadsheetUrl}#gid={sheet.Properties.SheetId}");
+                new SheetLink($"{spreadsheet.SpreadsheetUrl}#gid={sheet.Properties.SheetId}"));
         }
 
-        public Task<ITableEditor> GetEditorFor(SheetInfo info)
+        public Task<ITableEditor> GetEditorFor(SheetInfo info, CancellationToken cancellationToken)
             => Task.FromResult((ITableEditor)new GoogleSheetsTableEditor(_service, info.SpreadsheetId, info.SheetId));
 
-        public Task<ITableDataProvider> GetDataProviderAsync(SheetInfo info)
-            => GoogleTableDataProvider.Create(_service, info.SpreadsheetId, info.SheetId);
+        public Task<ITableDataProvider> GetDataProviderAsync(SheetInfo info, CancellationToken cancellationToken)
+            => GoogleTableDataProvider.CreateAsync(_service, info.SpreadsheetId, info.SheetId, cancellationToken);
+
+        public Task<SheetLink> GetSheetLinkAsync(string spreadsheetId, int sheetId, CancellationToken cancellationToken)
+            => Task.FromResult(new SheetLink($"https://docs.google.com/spreadsheets/d/{spreadsheetId}/edit#gid={sheetId}"));
     }
 }

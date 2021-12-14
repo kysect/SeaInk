@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <WarningLevel>5</WarningLevel>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <RootNamespace>SeaInk.Infrastructure.DataAccess</RootNamespace>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Content Include="..\..\..\.editorconfig">
+            <Link>.editorconfig</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EditorConfigFiles Remove="..\.editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\SeaInk.Core\SeaInk.Core.csproj" />
+    </ItemGroup>
+
+</Project>
