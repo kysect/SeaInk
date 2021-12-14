@@ -16,6 +16,10 @@ namespace SeaInk.Core.Entities
             LastName = lastName.ThrowIfNull();
         }
 
+#pragma warning disable CS8618
+        private Mentor() { }
+#pragma warning restore CS8618
+
         [Key]
         public Guid Id { get; private init; }
 
