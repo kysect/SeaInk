@@ -1,16 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Kysect.Centum.Extensions.Sheets.Indices;
 using Kysect.Centum.Sheets.Indices;
 using Kysect.Centum.Sheets.Models;
-using SeaInk.Application.TableLayout;
-using SeaInk.Application.TableLayout.Models;
+using SeaInk.Core.TableLayout;
+using SeaInk.Core.TableLayout.Models;
 using SeaInk.Utility.Extensions;
 
-namespace SeaInk.Infrastructure.TableLayout
+namespace SeaInk.Infrastructure.Integrations.GoogleSheets
 {
     public class GoogleSheetsTableEditor : ITableEditor
     {

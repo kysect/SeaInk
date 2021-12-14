@@ -1,17 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Kysect.Centum.Fields;
 using Kysect.Centum.Fields.Extractors;
 using Kysect.Centum.Sheets.Indices;
-using SeaInk.Application.TableLayout;
-using SeaInk.Application.TableLayout.Models;
-using SeaInk.Infrastructure.Exceptions;
+using SeaInk.Core.TableLayout;
+using SeaInk.Core.TableLayout.Models;
+using SeaInk.Infrastructure.Integrations.GoogleSheets.Exceptions;
 using SeaInk.Utility.Extensions;
 
-namespace SeaInk.Infrastructure.TableLayout
+namespace SeaInk.Infrastructure.Integrations.GoogleSheets
 {
     public class GoogleTableDataProvider : ITableDataProvider
     {
@@ -26,7 +23,7 @@ namespace SeaInk.Infrastructure.TableLayout
         public Frame Frame { get; }
         public string this[ISheetIndex index] => _data[index.Column.Value][index.Row.Value];
 
-        public static async Task<ITableDataProvider> Create(SheetsService service, string spreadsheetId, int sheetId)
+        public static async Task<ITableDataProvider> CreateAsync(SheetsService service, string spreadsheetId, int sheetId, CancellationToken cancellationToken)
         {
             service.ThrowIfNull();
             spreadsheetId.ThrowIfNull();
@@ -44,7 +41,7 @@ namespace SeaInk.Infrastructure.TableLayout
 
             ValueRange valueRange = await service.Spreadsheets.Values
                 .Get(spreadsheetId, $"{sheet.Properties.Title}!{range}")
-                .ExecuteAsync();
+                .ExecuteAsync(cancellationToken);
 
             var data = valueRange.Values
                 .Select(d => (IReadOnlyList<string>)d.Select(dd => dd.ToString()).ToList())
