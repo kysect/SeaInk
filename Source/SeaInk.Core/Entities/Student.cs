@@ -7,15 +7,18 @@ namespace SeaInk.Core.Entities
 {
     public sealed class Student : IEquatable<Student>
     {
-        public Student(int universityId, string firstName, string lastName, string middleName, StudyGroup group)
+        public Student(int universityId, string firstName, string lastName, string middleName)
         {
             Id = Guid.NewGuid();
             UniversityId = universityId;
             FirstName = firstName.ThrowIfNull();
             LastName = lastName.ThrowIfNull();
             MiddleName = middleName.ThrowIfNull();
-            Group = group.ThrowIfNull();
         }
+
+#pragma warning disable CS8618
+        private Student() { }
+#pragma warning restore CS8618
 
         [Key]
         public Guid Id { get; private init; }
@@ -25,8 +28,6 @@ namespace SeaInk.Core.Entities
         public string FirstName { get; private init; }
         public string LastName { get; private init; }
         public string MiddleName { get; private init; }
-
-        public StudyGroup Group { get; set; }
 
         [NotMapped]
         public string FullName => $"{FirstName} {LastName} {MiddleName}";
