@@ -7,7 +7,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class StudentGroup : IEquatable<StudentGroup>
+    public class StudentGroup : IEqualityComparer<StudentGroup>
     {
         private readonly List<Student> _students = new List<Student>();
 
@@ -19,7 +19,7 @@ namespace SeaInk.Core.Entities
         }
 
 #pragma warning disable CS8618
-        private StudentGroup() { }
+        protected StudentGroup() { }
 #pragma warning restore CS8618
 
         [Key]
@@ -29,7 +29,7 @@ namespace SeaInk.Core.Entities
 
         public string Name { get; private init; }
 
-        public IReadOnlyCollection<Student> Students => _students;
+        public virtual IReadOnlyCollection<Student> Students => _students;
 
         public void AddStudents(params Student[] students)
         {
@@ -54,13 +54,10 @@ namespace SeaInk.Core.Entities
             }
         }
 
-        public bool Equals(StudentGroup? other)
-            => other is not null && other.Id.Equals(Id);
+        public bool Equals(StudentGroup? x, StudentGroup? y)
+            => x is not null && y is not null && x.Id.Equals(y.Id);
 
-        public override bool Equals(object? obj)
-            => Equals(obj as StudentGroup);
-
-        public override int GetHashCode()
-            => Id.GetHashCode();
+        public int GetHashCode(StudentGroup obj)
+            => obj.Id.GetHashCode();
     }
 }

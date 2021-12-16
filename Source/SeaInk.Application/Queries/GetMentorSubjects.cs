@@ -27,7 +27,7 @@ namespace SeaInk.Application.Queries
             public async Task<IReadOnlyCollection<SubjectDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 List<Subject> subjects = await _context.SubjectDivisions
-                    .Where(d => d.StudyStudentGroups.Any(g => g.Mentors.Contains(request.Mentor)))
+                    .Where(d => d.StudyStudentGroups.Any(ssg => ssg.Mentors.Contains(request.Mentor)))
                     .Select(d => d.Subject)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);

@@ -38,7 +38,6 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
             .ToList();
 
         var notCreatedSubjects = notCreatedSubjectModels.Select(m => m.ToSubject()).ToList();
-        _context.Subjects.AddRange(notCreatedSubjects);
 
         foreach (Subject subject in notCreatedSubjects)
         {
@@ -58,7 +57,8 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
         return await SynchronizeSubjectsAsync(createdSubjects.Concat(notCreatedSubjects).ToList(), cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<Subject>> SynchronizeSubjectsAsync(IReadOnlyCollection<Subject> subjects, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<Subject>> SynchronizeSubjectsAsync(
+        IReadOnlyCollection<Subject> subjects, CancellationToken cancellationToken)
     {
         foreach (Subject subject in subjects)
         {
@@ -86,7 +86,7 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
             subject.AddAssignments(assignmentsToAdd);
             subject.RemoveAssignments(assignmentsToRemove);
 
-            _context.Assignments.AddRange(notCreatedAssignments);
+            _context.Subjects.Update(subject);
         }
 
         await _context.SaveChangesAsync(cancellationToken);
@@ -113,8 +113,7 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
         _context.StudentGroups.AddRange(notCreatedGroups);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var groups = createdGroups.Concat(notCreatedGroups).ToList();
-        return await SynchronizeStudentGroupsAsync(groups, cancellationToken);
+        return await SynchronizeStudentGroupsAsync(createdGroups.Concat(notCreatedGroups).ToList(), cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<StudentGroup>> SynchronizeStudentGroupsAsync(
@@ -146,7 +145,7 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
             group.AddStudents(studentsToAdd);
             group.RemoveStudents(studentsToRemove);
 
-            _context.Students.AddRange(notCreatedStudents);
+            _context.StudentGroups.Update(group);
         }
 
         await _context.SaveChangesAsync(cancellationToken);
@@ -169,7 +168,6 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
             .Select(g => new StudyStudentGroup(g))
             .ToArray();
 
-        _context.StudyStudentGroups.AddRange(notCreatedStudyStudentGroups);
         division.AddStudentStudyGroups(notCreatedStudyStudentGroups);
         _context.SubjectDivisions.Update(division);
         await _context.SaveChangesAsync(cancellationToken);

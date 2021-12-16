@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SeaInk.Core.Entities.Exceptions;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class StudyStudentGroup : IEquatable<StudyStudentGroup>
+    public class StudyStudentGroup : IEqualityComparer<StudyStudentGroup>
     {
         private readonly List<Mentor> _mentors = new List<Mentor>();
 
@@ -18,18 +17,17 @@ namespace SeaInk.Core.Entities
         }
 
 #pragma warning disable CS8618
-        private StudyStudentGroup() { }
+        protected StudyStudentGroup() { }
 #pragma warning restore CS8618
 
         public Guid Id { get; private init; }
         public int? SheetId { get; set; }
 
-        public SubjectDivision? Division { get; internal set; }
+        public virtual SubjectDivision? Division { get; internal set; }
 
-        public StudentGroup StudentGroup { get; private init; }
+        public virtual StudentGroup StudentGroup { get; private init; }
 
-        [NotMapped]
-        public IReadOnlyCollection<Mentor> Mentors => _mentors;
+        public virtual IReadOnlyCollection<Mentor> Mentors => _mentors;
 
         public void AddMentors(params Mentor[] mentors)
         {
@@ -54,13 +52,10 @@ namespace SeaInk.Core.Entities
             }
         }
 
-        public bool Equals(StudyStudentGroup? other)
-            => other is not null && other.Id.Equals(Id);
+        public bool Equals(StudyStudentGroup? x, StudyStudentGroup? y)
+            => x is not null && y is not null && x.Id.Equals(y.Id);
 
-        public override bool Equals(object? obj)
-            => Equals(obj as StudyStudentGroup);
-
-        public override int GetHashCode()
-            => Id.GetHashCode();
+        public int GetHashCode(StudyStudentGroup obj)
+            => obj.Id.GetHashCode();
     }
 }

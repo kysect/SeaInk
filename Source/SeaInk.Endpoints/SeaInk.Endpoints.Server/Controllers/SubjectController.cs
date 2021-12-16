@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using SeaInk.Application.Dtos;
 using SeaInk.Application.Queries;
 using SeaInk.Application.Services;
-using SeaInk.Core.Models;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Endpoints.Server.Controllers;
