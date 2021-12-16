@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -7,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using SeaInk.Application.Extensions;
 
 namespace SeaInk.Endpoints.Server
@@ -27,40 +25,13 @@ namespace SeaInk.Endpoints.Server
         {
             services.AddMediatR(typeof(Startup));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
-            services.AddSwaggerGen(o =>
-            {
-                o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT authorization using Bearer scheme",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                });
-
-                o.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer",
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
-                        },
-                        new List<string>()
-                    },
-                });
-            });
+            services.AddSwaggerGen();
             services.AddMvc();
 
             services.AddSeaInkServices(Configuration, builder =>
             {
-                builder.UseInMemoryDatabase("SeaInk");
+                builder.UseInMemoryDatabase("SeaInk.db");
+                builder.UseLazyLoadingProxies();
                 builder.EnableSensitiveDataLogging();
             });
         }

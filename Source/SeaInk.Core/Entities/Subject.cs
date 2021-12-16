@@ -7,7 +7,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class Subject : IEquatable<Subject>
+    public class Subject : IEqualityComparer<Subject>
     {
         private readonly List<Assignment> _assignments = new List<Assignment>();
 
@@ -19,7 +19,7 @@ namespace SeaInk.Core.Entities
         }
 
 #pragma warning disable CS8618
-        private Subject() { }
+        protected Subject() { }
 #pragma warning restore CS8618
 
         [Key]
@@ -27,7 +27,8 @@ namespace SeaInk.Core.Entities
 
         public int UniversityId { get; private init; }
         public string Name { get; private init; }
-        public IReadOnlyCollection<Assignment> Assignments => _assignments;
+
+        public virtual IReadOnlyCollection<Assignment> Assignments => _assignments;
 
         public void AddAssignments(IReadOnlyCollection<Assignment> assignments)
         {
@@ -52,13 +53,10 @@ namespace SeaInk.Core.Entities
             }
         }
 
-        public bool Equals(Subject? other)
-            => other is not null && other.Id.Equals(Id);
+        public bool Equals(Subject? x, Subject? y)
+            => x is not null && y is not null && x.Id.Equals(y.Id);
 
-        public override bool Equals(object? obj)
-            => Equals(obj as Subject);
-
-        public override int GetHashCode()
-            => Id.GetHashCode();
+        public int GetHashCode(Subject obj)
+            => obj.Id.GetHashCode();
     }
 }

@@ -47,6 +47,9 @@ namespace SeaInk.Infrastructure.DataAccess.Database
         private static void ConfigureMentor(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Mentor>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<Mentor>()
+                .Navigation(x => x.StudyStudentGroups)
+                .HasField("_studyStudentGroups");
         }
 
         private static void ConfigureStudent(ModelBuilder modelBuilder)
@@ -57,28 +60,36 @@ namespace SeaInk.Infrastructure.DataAccess.Database
         private static void ConfigureDivision(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SubjectDivision>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<SubjectDivision>().HasOne(d => d.Subject);
             modelBuilder.Entity<SubjectDivision>()
-                .HasMany<StudyStudentGroup>("_studyStudentGroups")
-                .WithOne(sgs => sgs.Division!);
+                .Navigation(d => d.StudyStudentGroups)
+                .HasField("_studyStudentGroups");
         }
 
         private static void ConfigureStudyGroup(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentGroup>().Property(x => x.Id).ValueGeneratedNever();
-            modelBuilder.Entity<StudentGroup>().HasMany<Student>("_students");
+            modelBuilder.Entity<StudentGroup>()
+                .Navigation(g => g.Students)
+                .HasField("_students");
         }
 
         private static void ConfigureSubject(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Subject>().Property(x => x.Id).ValueGeneratedNever();
-            modelBuilder.Entity<Subject>().HasMany<Assignment>("_assignments");
+            modelBuilder.Entity<Subject>()
+                .Navigation(s => s.Assignments)
+                .HasField("_assignments");
         }
 
         private static void ConfigureStudyGroupSubject(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudyStudentGroup>().Property(x => x.Id).ValueGeneratedNever();
-            modelBuilder.Entity<StudyStudentGroup>().HasMany<Mentor>("_mentors");
             modelBuilder.Entity<StudyStudentGroup>().HasOne(s => s.StudentGroup);
+            modelBuilder.Entity<StudyStudentGroup>().HasOne(ssg => ssg.Division);
+            modelBuilder.Entity<StudyStudentGroup>()
+                .Navigation(ssg => ssg.Mentors)
+                .HasField("_mentors");
         }
 
         private static void ConfigureTableComponents(ModelBuilder modelBuilder)

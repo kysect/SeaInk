@@ -8,6 +8,7 @@ using SeaInk.Core.Entities;
 using SeaInk.Core.Services;
 using SeaInk.Core.UniversityServiceModels;
 using SeaInk.Infrastructure.DataAccess.Database;
+using SeaInk.Infrastructure.DataAccess.Extensions;
 
 namespace SeaInk.Application.Commands;
 
@@ -61,7 +62,7 @@ public static class RegisterMentor
                 await _context.SaveChangesAsync(cancellationToken);
             }
 
-            _context.Mentors.Add(mentor);
+            _context.Mentors.AddOrUpdate(mentor);
             await _context.SaveChangesAsync(cancellationToken);
             return mentor;
         }

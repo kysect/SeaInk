@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class Assignment : IEquatable<Assignment>
+    public class Assignment : IEqualityComparer<Assignment>
     {
         public Assignment(
             int universityId,
@@ -26,7 +27,7 @@ namespace SeaInk.Core.Entities
         }
 
 #pragma warning disable CS8618
-        private Assignment() { }
+        protected Assignment() { }
 #pragma warning restore CS8618
 
         [Key]
@@ -43,13 +44,10 @@ namespace SeaInk.Core.Entities
         public double MinPoints { get; private init; }
         public double MaxPoints { get; private init; }
 
-        public bool Equals(Assignment? other)
-            => other is not null && other.Id.Equals(Id);
+        public bool Equals(Assignment? x, Assignment? y)
+            => x is not null && y is not null && x.Id.Equals(y.Id);
 
-        public override bool Equals(object? obj)
-            => Equals(obj as Assignment);
-
-        public override int GetHashCode()
-            => Id.GetHashCode();
+        public int GetHashCode(Assignment obj)
+            => obj.Id.GetHashCode();
     }
 }

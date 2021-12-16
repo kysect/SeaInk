@@ -1,11 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class Student : IEquatable<Student>
+    public class Student : IEqualityComparer<Student>
     {
         public Student(int universityId, string firstName, string lastName, string middleName)
         {
@@ -17,7 +17,7 @@ namespace SeaInk.Core.Entities
         }
 
 #pragma warning disable CS8618
-        private Student() { }
+        protected Student() { }
 #pragma warning restore CS8618
 
         [Key]
@@ -29,16 +29,12 @@ namespace SeaInk.Core.Entities
         public string LastName { get; private init; }
         public string MiddleName { get; private init; }
 
-        [NotMapped]
         public string FullName => $"{FirstName} {LastName} {MiddleName}";
 
-        public bool Equals(Student? other)
-            => other is not null && other.Id.Equals(Id);
+        public bool Equals(Student? x, Student? y)
+            => x is not null && y is not null && x.Id.Equals(y.Id);
 
-        public override bool Equals(object? obj)
-            => Equals(obj as Student);
-
-        public override int GetHashCode()
-            => Id.GetHashCode();
+        public int GetHashCode(Student obj)
+            => obj.Id.GetHashCode();
     }
 }

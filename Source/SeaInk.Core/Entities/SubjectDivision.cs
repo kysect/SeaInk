@@ -7,7 +7,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Core.Entities
 {
-    public sealed class SubjectDivision : IEquatable<SubjectDivision>
+    public class SubjectDivision : IEqualityComparer<SubjectDivision>
     {
         private readonly List<StudyStudentGroup> _studyStudentGroups = new List<StudyStudentGroup>();
 
@@ -19,16 +19,16 @@ namespace SeaInk.Core.Entities
         }
 
 #pragma warning disable CS8618
-        private SubjectDivision() { }
+        protected SubjectDivision() { }
 #pragma warning restore CS8618
 
         [Key]
         public Guid Id { get; private init; }
 
         public string SpreadsheetId { get; set; }
-        public Subject Subject { get; private init; }
+        public virtual Subject Subject { get; private init; }
 
-        public IReadOnlyCollection<StudyStudentGroup> StudyStudentGroups => _studyStudentGroups;
+        public virtual IReadOnlyCollection<StudyStudentGroup> StudyStudentGroups => _studyStudentGroups;
 
         public bool Contains(StudyStudentGroup studyStudentGroup)
             => _studyStudentGroups.Contains(studyStudentGroup) && (studyStudentGroup.Division?.Equals(this) ?? false);
@@ -65,13 +65,10 @@ namespace SeaInk.Core.Entities
             }
         }
 
-        public bool Equals(SubjectDivision? other)
-            => other is not null && other.Id.Equals(Id);
+        public bool Equals(SubjectDivision? x, SubjectDivision? y)
+            => x is not null && y is not null && x.Id.Equals(y.Id);
 
-        public override bool Equals(object? obj)
-            => Equals(obj as SubjectDivision);
-
-        public override int GetHashCode()
-            => Id.GetHashCode();
+        public int GetHashCode(SubjectDivision obj)
+            => obj.Id.GetHashCode();
     }
 }
