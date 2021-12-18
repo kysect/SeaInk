@@ -36,7 +36,7 @@ public static class RegisterMentor
                 .ConfigureAwait(false);
 
             IReadOnlyCollection<SubjectUniversityModel> subjectModels = await _universityService
-                .GetMentorSubjectsAsync(mentor, cancellationToken)
+                .GetMentorSubjectUniversityModelsAsync(mentor, cancellationToken)
                 .ConfigureAwait(false);
 
             IReadOnlyCollection<Subject> subjects = await _databaseSynchronizationService
@@ -46,7 +46,7 @@ public static class RegisterMentor
             foreach (Subject subject in subjects)
             {
                 IReadOnlyCollection<StudentGroupUniversityModel> groupModels = await _universityService
-                    .GetMentorSubjectGroupsAsync(mentor, subject, cancellationToken)
+                    .GetMentorSubjectGroupUniversityModelsAsync(mentor, subject, cancellationToken)
                     .ConfigureAwait(false);
 
                 IReadOnlyCollection<StudentGroup> groups = await _databaseSynchronizationService

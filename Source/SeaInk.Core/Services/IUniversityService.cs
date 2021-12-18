@@ -12,13 +12,13 @@ namespace SeaInk.Core.Services
     {
         Task<Mentor> GetMentorAsync(int universityId, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<SubjectUniversityModel>> GetMentorSubjectsAsync(Mentor mentor, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<SubjectUniversityModel>> GetMentorSubjectUniversityModelsAsync(Mentor mentor, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<StudentGroupUniversityModel>> GetMentorSubjectGroupsAsync(Mentor mentor, Subject subject, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<StudentGroupUniversityModel>> GetMentorSubjectGroupUniversityModelsAsync(Mentor mentor, Subject subject, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<AssignmentUniversityModel>> GetSubjectAssignmentsAsync(Subject subject, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<AssignmentUniversityModel>> GetSubjectAssignmentUniversityModelsAsync(Subject subject, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<StudentUniversityModel>> GetGroupStudentsAsync(StudentGroup group, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<StudentUniversityModel>> GetGroupStudentUniversityModelsAsync(StudentGroup group, CancellationToken cancellationToken);
 
         Task<StudentsAssignmentProgressTable> GetStudentAssignmentProgressTableAsync(StudyStudentGroup studyStudentGroup, CancellationToken cancellationToken);
         Task SetStudentAssignmentProgressesAsync(IReadOnlyCollection<StudentAssignmentProgress> progresses, CancellationToken cancellationToken);

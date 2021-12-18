@@ -41,13 +41,13 @@ namespace SeaInk.Infrastructure.Integrations.UniversitySystem
             return Task.FromResult(faker.Generate());
         }
 
-        public Task<IReadOnlyCollection<SubjectUniversityModel>> GetMentorSubjectsAsync(Mentor mentor, CancellationToken cancellationToken)
+        public Task<IReadOnlyCollection<SubjectUniversityModel>> GetMentorSubjectUniversityModelsAsync(Mentor mentor, CancellationToken cancellationToken)
         {
             mentor.ThrowIfNull();
             return Task.FromResult((IReadOnlyCollection<SubjectUniversityModel>)SubjectFaker.Generate(6));
         }
 
-        public Task<IReadOnlyCollection<StudentGroupUniversityModel>> GetMentorSubjectGroupsAsync(
+        public Task<IReadOnlyCollection<StudentGroupUniversityModel>> GetMentorSubjectGroupUniversityModelsAsync(
             Mentor mentor, Subject subject, CancellationToken cancellationToken)
         {
             mentor.ThrowIfNull();
@@ -56,14 +56,14 @@ namespace SeaInk.Infrastructure.Integrations.UniversitySystem
             return Task.FromResult((IReadOnlyCollection<StudentGroupUniversityModel>)StudyGroupFaker.Generate(3));
         }
 
-        public Task<IReadOnlyCollection<AssignmentUniversityModel>> GetSubjectAssignmentsAsync(Subject subject, CancellationToken cancellationToken)
+        public Task<IReadOnlyCollection<AssignmentUniversityModel>> GetSubjectAssignmentUniversityModelsAsync(Subject subject, CancellationToken cancellationToken)
         {
             subject.ThrowIfNull();
 
             return Task.FromResult((IReadOnlyCollection<AssignmentUniversityModel>)AssignmentFaker.Generate(8));
         }
 
-        public Task<IReadOnlyCollection<StudentUniversityModel>> GetGroupStudentsAsync(StudentGroup group, CancellationToken cancellationToken)
+        public Task<IReadOnlyCollection<StudentUniversityModel>> GetGroupStudentUniversityModelsAsync(StudentGroup group, CancellationToken cancellationToken)
         {
             group.ThrowIfNull();
 
