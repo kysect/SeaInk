@@ -33,8 +33,6 @@ namespace SeaInk.Application.Extensions
             services.AddMediatR(typeof(IAssemblyMarker));
             AddSheetsService(services, configuration);
 
-            services.BuildServiceProvider().GetRequiredService<IIdentityService>().GetCurrentMentor().GetAwaiter().GetResult();
-
             return services;
         }
 
