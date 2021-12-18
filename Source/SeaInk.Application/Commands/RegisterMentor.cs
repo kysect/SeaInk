@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using SeaInk.Application.Extensions;
 using SeaInk.Application.Services;
 using SeaInk.Core.Entities;
 using SeaInk.Core.Services;
@@ -57,7 +57,7 @@ public static class RegisterMentor
                     .SynchronizeStudyStudentGroupsAsync(subject, groups, cancellationToken)
                     .ConfigureAwait(false);
 
-                studyGroups.ToList().ForEach(ssg => ssg.AddMentors(mentor));
+                studyGroups.ForEach(ssg => ssg.AddMentors(mentor));
                 _context.StudyStudentGroups.UpdateRange(studyGroups);
                 await _context.SaveChangesAsync(cancellationToken);
             }

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Utility", "SeaInk.Ut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaInk.Infrastructure.DataAccess", "SeaInk.Infrastructure\SeaInk.Infrastructure.DataAccess\SeaInk.Infrastructure.DataAccess.csproj", "{6D553912-ABEF-4678-8183-B002C0374E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Application", "SeaInk.Application\SeaInk.Application.csproj", "{C4BA0626-99D7-48C2-B42E-30235CC08781}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeaInk.Endpoints", "SeaInk.Endpoints", "{6BF5DE80-83C7-43D3-ACEB-6614D91DB8A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Endpoints.Common", "SeaInk.Endpoints\SeaInk.Endpoints.Common\SeaInk.Endpoints.Common.csproj", "{8190BBA3-D2FB-4404-9F0D-DD08D8D7E47A}"
@@ -20,6 +18,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeaInk.Infrastructure", "SeaInk.Infrastructure", "{C5233AB0-C23E-4101-8F4B-24F9D2EBA701}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Infrastructure.Integrations", "SeaInk.Infrastructure\SeaInk.Infrastructure.Integrations\SeaInk.Infrastructure.Integrations.csproj", "{791D1AB4-40FD-4C6F-87A6-D024B9762614}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Application", "SeaInk.Application\SeaInk.Application.csproj", "{7F2B419D-574D-4F4D-A96E-DFF91B5FB665}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaInk.Infrastructure.Dto", "SeaInk.Infrastructure\SeaInk.Infrastructure.Dto\SeaInk.Infrastructure.Dto.csproj", "{3B593D7A-22D6-4812-B20F-EE6611DD1680}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +41,6 @@ Global
 		{6D553912-ABEF-4678-8183-B002C0374E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D553912-ABEF-4678-8183-B002C0374E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D553912-ABEF-4678-8183-B002C0374E13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4BA0626-99D7-48C2-B42E-30235CC08781}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8190BBA3-D2FB-4404-9F0D-DD08D8D7E47A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8190BBA3-D2FB-4404-9F0D-DD08D8D7E47A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8190BBA3-D2FB-4404-9F0D-DD08D8D7E47A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,6 +53,14 @@ Global
 		{791D1AB4-40FD-4C6F-87A6-D024B9762614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{791D1AB4-40FD-4C6F-87A6-D024B9762614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{791D1AB4-40FD-4C6F-87A6-D024B9762614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2B419D-574D-4F4D-A96E-DFF91B5FB665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2B419D-574D-4F4D-A96E-DFF91B5FB665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2B419D-574D-4F4D-A96E-DFF91B5FB665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2B419D-574D-4F4D-A96E-DFF91B5FB665}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B593D7A-22D6-4812-B20F-EE6611DD1680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B593D7A-22D6-4812-B20F-EE6611DD1680}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B593D7A-22D6-4812-B20F-EE6611DD1680}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B593D7A-22D6-4812-B20F-EE6611DD1680}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{5947E893-7B0D-4B40-B277-A068ECD474AF} = {6BF5DE80-83C7-43D3-ACEB-6614D91DB8A3}
 		{6D553912-ABEF-4678-8183-B002C0374E13} = {C5233AB0-C23E-4101-8F4B-24F9D2EBA701}
 		{791D1AB4-40FD-4C6F-87A6-D024B9762614} = {C5233AB0-C23E-4101-8F4B-24F9D2EBA701}
+		{3B593D7A-22D6-4812-B20F-EE6611DD1680} = {C5233AB0-C23E-4101-8F4B-24F9D2EBA701}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C15B403-3B6F-477C-B338-BDD7F3B3CB66}
