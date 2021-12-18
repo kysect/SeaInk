@@ -20,26 +20,6 @@ namespace SeaInk.Core.Services
             _sheetsService = sheetsService.ThrowIfNull();
         }
 
-        public async Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(
-            StudyStudentGroup studyStudentGroup, TableLayoutComponent layoutComponent, CancellationToken cancellationToken)
-        {
-            studyStudentGroup.ThrowIfNull();
-            layoutComponent.ThrowIfNull();
-
-            SubjectDivision subjectDivision = studyStudentGroup.Division.ThrowIfNull();
-
-            if (!string.IsNullOrEmpty(subjectDivision.SpreadsheetId))
-                throw new SpreadsheetCreatedException(subjectDivision);
-
-            CreateSpreadsheetResponse response = await _sheetsService.CreateSpreadsheetAsync(subjectDivision.Subject.Name, cancellationToken);
-            ITableEditor editor = await _sheetsService.GetEditorFor(response.SheetInfo, cancellationToken);
-
-            layoutComponent.ExecuteCommand(new DrawAllCommand(), new SheetIndex(1, 1), editor);
-            await editor.ExecuteAsync().ConfigureAwait(false);
-
-            return response;
-        }
-
         public async Task<CreateSheetResponse> CreateSheetAsync(
             StudyStudentGroup studyStudentGroup, TableLayoutComponent layoutComponent, CancellationToken cancellationToken)
         {
@@ -49,20 +29,29 @@ namespace SeaInk.Core.Services
             SubjectDivision subjectDivision = studyStudentGroup.Division.ThrowIfNull();
 
             if (string.IsNullOrEmpty(subjectDivision.SpreadsheetId))
-                throw new SpreadsheetNotCreatedException(subjectDivision);
+            {
+                CreateSpreadsheetResponse createSpreadsheetResponse = await _sheetsService
+                    .CreateSpreadsheetAsync(subjectDivision.Subject.Name, cancellationToken)
+                    .ConfigureAwait(false);
+
+                subjectDivision.SpreadsheetId = createSpreadsheetResponse.SheetInfo.SpreadsheetId;
+            }
 
             if (studyStudentGroup.SheetId is not null)
                 throw new SheetCreatedException(studyStudentGroup);
 
-            CreateSheetResponse response = await _sheetsService
+            CreateSheetResponse createSheetResponse = await _sheetsService
                 .CreateSheetAsync(subjectDivision.SpreadsheetId, studyStudentGroup.StudentGroup.Name, cancellationToken);
 
-            ITableEditor editor = await _sheetsService.GetEditorFor(new SheetInfo(subjectDivision.SpreadsheetId, response.SheetId), cancellationToken);
+            studyStudentGroup.SheetId = studyStudentGroup.SheetId;
+
+            ITableEditor editor = await _sheetsService
+                .GetEditorFor(new SheetInfo(subjectDivision.SpreadsheetId, createSheetResponse.SheetId), cancellationToken);
 
             layoutComponent.ExecuteCommand(new DrawAllCommand(), new SheetIndex(1, 1), editor);
             await editor.ExecuteAsync().ConfigureAwait(false);
 
-            return response;
+            return createSheetResponse;
         }
 
         public Task<SheetLink> GetSheetLinkAsync(StudyStudentGroup studyStudentGroup, CancellationToken cancellationToken)

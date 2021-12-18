@@ -38,34 +38,15 @@ public static class CreateStudyStudentGroupTable
             if (ssg.Division is null)
                 throw new DivisionUnassignedException(ssg);
 
-            if (string.IsNullOrEmpty(ssg.Division.SpreadsheetId))
-            {
-                CreateSpreadsheetResponse response = await _tableService
-                    .CreateSpreadsheetAsync(ssg, request.LayoutComponent, cancellationToken)
-                    .ConfigureAwait(false);
+            CreateSheetResponse response = await _tableService
+                .CreateSheetAsync(ssg, request.LayoutComponent, cancellationToken)
+                .ConfigureAwait(false);
 
-                ssg.Division.SpreadsheetId = response.SheetInfo.SpreadsheetId;
-                ssg.SheetId = response.SheetInfo.SheetId;
+            _context.StudyStudentGroups.Update(ssg);
+            _context.SubjectDivisions.Update(ssg.Division);
+            await _context.SaveChangesAsync(cancellationToken);
 
-                _context.StudyStudentGroups.UpdateRange(ssg);
-                _context.SubjectDivisions.UpdateRange(ssg.Division);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return new CreateSheetResponse(response.SheetInfo.SheetId, response.SheetLink);
-            }
-            else
-            {
-                CreateSheetResponse response = await _tableService
-                    .CreateSheetAsync(ssg, request.LayoutComponent, cancellationToken)
-                    .ConfigureAwait(false);
-
-                ssg.SheetId = response.SheetId;
-
-                _context.StudyStudentGroups.Update(ssg);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return response;
-            }
+            return response;
         }
     }
 }

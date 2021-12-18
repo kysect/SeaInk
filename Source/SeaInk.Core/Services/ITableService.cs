@@ -9,9 +9,6 @@ namespace SeaInk.Core.Services
 {
     public interface ITableService
     {
-        Task<CreateSpreadsheetResponse> CreateSpreadsheetAsync(
-            StudyStudentGroup studyStudentGroup, TableLayoutComponent layoutComponent, CancellationToken cancellationToken);
-
         Task<CreateSheetResponse> CreateSheetAsync(
             StudyStudentGroup studyStudentGroup, TableLayoutComponent layoutComponent, CancellationToken cancellationToken);
 
