@@ -35,6 +35,7 @@
     <ItemGroup>
       <ProjectReference Include="..\SeaInk.Core\SeaInk.Core.csproj" />
       <ProjectReference Include="..\SeaInk.Infrastructure\SeaInk.Infrastructure.DataAccess\SeaInk.Infrastructure.DataAccess.csproj" />
+      <ProjectReference Include="..\SeaInk.Infrastructure\SeaInk.Infrastructure.Dto\SeaInk.Infrastructure.Dto.csproj" />
       <ProjectReference Include="..\SeaInk.Infrastructure\SeaInk.Infrastructure.Integrations\SeaInk.Infrastructure.Integrations.csproj" />
       <ProjectReference Include="..\SeaInk.Utility\SeaInk.Utility.csproj" />
     </ItemGroup>

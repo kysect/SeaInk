@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SeaInk.Application.Dtos;
 using SeaInk.Application.Queries;
 using SeaInk.Application.Services;
+using SeaInk.Infrastructure.Dto;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Endpoints.Server.Controllers;

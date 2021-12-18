@@ -4,9 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SeaInk.Application.Dtos;
+using SeaInk.Application.Extensions;
 using SeaInk.Core.Entities;
 using SeaInk.Infrastructure.DataAccess.Database;
+using SeaInk.Infrastructure.Dto;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Application.Queries
