@@ -63,7 +63,7 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
         foreach (Subject subject in subjects)
         {
             IReadOnlyCollection<AssignmentUniversityModel> assignmentModels = await _universityService
-                .GetSubjectAssignmentsAsync(subject, cancellationToken)
+                .GetSubjectAssignmentUniversityModelsAsync(subject, cancellationToken)
                 .ConfigureAwait(false);
 
             var assignmentModelIds = assignmentModels.Select(a => a.UniversityId).ToList();
@@ -122,7 +122,7 @@ public class DatabaseSynchronizationService : IDatabaseSynchronizationService
         foreach (StudentGroup group in groups)
         {
             IReadOnlyCollection<StudentUniversityModel> studentModels = await _universityService
-                .GetGroupStudentsAsync(group, cancellationToken)
+                .GetGroupStudentUniversityModelsAsync(group, cancellationToken)
                 .ConfigureAwait(false);
 
             var studentModelIds = studentModels.Select(s => s.UniversityId).ToList();
