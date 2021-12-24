@@ -5,7 +5,7 @@ namespace SeaInk.Core.Models
 {
     public class StudentAssignmentProgress
     {
-        public StudentAssignmentProgress(Student student, StudyAssignment assignment, AssignmentProgress progress)
+        public StudentAssignmentProgress(Student student, Assignment assignment, AssignmentProgress progress)
         {
             Student = student.ThrowIfNull();
             Assignment = assignment.ThrowIfNull();
@@ -13,7 +13,7 @@ namespace SeaInk.Core.Models
         }
 
         public Student Student { get; set; }
-        public StudyAssignment Assignment { get; set; }
+        public Assignment Assignment { get; set; }
         public AssignmentProgress Progress { get; set; }
     }
 }
