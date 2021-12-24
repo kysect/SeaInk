@@ -14,9 +14,9 @@ namespace SeaInk.Core.TableLayout.Components
                                                       IValueSettingLayoutComponent<AssignmentProgress>
     {
         public abstract AssignmentModel Value { get; }
-        public abstract void Remove(ISheetIndex begin, ITableEditor editor);
-        public abstract void Draw(ISheetIndex begin, ITableEditor editor);
-        public abstract AssignmentProgress GetValue(ISheetIndex begin, ITableDataProvider provider);
-        public abstract void SetValue(AssignmentProgress value, ISheetIndex begin, ITableEditor editor);
+        public abstract void Remove(ISheetIndex begin, ISheetEditor editor);
+        public abstract void Draw(ISheetIndex begin, ISheetEditor editor);
+        public abstract AssignmentProgress GetValue(ISheetIndex begin, ISheetDataProvider provider);
+        public abstract void SetValue(AssignmentProgress value, ISheetIndex begin, ISheetEditor editor);
     }
 }

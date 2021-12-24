@@ -22,7 +22,7 @@ namespace SeaInk.Core.TableLayout
 
         public override Frame Frame => _header.Frame;
 
-        public TableModel GetTable(ITableDataProvider provider)
+        public TableModel GetTable(ISheetDataProvider provider)
         {
             int startRow = Frame.Height + 1;
             ISheetIndex index = new SheetIndex(1, startRow);
@@ -37,7 +37,7 @@ namespace SeaInk.Core.TableLayout
             return new TableModel(rows);
         }
 
-        public void SetTable(TableModel table, ITableEditor editor)
+        public void SetTable(TableModel table, ISheetEditor editor)
         {
             int startRow = Frame.Height + 1;
             ISheetIndex index = new SheetIndex(1, startRow);

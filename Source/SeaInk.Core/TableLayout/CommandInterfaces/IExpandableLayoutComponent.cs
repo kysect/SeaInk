@@ -7,6 +7,6 @@ namespace SeaInk.Core.TableLayout.CommandInterfaces
     public interface IExpandableLayoutComponent<in TComponent>
         where TComponent : LayoutComponent
     {
-        Result AddComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor);
+        Result AddComponent(TComponent component, IScaledTableIndex begin, ISheetEditor editor);
     }
 }

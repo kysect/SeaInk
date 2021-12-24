@@ -18,16 +18,16 @@ namespace SeaInk.Core.TableLayout.Components
 
         public override AssignmentModel Value { get; }
 
-        public override void Remove(ISheetIndex begin, ITableEditor editor)
+        public override void Remove(ISheetIndex begin, ISheetEditor editor)
             => editor.EnqueueDeleteColumn(begin.Column);
 
-        public override void Draw(ISheetIndex begin, ITableEditor editor)
+        public override void Draw(ISheetIndex begin, ISheetEditor editor)
             => editor.EnqueueWrite(begin, new[] { new[] { Value.Title } });
 
-        public override AssignmentProgress GetValue(ISheetIndex begin, ITableDataProvider provider)
+        public override AssignmentProgress GetValue(ISheetIndex begin, ISheetDataProvider provider)
             => new AssignmentProgress(double.Parse(provider[begin]));
 
-        public override void SetValue(AssignmentProgress value, ISheetIndex begin, ITableEditor editor)
+        public override void SetValue(AssignmentProgress value, ISheetIndex begin, ISheetEditor editor)
             => editor.EnqueueWrite(begin, new[] { new[] { value.Points.ToString(CultureInfo.InvariantCulture) } });
 
         public override bool Equals(LayoutComponent? other)

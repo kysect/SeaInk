@@ -9,7 +9,7 @@ namespace SeaInk.Core.TableLayout.Commands
 {
     public class DrawComponentCommand : GenericLayoutCommand<IDrawableLayoutComponent>
     {
-        protected override Result Execute(IDrawableLayoutComponent target, ISheetIndex begin, ITableEditor? editor)
+        protected override Result Execute(IDrawableLayoutComponent target, ISheetIndex begin, ISheetEditor? editor)
         {
             var index = new MergeScanningIndex(begin.Copy(), editor.ThrowIfNull());
             target.Draw(index, editor!);

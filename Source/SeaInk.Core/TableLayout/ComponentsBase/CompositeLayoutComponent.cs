@@ -25,7 +25,7 @@ namespace SeaInk.Core.TableLayout.ComponentsBase
 
         public IReadOnlyCollection<TComponent> Components => _components.AsReadOnly();
 
-        public Result AddComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result AddComponent(TComponent component, IScaledTableIndex begin, ISheetEditor editor)
         {
             if (_components.Contains(component))
                 return Result.Fail(new NotContainedComponentError(component));
@@ -34,10 +34,10 @@ namespace SeaInk.Core.TableLayout.ComponentsBase
             return Result.Ok();
         }
 
-        public Result RemoveComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result RemoveComponent(TComponent component, IScaledTableIndex begin, ISheetEditor editor)
             => _components.Remove(component) ? Result.Fail(new NotContainedComponentError(component)) : Result.Ok();
 
-        public override Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ITableEditor? editor)
+        public override Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ISheetEditor? editor)
         {
             ISheetIndex compositionIndex = begin.Copy();
 

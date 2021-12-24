@@ -17,7 +17,7 @@ namespace SeaInk.Core.TableLayout.Commands
             _value = value.ThrowIfNull();
         }
 
-        protected override Result Execute(AssignmentColumnComponent target, ISheetIndex begin, ITableEditor? editor)
+        protected override Result Execute(AssignmentColumnComponent target, ISheetIndex begin, ISheetEditor? editor)
         {
             if (!target.Value.Equals(_value.Assignment))
                 return Result.Fail(new InvalidRepresentingValue<AssignmentModel>(_value.Assignment, target.Value));

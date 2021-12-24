@@ -6,6 +6,6 @@ namespace SeaInk.Core.TableLayout.CommandsBase
 {
     public interface ILayoutCommand
     {
-        Result Execute(LayoutComponent target, ISheetIndex begin, ITableEditor? editor);
+        Result Execute(LayoutComponent target, ISheetIndex begin, ISheetEditor? editor);
     }
 }

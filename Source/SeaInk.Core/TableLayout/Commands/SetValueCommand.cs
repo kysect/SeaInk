@@ -15,7 +15,7 @@ namespace SeaInk.Core.TableLayout.Commands
             _value = value.ThrowIfNull();
         }
 
-        protected override Result Execute(IValueSettingLayoutComponent<T> target, ISheetIndex begin, ITableEditor? editor)
+        protected override Result Execute(IValueSettingLayoutComponent<T> target, ISheetIndex begin, ISheetEditor? editor)
         {
             target.SetValue(_value, begin, editor.ThrowIfNull());
             return Result.Ok();

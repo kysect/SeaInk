@@ -7,10 +7,10 @@ namespace SeaInk.Core.TableLayout.Indices
     public readonly struct MergeScanningIndex : ISheetIndex
     {
         private readonly ISheetIndex _index;
-        private readonly ITableEditor _editor;
+        private readonly ISheetEditor _editor;
         private readonly Scale? _scale;
 
-        public MergeScanningIndex(ISheetIndex index, ITableEditor editor)
+        public MergeScanningIndex(ISheetIndex index, ISheetEditor editor)
         {
             _index = index;
             _editor = editor;

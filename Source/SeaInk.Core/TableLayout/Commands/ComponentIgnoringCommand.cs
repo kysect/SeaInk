@@ -20,7 +20,7 @@ namespace SeaInk.Core.TableLayout.Commands
             _ignored = ignored.ToList();
         }
 
-        public Result Execute(LayoutComponent target, ISheetIndex begin, ITableEditor? editor)
+        public Result Execute(LayoutComponent target, ISheetIndex begin, ISheetEditor? editor)
         {
             if (_ignored.Contains(target))
                 return Result.Fail(new ComponentShouldBeIgnoredError(target));

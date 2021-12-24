@@ -34,7 +34,7 @@ namespace SeaInk.Core.Services
             if (studyStudentGroup.SheetId is null)
                 throw new SheetNotCreatedException(studyStudentGroup);
 
-            ITableDataProvider dataProvider = await _sheetsService.GetDataProviderAsync(
+            ISheetDataProvider dataProvider = await _sheetsService.GetDataProviderAsync(
                 new SheetInfo(studyStudentGroup.Division.SpreadsheetId, studyStudentGroup.SheetId.Value), cancellationToken);
 
             var sheetsTable = layoutComponent.GetTable(dataProvider).ToStudentsAssignmentProgressTable(studyStudentGroup, subject);

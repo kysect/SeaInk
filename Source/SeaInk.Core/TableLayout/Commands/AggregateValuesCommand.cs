@@ -12,17 +12,17 @@ namespace SeaInk.Core.TableLayout.Commands
     public class AggregateValuesCommand<T> : ILayoutCommand
     {
         private readonly List<T> _values = new List<T>();
-        private readonly ITableDataProvider _provider;
+        private readonly ISheetDataProvider _provider;
         private readonly List<LayoutComponent> _visitedComponents = new List<LayoutComponent>();
 
-        public AggregateValuesCommand(ITableDataProvider provider)
+        public AggregateValuesCommand(ISheetDataProvider provider)
         {
             _provider = provider;
         }
 
         public IReadOnlyCollection<T> Values => _values.AsReadOnly();
 
-        public Result Execute(LayoutComponent target, ISheetIndex begin, ITableEditor? editor)
+        public Result Execute(LayoutComponent target, ISheetIndex begin, ISheetEditor? editor)
         {
             var command = new GetValueCommand<T>(_provider);
             Result result = target.ExecuteCommand(new ComponentIgnoringCommand(command, _visitedComponents), begin, editor);

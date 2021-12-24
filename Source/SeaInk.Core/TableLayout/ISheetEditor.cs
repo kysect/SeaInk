@@ -5,7 +5,7 @@ using SeaInk.Core.TableLayout.Models;
 
 namespace SeaInk.Core.TableLayout
 {
-    public interface ITableEditor
+    public interface ISheetEditor
     {
         void EnqueueWrite(ISheetIndex index, IReadOnlyCollection<IReadOnlyCollection<string>> data);
         void EnqueueMerge(ISheetIndex index, Frame frame);

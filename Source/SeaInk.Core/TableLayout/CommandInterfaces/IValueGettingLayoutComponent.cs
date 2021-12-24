@@ -4,6 +4,6 @@ namespace SeaInk.Core.TableLayout.CommandInterfaces
 {
     public interface IValueGettingLayoutComponent<T>
     {
-        T GetValue(ISheetIndex begin, ITableDataProvider provider);
+        T GetValue(ISheetIndex begin, ISheetDataProvider provider);
     }
 }
