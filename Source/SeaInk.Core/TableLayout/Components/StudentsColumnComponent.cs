@@ -11,10 +11,10 @@ namespace SeaInk.Core.TableLayout.Components
     {
         public override Frame Frame => new Frame(1, 1);
 
-        public StudentModel GetValue(ISheetIndex begin, ITableDataProvider provider)
+        public StudentModel GetValue(ISheetIndex begin, ISheetDataProvider provider)
             => new StudentModel(provider[begin]);
 
-        public void SetValue(StudentModel value, ISheetIndex begin, ITableEditor editor)
+        public void SetValue(StudentModel value, ISheetIndex begin, ISheetEditor editor)
             => editor.EnqueueWrite(begin, new[] { new[] { value.Name } });
 
         public override bool Equals(LayoutComponent? other)

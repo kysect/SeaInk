@@ -7,7 +7,7 @@ namespace SeaInk.Core.TableLayout.CommandsBase
 {
     public abstract class GenericLayoutCommand<T> : ILayoutCommand
     {
-        public Result Execute(LayoutComponent target, ISheetIndex begin, ITableEditor? editor)
+        public Result Execute(LayoutComponent target, ISheetIndex begin, ISheetEditor? editor)
         {
             return target switch
             {
@@ -16,6 +16,6 @@ namespace SeaInk.Core.TableLayout.CommandsBase
             };
         }
 
-        protected abstract Result Execute(T target, ISheetIndex begin, ITableEditor? editor);
+        protected abstract Result Execute(T target, ISheetIndex begin, ISheetEditor? editor);
     }
 }

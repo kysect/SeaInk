@@ -71,11 +71,11 @@ namespace SeaInk.Infrastructure.Integrations.GoogleSheets
                 new SheetLink($"{spreadsheet.SpreadsheetUrl}#gid={sheet.Properties.SheetId}"));
         }
 
-        public Task<ITableEditor> GetEditorFor(SheetInfo info, CancellationToken cancellationToken)
-            => Task.FromResult((ITableEditor)new GoogleSheetsTableEditor(_service, info.SpreadsheetId, info.SheetId));
+        public Task<ISheetEditor> GetEditorFor(SheetInfo info, CancellationToken cancellationToken)
+            => Task.FromResult((ISheetEditor)new GoogleSheetEditor(_service, info.SpreadsheetId, info.SheetId));
 
-        public Task<ITableDataProvider> GetDataProviderAsync(SheetInfo info, CancellationToken cancellationToken)
-            => GoogleTableDataProvider.CreateAsync(_service, info.SpreadsheetId, info.SheetId, cancellationToken);
+        public Task<ISheetDataProvider> GetDataProviderAsync(SheetInfo info, CancellationToken cancellationToken)
+            => GoogleSheetDataProvider.CreateAsync(_service, info.SpreadsheetId, info.SheetId, cancellationToken);
 
         public Task<SheetLink> GetSheetLinkAsync(string spreadsheetId, int sheetId, CancellationToken cancellationToken)
             => Task.FromResult(new SheetLink($"https://docs.google.com/spreadsheets/d/{spreadsheetId}/edit#gid={sheetId}"));

@@ -35,13 +35,13 @@ namespace SeaInk.Core.TableLayout.Components
         public override bool Equals(object? obj)
             => Equals(obj as LayoutComponent);
 
-        public override Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ITableEditor? editor)
+        public override Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ISheetEditor? editor)
         {
             Result baseResult = base.ExecuteCommand(command, begin, editor);
             return baseResult.IsSuccess ? baseResult : _stack.ExecuteCommand(command, begin, editor);
         }
 
-        public TableRowModel GetValue(ISheetIndex begin, ITableDataProvider provider)
+        public TableRowModel GetValue(ISheetIndex begin, ISheetDataProvider provider)
         {
             var getStudentCommand = new GetValueCommand<StudentModel>(provider);
 
@@ -56,7 +56,7 @@ namespace SeaInk.Core.TableLayout.Components
                 aggregateAssignmentProgressesCommand.Values);
         }
 
-        public void SetValue(TableRowModel value, ISheetIndex begin, ITableEditor editor)
+        public void SetValue(TableRowModel value, ISheetIndex begin, ISheetEditor editor)
         {
             var studentSetCommand = new SetValueCommand<StudentModel>(value.Student);
 

@@ -10,11 +10,11 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Infrastructure.Integrations.GoogleSheets
 {
-    public class GoogleTableDataProvider : ITableDataProvider
+    public class GoogleSheetDataProvider : ISheetDataProvider
     {
         private readonly IReadOnlyList<IReadOnlyList<string>> _data;
 
-        private GoogleTableDataProvider(IReadOnlyList<IReadOnlyList<string>> data)
+        private GoogleSheetDataProvider(IReadOnlyList<IReadOnlyList<string>> data)
         {
             _data = data;
             Frame = new Frame(data.Max(d => d.Count), data.Count);
@@ -23,7 +23,7 @@ namespace SeaInk.Infrastructure.Integrations.GoogleSheets
         public Frame Frame { get; }
         public string this[ISheetIndex index] => _data[index.Column.Value][index.Row.Value];
 
-        public static async Task<ITableDataProvider> CreateAsync(SheetsService service, string spreadsheetId, int sheetId, CancellationToken cancellationToken)
+        public static async Task<ISheetDataProvider> CreateAsync(SheetsService service, string spreadsheetId, int sheetId, CancellationToken cancellationToken)
         {
             service.ThrowIfNull();
             spreadsheetId.ThrowIfNull();
@@ -47,7 +47,7 @@ namespace SeaInk.Infrastructure.Integrations.GoogleSheets
                 .Select(d => (IReadOnlyList<string>)d.Select(dd => dd.ToString()).ToList())
                 .ToList();
 
-            return new GoogleTableDataProvider(data);
+            return new GoogleSheetDataProvider(data);
         }
 
         private static Task<Spreadsheet> GetSpreadsheet(SheetsService service, string spreadsheetId)

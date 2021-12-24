@@ -15,7 +15,7 @@ namespace SeaInk.Core.TableLayout.Commands
             _component = component.ThrowIfNull();
         }
 
-        protected override Result Execute(IDrawableLayoutComponent target, ISheetIndex begin, ITableEditor? editor)
+        protected override Result Execute(IDrawableLayoutComponent target, ISheetIndex begin, ISheetEditor? editor)
         {
             return !_component.Equals(target)
                 ? Result.Fail(new InvalidComponentError<IDrawableLayoutComponent>(_component, target))

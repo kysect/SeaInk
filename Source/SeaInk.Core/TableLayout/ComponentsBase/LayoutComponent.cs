@@ -19,7 +19,7 @@ namespace SeaInk.Core.TableLayout.ComponentsBase
         public abstract override bool Equals(object? obj);
         public abstract override int GetHashCode();
 
-        public virtual Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ITableEditor? editor)
+        public virtual Result ExecuteCommand(ILayoutCommand command, ISheetIndex begin, ISheetEditor? editor)
             => command.Execute(this, begin, editor);
     }
 }

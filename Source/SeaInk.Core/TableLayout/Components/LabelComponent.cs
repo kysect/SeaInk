@@ -16,7 +16,7 @@ namespace SeaInk.Core.TableLayout.Components
 
         public override Frame Frame => new Frame(1, 1);
 
-        public void Draw(ISheetIndex begin, ITableEditor editor)
+        public void Draw(ISheetIndex begin, ISheetEditor editor)
             => editor.EnqueueWrite(begin, new[] { new[] { _value } });
 
         public override bool Equals(LayoutComponent? other)

@@ -4,6 +4,6 @@ namespace SeaInk.Core.TableLayout.CommandInterfaces
 {
     public interface IRemovableComponent
     {
-        void Remove(ISheetIndex begin, ITableEditor editor);
+        void Remove(ISheetIndex begin, ISheetEditor editor);
     }
 }

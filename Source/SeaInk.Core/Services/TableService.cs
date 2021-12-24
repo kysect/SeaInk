@@ -45,7 +45,7 @@ namespace SeaInk.Core.Services
 
             studyStudentGroup.SheetId = studyStudentGroup.SheetId;
 
-            ITableEditor editor = await _sheetsService
+            ISheetEditor editor = await _sheetsService
                 .GetEditorFor(new SheetInfo(subjectDivision.SpreadsheetId, createSheetResponse.SheetId), cancellationToken);
 
             layoutComponent.ExecuteCommand(new DrawAllCommand(), new SheetIndex(1, 1), editor);
@@ -80,7 +80,7 @@ namespace SeaInk.Core.Services
             int sheetId = studyStudentGroup.SheetId
                 .ThrowIfNull(new SheetNotCreatedException(studyStudentGroup));
 
-            ITableEditor editor = await _sheetsService.GetEditorFor(new SheetInfo(subjectDivision.SpreadsheetId, sheetId), cancellationToken);
+            ISheetEditor editor = await _sheetsService.GetEditorFor(new SheetInfo(subjectDivision.SpreadsheetId, sheetId), cancellationToken);
 
             layoutComponent.SetTable(tableModel, editor);
             await editor.ExecuteAsync().ConfigureAwait(false);
@@ -98,7 +98,7 @@ namespace SeaInk.Core.Services
             int sheetId = studyStudentGroup.SheetId
                 .ThrowIfNull(new SheetNotCreatedException(studyStudentGroup));
 
-            ITableDataProvider provider = await _sheetsService
+            ISheetDataProvider provider = await _sheetsService
                 .GetDataProviderAsync(new SheetInfo(subjectDivision.SpreadsheetId, sheetId), cancellationToken)
                 .ConfigureAwait(false);
 

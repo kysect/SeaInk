@@ -9,7 +9,7 @@ using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Infrastructure.Integrations.GoogleSheets
 {
-    public class GoogleSheetsTableEditor : ITableEditor
+    public class GoogleSheetEditor : ISheetEditor
     {
         private readonly object _lock = new object();
 
@@ -20,7 +20,7 @@ namespace SeaInk.Infrastructure.Integrations.GoogleSheets
         private readonly List<Request> _requests = new List<Request>();
         private readonly List<ValueRange> _ranges = new List<ValueRange>();
 
-        public GoogleSheetsTableEditor(SheetsService service, string spreadsheetId, int sheetId)
+        public GoogleSheetEditor(SheetsService service, string spreadsheetId, int sheetId)
         {
             _service = service;
             _spreadsheetId = spreadsheetId.ThrowIfNull();

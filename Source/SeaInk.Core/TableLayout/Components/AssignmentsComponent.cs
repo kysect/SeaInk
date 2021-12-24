@@ -26,12 +26,12 @@ namespace SeaInk.Core.TableLayout.Components
 
         public override Frame Frame => _stack.Frame;
 
-        public Result AddComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result AddComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ISheetEditor editor)
         {
             return _stack.AddComponent(component, begin, editor);
         }
 
-        public Result RemoveComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ITableEditor editor)
+        public Result RemoveComponent(AssignmentColumnComponent component, IScaledTableIndex begin, ISheetEditor editor)
         {
             Result result = _stack.ExecuteCommand(new ComponentRemoveCommand(component), begin, editor);
             return result.IsSuccess ? _stack.RemoveComponent(component, begin, editor) : result;

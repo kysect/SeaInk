@@ -7,6 +7,6 @@ namespace SeaInk.Core.TableLayout.CommandInterfaces
     public interface IReducibleLayoutComponent<in TComponent>
         where TComponent : LayoutComponent
     {
-        Result RemoveComponent(TComponent component, IScaledTableIndex begin, ITableEditor editor);
+        Result RemoveComponent(TComponent component, IScaledTableIndex begin, ISheetEditor editor);
     }
 }

@@ -4,6 +4,6 @@ namespace SeaInk.Core.TableLayout.CommandInterfaces
 {
     public interface IDrawableLayoutComponent
     {
-        void Draw(ISheetIndex begin, ITableEditor editor);
+        void Draw(ISheetIndex begin, ISheetEditor editor);
     }
 }
