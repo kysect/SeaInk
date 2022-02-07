@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SeaInk.Core.Entities;
 using SeaInk.Core.TableLayout;
-using SeaInk.Core.TableLayout.Components;
-using SeaInk.Core.TableLayout.ComponentsBase;
+using SeaInk.Infrastructure.DataAccess.Exceptions;
 using SeaInk.Infrastructure.DataAccess.Models;
+using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Infrastructure.DataAccess.Database
 {
@@ -36,7 +37,12 @@ namespace SeaInk.Infrastructure.DataAccess.Database
             ConfigureMentor(modelBuilder);
             ConfigureStudent(modelBuilder);
 
-            // ConfigureTableComponents(modelBuilder);
+            modelBuilder.Entity<StudyGroupSubjectLayout>()
+                .Property(ssg => ssg.Layout)
+                .HasConversion(
+                    component => JsonConvert.SerializeObject(component),
+                    s => JsonConvert.DeserializeObject<TableLayoutComponent>(s)
+                        .ThrowIfNull(new FailedTableLayoutComponentDeserializationException(s)));
         }
 
         private static void ConfigureAssignment(ModelBuilder modelBuilder)
@@ -90,17 +96,6 @@ namespace SeaInk.Infrastructure.DataAccess.Database
             modelBuilder.Entity<StudyStudentGroup>()
                 .Navigation(ssg => ssg.Mentors)
                 .HasField("_mentors");
-        }
-
-        private static void ConfigureTableComponents(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<LabelComponent>().Property(x => x.Id).ValueGeneratedNever();
-            modelBuilder.Entity(typeof(CompositeLayoutComponent<>)).HasMany("_components");
-            modelBuilder.Entity<LabelComponent>().Property("_value");
-
-            modelBuilder.Entity<TableLayoutComponent>().HasOne<HeaderLayoutComponent>("_header");
-            modelBuilder.Entity<HeaderLayoutComponent>().HasOne<HorizontalStackLayoutComponent<LayoutComponent>>("_stack");
-            modelBuilder.Entity<AssignmentsComponent>().HasOne<HorizontalStackLayoutComponent<AssignmentColumnComponent>>("_stack");
         }
     }
 }
