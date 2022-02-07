@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Kysect.Centum.Sheets.Indices;
+using Newtonsoft.Json;
 using SeaInk.Core.TableLayout.Components;
 using SeaInk.Core.TableLayout.ComponentsBase;
 using SeaInk.Core.TableLayout.Models;
@@ -9,6 +10,7 @@ namespace SeaInk.Core.TableLayout
 {
     public class TableLayoutComponent : LayoutComponent
     {
+        [JsonProperty]
         private readonly HeaderLayoutComponent _header;
 
         public TableLayoutComponent(HeaderLayoutComponent header)

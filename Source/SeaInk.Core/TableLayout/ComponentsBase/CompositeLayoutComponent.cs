@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentResults;
 using Kysect.Centum.Sheets.Indices;
+using Newtonsoft.Json;
 using SeaInk.Core.TableLayout.CommandInterfaces;
 using SeaInk.Core.TableLayout.CommandsBase;
 using SeaInk.Core.TableLayout.Errors;
@@ -16,6 +17,7 @@ namespace SeaInk.Core.TableLayout.ComponentsBase
                                                                  IReducibleLayoutComponent<TComponent>
         where TComponent : LayoutComponent
     {
+        [JsonProperty]
         private readonly List<TComponent> _components;
 
         protected CompositeLayoutComponent(IReadOnlyCollection<TComponent> components)
