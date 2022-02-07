@@ -7,6 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SeaInk.Application.Extensions;
+using SeaInk.Core.TableLayout.ComponentsBase;
+using SeaInk.Infrastructure.DataAccess.Serialization;
+using SeaInk.Utility.Tools;
+using AssemblyScanner = SeaInk.Utility.Tools.AssemblyScanner;
 
 namespace SeaInk.Endpoints.Server
 {
@@ -23,6 +27,12 @@ namespace SeaInk.Endpoints.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var typeLocator = new TypeLocator();
+            typeLocator.AddTypes(AssemblyScanner.ScanAssignableTo<LayoutComponent>(typeof(Core.IAssemblyMarker)));
+
+            services.AddSingleton(typeLocator);
+            services.AddSingleton<LayoutComponentSerializationConfiguration>();
+
             services.AddMediatR(typeof(Startup));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
             services.AddSwaggerGen();
