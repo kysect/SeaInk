@@ -1,4 +1,5 @@
 using Kysect.Centum.Sheets.Indices;
+using Newtonsoft.Json;
 using SeaInk.Core.TableLayout.CommandInterfaces;
 using SeaInk.Core.TableLayout.ComponentsBase;
 using SeaInk.Core.TableLayout.Models;
@@ -7,6 +8,7 @@ namespace SeaInk.Core.TableLayout.Components
 {
     public class LabelComponent : LayoutComponent, IDrawableLayoutComponent
     {
+        [JsonProperty]
         private readonly string _value;
 
         public LabelComponent(string value)

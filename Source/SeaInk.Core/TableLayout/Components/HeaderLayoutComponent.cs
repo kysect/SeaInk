@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FluentResults;
 using Kysect.Centum.Sheets.Indices;
+using Newtonsoft.Json;
 using SeaInk.Core.TableLayout.CommandInterfaces;
 using SeaInk.Core.TableLayout.Commands;
 using SeaInk.Core.TableLayout.CommandsBase;
@@ -15,6 +16,7 @@ namespace SeaInk.Core.TableLayout.Components
                                          IValueGettingLayoutComponent<TableRowModel>,
                                          IValueSettingLayoutComponent<TableRowModel>
     {
+        [JsonProperty]
         private readonly HorizontalStackLayoutComponent<LayoutComponent> _stack;
 
         public HeaderLayoutComponent(IReadOnlyCollection<LayoutComponent> components)

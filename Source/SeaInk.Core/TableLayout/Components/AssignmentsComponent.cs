@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentResults;
+using Newtonsoft.Json;
 using SeaInk.Core.TableLayout.CommandInterfaces;
 using SeaInk.Core.TableLayout.Commands;
 using SeaInk.Core.TableLayout.ComponentsBase;
@@ -12,6 +13,7 @@ namespace SeaInk.Core.TableLayout.Components
         IExpandableLayoutComponent<AssignmentColumnComponent>,
         IReducibleLayoutComponent<AssignmentColumnComponent>
     {
+        [JsonProperty]
         private readonly HorizontalStackLayoutComponent<AssignmentColumnComponent> _stack;
 
         public AssignmentsComponent(IReadOnlyCollection<AssignmentColumnComponent> components)
