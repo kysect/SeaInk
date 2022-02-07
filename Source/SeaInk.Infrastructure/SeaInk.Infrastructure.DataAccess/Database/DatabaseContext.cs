@@ -4,15 +4,19 @@ using SeaInk.Core.Entities;
 using SeaInk.Core.TableLayout;
 using SeaInk.Infrastructure.DataAccess.Exceptions;
 using SeaInk.Infrastructure.DataAccess.Models;
+using SeaInk.Infrastructure.DataAccess.Serialization;
 using SeaInk.Utility.Extensions;
 
 namespace SeaInk.Infrastructure.DataAccess.Database
 {
     public sealed class DatabaseContext : DbContext
     {
-        public DatabaseContext(DbContextOptions options)
+        private readonly LayoutComponentSerializationConfiguration _layoutComponentSerializationConfiguration;
+
+        public DatabaseContext(DbContextOptions options, LayoutComponentSerializationConfiguration layoutComponentSerializationConfiguration)
             : base(options)
         {
+            _layoutComponentSerializationConfiguration = layoutComponentSerializationConfiguration;
             Database.EnsureCreated();
         }
 
@@ -40,8 +44,10 @@ namespace SeaInk.Infrastructure.DataAccess.Database
             modelBuilder.Entity<StudyGroupSubjectLayout>()
                 .Property(ssg => ssg.Layout)
                 .HasConversion(
-                    component => JsonConvert.SerializeObject(component),
-                    s => JsonConvert.DeserializeObject<TableLayoutComponent>(s)
+                    c => JsonConvert
+                        .SerializeObject(c, _layoutComponentSerializationConfiguration.SerializationSettings),
+                    s => JsonConvert
+                        .DeserializeObject<TableLayoutComponent>(s, _layoutComponentSerializationConfiguration.DeserializationSettings)
                         .ThrowIfNull(new FailedTableLayoutComponentDeserializationException(s)));
         }
 
