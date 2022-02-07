@@ -1,5 +1,6 @@
 using System.Globalization;
 using Kysect.Centum.Sheets.Indices;
+using Newtonsoft.Json;
 using SeaInk.Core.Models;
 using SeaInk.Core.TableLayout.ComponentsBase;
 using SeaInk.Core.TableLayout.Models;
@@ -16,6 +17,7 @@ namespace SeaInk.Core.TableLayout.Components
 
         public override Frame Frame => new Frame(1, 1);
 
+        [JsonProperty]
         public override AssignmentModel Value { get; }
 
         public override void Remove(ISheetIndex begin, ISheetEditor editor)

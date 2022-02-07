@@ -8,12 +8,6 @@ namespace SeaInk.Core.TableLayout.ComponentsBase
 {
     public abstract class LayoutComponent : IEquatable<LayoutComponent>
     {
-        protected LayoutComponent()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; protected init; }
         public abstract Frame Frame { get; }
         public abstract bool Equals(LayoutComponent? other);
         public abstract override bool Equals(object? obj);
